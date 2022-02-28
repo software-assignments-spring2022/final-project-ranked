@@ -4,7 +4,7 @@
 Ranked is a game forum site that provides developers with instant access to feedback on game updates, balance changes, and more, along with creating a community that players can refer to when looking for advice, ideas, or even whether or not the game is worth it. Players can create threads on any aspect of a game and get answers from other verified players. This creates a community for the players, all the while building trust with our platform (something near impossible in the gaming space).
 
 ### MVP
-- Users are able to create an account based on their email address and a unique username
+- Users are able to create an account based on their email address and a unique username 
 - Users can search for megathreads (games) and view current posts and comments related to each
 - Verified users can post, comment, and vote on posts (they also select tags to categorize the post)
 
