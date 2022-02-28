@@ -33,12 +33,12 @@ Ranked is a game forum site that provides developers with instant access to feed
 - Game developers and studios can be verified/approved with us then create their own megathread pertaining to their games, however they do not moderate it
 
 ## Core Team
-**Christopher Chen** - https://github.com/chrisXchen
-**India Daniel** - https://github.com/igdaniel-1
-**Xuelong(Phillip) Jiang** - https://github.com/Phillip-XuelongJiang
-**Sid Wang** - https://github.com/sid2002CN
-**Jason Lai** - https://github.com/M2JT
-**Yoshiaki Kato** - https://github.com/katoy01
+**Christopher Chen** - https://github.com/chrisXchen  
+**India Daniel** - https://github.com/igdaniel-1  
+**Xuelong(Phillip) Jiang** - https://github.com/Phillip-XuelongJiang  
+**Sid Wang** - https://github.com/sid2002CN  
+**Jason Lai** - https://github.com/M2JT  
+**Yoshiaki Kato** - https://github.com/katoy01  
 ## Brief History and Contributions
 The idea for Ranked started with Chris, but none of the progress made would’ve been possible without India, Phillip, Sid, Jason, and Yoshiaki, so all credit goes to them. Originally, the idea was for a video game social media site where you could post clips of your gameplay. However it became obvious the utility of that is more limited than an open forum and thus Ranked was born.
 If you’d like to contribute to our project, please reference the Contributions Document, then message any of us on Github. We’ll be happy to get in touch with you!
