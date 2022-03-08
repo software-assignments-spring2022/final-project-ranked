@@ -1,0 +1,14 @@
+.Tag {
+  /* some spacing around the entire contents of the app */
+  margin: 0px;
+}
+
+.Tag-main {
+  /* use flexbox to create a tiling area with a row of puppy articles inside */
+  border-radius: 25px;
+  border: 2px solid rgb(184, 238, 255);
+  padding: 10px; 
+  display: flex;
+  flex-direction: row;
+  font-size: 13px;
+}
