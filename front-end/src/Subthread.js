@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import axios from "axios"
-import Tag from "./Tag"
 import CommentSection from "./CommentSection"
+import Post from "./Post"
 // import comment_info from "./mock-comment-section.json"
 import "./Subthread.css"
 
@@ -53,19 +53,7 @@ const Subthread = (props) => {
     return (
         <div className="Subthread">
             {/* <button className="back-button" onClick={goBack}> Back </button> */}
-            <h1> {data.title} </h1>
-            <section className="post">
-                <img alt="game picture" src="https://picsum.photos/200?page=animals" />
-                <div className="details">
-                    <p>{data.body}</p>
-                    <section className="tags">
-                        {data.tags && 
-                            data.tags.map(item => (
-                                <Tag tagName={item} />
-                        ))}
-                    </section>
-                </div>
-            </section>
+            <Post user={props.user} post={data}></Post>
             <CommentSection user={props.user} postId={postId}/>
         </div>
     );
