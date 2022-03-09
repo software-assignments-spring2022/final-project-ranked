@@ -1,0 +1,17 @@
+.post-body {
+    display: flex;
+}
+
+.post-body .details {
+margin: 20px;
+}
+
+.post-body .details p {
+/* override the general setting for all paragraphs */
+margin-left: 0px;
+}
+
+.tags {
+display: flex;
+flex-direction: row;
+}
