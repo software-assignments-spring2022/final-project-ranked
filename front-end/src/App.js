@@ -1,48 +1,52 @@
 import './App.css';
+import React, { useState, useRef, useCallback } from 'react'
+import usePostSearch from './usePostSearch';
+const posts = [
+  {
+  title: "Post1",
+  author: "Sid",
+  time: "Dec 7, 2021",
+  description:"Trying to farm"
+  },
+  {
+    title: "Post2",
+    author: "Sid",
+    time: "Dec 8, 2021",
+    description:"Best Valorants players in the world"
+  },
+  {
+    title: "Post3",
+    author: "Sid",
+    time: "Dec 9, 2021",
+    description:"Best LOL players in the world"
+  }
+]
 
 function App() {
+  const [query, setQuery] = useState('')
+  const [pageNumber, setPageNumber] = useState(1)
+
+  function handleSearch(e) {
+    setQuery(e.target.value)
+    setPageNumber(1)
+  }
+  
   return (
     <div className="App">
       <div class="header">
-        <h2>This is the header.</h2>  
+        <h2>This is the header.</h2>
+        <input type="text" value={query} onChange={handleSearch}></input>  
       </div>
 
-
-  <div class="leftcolumn">
-    <div class="post">
-      <h2>Post 1</h2>
-      <h5>Author: Sid,Last Updated: Dec 7, 2021</h5>
+  <div className="posts">
+    {posts.map((post) =>(
+      <div class="post">
+      <h2>{post.title}</h2>
+      <h5>Author: {post.author},Last Updated: {post.time}</h5>
       <div class="img"><img src = "N/A" alt="N/A"/></div>
-      <p>Trying to farm</p>
-      <p>No one can stop me farming.</p>
-    </div>
-    <div class="post">
-      <h2>Post 2</h2>
-      <h5>Author: Sid,Last Updated: Dec 9, 2021</h5>
-      <div class="img"><img src = "N/A" alt="N/A"/></div>
-      <p>Best Valorants players in the world:</p>
-      <ul>
-          <li>Sid</li>
-          <li>Tenz</li>
-          <li>ShahZaM</li>
-      </ul>
-    </div>
-    <div class="post">
-        <h2>Post 3</h2>
-        <h5>Author: Sid,Last Updated: Dec 10, 2021</h5>
-        <div class="img"><img src = "N/A" alt="N/A"/></div>
-        <p>Best LOL players in the world::</p>
-        <ul>
-          <li>Sid</li>
-          <li>Faker</li>
-      </ul>
-    </div>
-    <div class="post">
-        <h2>Post 4</h2>
-        <h5>Author: Sid,Last Updated: Dec 10, 2021</h5>
-        <div class="img"><img src = "Hash.svg" alt="Hash"/></div>
-        <p>I hate midterm.</p>
-    </div>
+      <p>{post.description}</p>
+      </div>
+    ))}
   </div>
 
   <div class="footer">
