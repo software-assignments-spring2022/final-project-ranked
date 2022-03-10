@@ -1,0 +1,56 @@
+body{
+    width: 400px;
+    height: 700px;
+    border: 1px solid black;
+    margin: auto;
+    margin-top: 100px;
+}
+
+.ThreadRequest-header{
+    width: 400px;
+    height: 100px;
+    border: 1px solid red;
+    text-align: center;
+}
+
+.ThreadRequest-div{
+    border: 1px solid green;
+    width: 350px;
+    height: 570px;
+    margin: auto;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.ThreadRequest-questionDiv{
+    border: 1px solid black;
+    width: 340px;
+    height: 110px;
+    margin: auto;
+}
+
+.ThreadRequest-questonP{
+    border: 1px solid black;
+    width: 300px;
+    height: 35px;
+    margin: auto;
+    padding: 5px;
+}
+
+.ThreadRequest-questonBtns{
+    border: 1px solid black;
+    width: 90px;
+    position: relative;
+    top: 20px;
+    left: 40px;
+}
+
+.ThreadRequest-textArea{
+    border: 1px solid black;
+    height: 300px;
+}
+
+Button{
+    margin-top: 10px;
+    width: 120px;
+}
