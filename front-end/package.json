@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "name": "tester_example",
+=======
+  "name": "front-end",
+>>>>>>> 7ac5b0bb5307db67349d7b130046d8b5484ed778
   "version": "0.1.0",
   "private": true,
   "dependencies": {
