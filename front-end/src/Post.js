@@ -6,7 +6,7 @@ const Post = props => {
     <div className="Post">
         <h1> {props.post.title} </h1>
         <section className="post-body">
-            <img alt="game picture" src="https://picsum.photos/200?page=animals" />
+            <img alt="game picture" src={props.post.image} />
             <div className="details">
                 <p>user: {props.post.user}</p>
                 <p>{props.post.body}</p>

@@ -11,7 +11,7 @@ const Subthread = (props) => {
     const [data, setData] = useState([]);
 
     // from the website link
-    const postId = useParams();
+    const {postId} = useParams();
 
     //   the following side-effect will be called once upon initial render
     useEffect(() => {

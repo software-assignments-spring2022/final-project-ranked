@@ -1,38 +1,20 @@
 .Megathread {
-    text-align: left;
-  }
-  
-  .Megathread-logo {
-    height: 40vmin;
-    pointer-events: none;
-  }
-  
-  @media (prefers-reduced-motion: no-preference) {
-    .Megathread-logo {
-      animation: Megathread-logo-spin infinite 20s linear;
-    }
-  }
-  
-  .Megathread-header {
-    background-color: #5C667A;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: #282C35;
-  }
-  
-  .Megathread-link {
-    color: #61dafb;
-  }
-  
-  @keyframes Megathread-logo-spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
+  text-align: left;
+}
+
+.post {
+  padding: 15px;
+  border: 2px solid rgb(0, 0, 0);
+  border-radius: 10px;
+}
+
+.selfPosting {
+  text-align: center;
+}
+
+.selfPosting {
+  padding: 15px;
+  border: 2px solid rgb(270, 96, 0);
+  background-color: rgb(184, 238, 255);
+  border-radius: 10px;
+}
