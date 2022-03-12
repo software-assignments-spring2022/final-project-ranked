@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+/* <<<<<<< HEAD */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -11,7 +11,9 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-=======
+}
+
+/* ======= */
 * {
   box-sizing: border-box;
 }
@@ -37,7 +39,7 @@ a:active {
 
 body {
   font-family: ManropeFont;
-  padding: 20px;
+  /* padding: 20px; */
   background: #5C667A;
 }
 
@@ -94,5 +96,5 @@ img {
     width: 100%;
     padding: 0;
   }
->>>>>>> 7ac5b0bb5307db67349d7b130046d8b5484ed778
+/* >>>>>>> 7ac5b0bb5307db67349d7b130046d8b5484ed778 */
 }
