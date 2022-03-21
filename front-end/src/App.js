@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-import logo from "./logo.svg"
-import "./App.css"
-=======
 // app.js
 // import header features
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
@@ -12,7 +8,6 @@ import Header from "./Header"
 // styling
 // import logo from './Components/ranked_arrow.png';
 import './App.css';
->>>>>>> 51ba3adafe4a91e4cc268da7383c708ff84372a6
 
 function App() {
   return (
@@ -21,12 +16,6 @@ function App() {
         <Header />
       </header>
     </div>
-<<<<<<< HEAD
-  )
-}
-
-export default App
-=======
     <body>
       <p>just a paragraph to test</p>
     </body>
@@ -39,4 +28,3 @@ export default App
 }
 
 export default App;
->>>>>>> 51ba3adafe4a91e4cc268da7383c708ff84372a6
