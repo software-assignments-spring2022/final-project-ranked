@@ -1,3 +1,7 @@
+.Post {
+    background-color: #5C667A;
+}
+
 .post-body {
   display: flex;
 }
