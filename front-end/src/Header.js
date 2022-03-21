@@ -59,8 +59,9 @@ const Header = props => {
                 fullWidth
                 label="Search"
               />
-              </div>
-              <List input={inputText}/>  {/* this will be the backend tag file */}
+            </div>
+            {/* this will be the backend tag file */}
+            {/* <List input={inputText}/>   */}
           </li>
           <li className="nav-item">
             {/* burger menu */}
@@ -72,4 +73,4 @@ const Header = props => {
   )
 }
 
-export default Headergit
+export default Header

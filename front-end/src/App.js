@@ -12,18 +12,21 @@ import './App.css';
 function App() {
   return (
     <><div className="App">
+      
+    
+    {/* <body>
+      <p>just a paragraph to test</p>
+    </body> */}
+    <Router>
       <header className="App-header">
         <Header />
       </header>
-    </div>
-    <body>
-      <p>just a paragraph to test</p>
-    </body>
-    <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        {/* <Route path="/about" element={<About />} /> */}
       </Routes>
-    </Router></>
+    </Router>
+    </div></>
   );
 }
 

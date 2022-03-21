@@ -1,73 +1,59 @@
 
 
-.Header-nav {
+.Header-header {
+  /* height: 100px; */
+  /* padding: 0px; */
+  /* border: 10px red; */
   display: flex;
   flex-direction: row;
-
-  /* justify-content: space-between; */
-  /* align-items: start; */
-}
-
-.Header-header {
-  height: 100px;
-  padding: 0px;
+  justify-content: space-between;
 }
 
 .Header-navbar {
-  /* background-color: rgb(207, 96, 0);      "ranked" orange */
-  /* max-height: 50px; */
-  display: flex;
-  flex-direction: row;
-  /* align-items: center;
-  justify-content: center; */
-  /* font-size: calc(10px + 1vmin); */
-  color: white;
+  color: transparent;
+  width: 100%;
 }
-
-/* .logo {
-  /* display: inline-block; 
-  height: 10px;
-} */
 
 .nav-links {
   list-style: row;
-  /* display:  */
-  color: rgb(184, 238, 255);
+  /* color: rgb(184, 238, 255); */
+  width: 100%;
+  display: flex;
+  justify-content: left;
+  margin: 10px;
+  /* padding: 20px; */
 }
+/* this is the icon, search, and hamburger containers (3) */
 .nav-item {
-  top: 36px;
-  /* width:40px; */
-  display: inline-block;
+  /* color: green; */
+  /* top: 36px; */
+  /* width:40px;
+  height: 40px; */
+  /* display: inline-block; */
+  border: 2px solid transparent;
+  /* padding:20px; */
+  /* display: inline-flex; */
   background-color: #282c34;
   /* padding: 10px 15px; */
   /* width: 60%; */
 }
-.nav-item a {
-  color: rgb(184, 238, 255);          /* "ranked" blue */
+/* .nav-item a {
+  color: rgb(184, 238, 255);          "ranked" blue
   text-decoration: none;
-}
-
-.nav-item:hover a {
-  color: rgb(135, 187, 202);          /* slightly darker "ranked" blue */
-}
-
-/* .logo img {
-  width: 10px;
-
 } */
 
-.logo-image {
+/* .nav-item:hover a {
+  color: rgb(135, 187, 202);           slightly darker "ranked" blue 
+} */
+
+
+/* .logo-image {
   position: fixed;
-  /* max-width: 15px;
-  max-height: 15px; */
   left: 36px;
-  /* right: 36px; */
   top: 20px;
-}
+} */
 
 /* search bar styling */
 .search {
-width: 80%;
-/* color: red; /*rgb(184, 238, 255);
-background-color: #282c34; */
+width: 100%;
 }
