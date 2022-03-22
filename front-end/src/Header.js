@@ -39,13 +39,12 @@ const Header = props => {
   return (
     <header className="Header-header">
       <nav className="Header-navbar">
-      
         <ul className="nav-links">
           <li className="nav-item">
             <div className="logo-image">
               {/* home button */}
-              <a href="/home">
-                <img src={logo} width={45} height={60} alt='Logo'/>
+              <a href="/">
+                <img src={logo} alt='Logo'/>
               </a>
             </div>
           </li>
@@ -65,7 +64,10 @@ const Header = props => {
           </li>
           <li className="nav-item">
             {/* burger menu */}
-            <Sidebar /> {/* pageWrapId={'page-wrap'} outerContainerId={'outer-container'} */} 
+            <div className='menu'>
+              <Sidebar />
+            </div>
+            {/* pageWrapId={'page-wrap'} outerContainerId={'outer-container'} */} 
           </li>
         </ul>
       </nav>

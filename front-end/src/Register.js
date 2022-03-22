@@ -4,16 +4,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './Register.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import Card from 'react-bootstrap/Card';
 
 const Register = props => {
     return (
         <>
-            <header className='Register-header'>header section</header>
             <main className='Register'>
                 <div className='Register-tabDiv'>
                     <div className='Register-loginTab'>
-                        <Link to='/login'>Login</Link>
+                        <Link to='/login'><p>Login</p></Link>
                     </div>
                     <div className='Register-registerTab'>Register</div>
                 </div>
@@ -39,7 +37,6 @@ const Register = props => {
                     </Form>
                 </div>
             </main>
-            <Card.Footer className='Register-footer'>© 2022 Ranked</Card.Footer>
         </>
     )
 }

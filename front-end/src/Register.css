@@ -1,16 +1,5 @@
 body{
-    width: 400px;
-    height: 700px;
-    border: 1px solid black;
     margin: auto;
-    margin-top: 100px;
-}
-
-.Register-header{
-    width: 400px;
-    height: 100px;
-    border: 1px solid red;
-    text-align: center;
 }
 
 .Register-tabDiv{
@@ -35,6 +24,10 @@ body{
 
 .Register-loginTab > a{
     text-decoration: none;
+}
+
+.Register-loginTab > a > p{
+    color: black;
 }
 
 .Register-registerDiv{
@@ -70,11 +63,5 @@ body{
 .Register-submitBtn{
     position: relative;
     top: 80px;
-    left: 220px;
-}
-
-.Register-footer{
-    text-align: center;
-    position: relative;
-    top: 45px;
+    left: 120px;
 }

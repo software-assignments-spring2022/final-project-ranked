@@ -1,12 +1,13 @@
-
-
 .Header-header {
-  /* height: 100px; */
-  /* padding: 0px; */
-  /* border: 10px red; */
+  background-color: #282c34;
+  height: 100px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
+  /* height: 100px; */
+  /* padding: 0px; */
+  /* border: 10px red; */
 }
 
 .Header-navbar {
@@ -16,24 +17,27 @@
 
 .nav-links {
   list-style: row;
-  /* color: rgb(184, 238, 255); */
   width: 100%;
   display: flex;
   justify-content: left;
   margin: 10px;
+
+  /* color: rgb(184, 238, 255); */
   /* padding: 20px; */
 }
+
 /* this is the icon, search, and hamburger containers (3) */
 .nav-item {
+  border: 2px solid transparent;
+  background-color: #282c34;
+
   /* color: green; */
   /* top: 36px; */
   /* width:40px;
   height: 40px; */
   /* display: inline-block; */
-  border: 2px solid transparent;
   /* padding:20px; */
   /* display: inline-flex; */
-  background-color: #282c34;
   /* padding: 10px 15px; */
   /* width: 60%; */
 }
@@ -41,19 +45,28 @@
   color: rgb(184, 238, 255);          "ranked" blue
   text-decoration: none;
 } */
-
 /* .nav-item:hover a {
   color: rgb(135, 187, 202);           slightly darker "ranked" blue 
 } */
 
-
-/* .logo-image {
+.logo-image > a > img {
   position: fixed;
-  left: 36px;
-  top: 20px;
-} */
+  left: 5px;
+  top: 5px;
+  width: 90px;
+  height: 90px;
+}
 
 /* search bar styling */
 .search {
-width: 100%;
+  width: 210px;
+  position: fixed;
+  left: 110px;
+  top: 20px;
+}
+
+.menu {
+  position: fixed;
+  right: 75px;
+  top: 23px;
 }

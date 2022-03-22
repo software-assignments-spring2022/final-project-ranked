@@ -1,5 +1,4 @@
 // sidebar
-
 import React from 'react';
 import { slide as Menu } from 'react-burger-menu';
 import './Sidebar.css';
@@ -7,14 +6,14 @@ import './Sidebar.css';
 export default props => {
   return (
     <Menu right >
-      <a className="menu-item" href="/Login">
+      <a className="menu-item" href="/login">
         Login
       </a>
-      <a className="menu-item" href="/About">
+      <a className="menu-item" href="/about">
         About
       </a>
-      <a className="menu-item" href="/Contact">
-        Contact
+      <a className="menu-item" href="/threadrequest">
+        Thread Request
       </a>
     </Menu>
   );
