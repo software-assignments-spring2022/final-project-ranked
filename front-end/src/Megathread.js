@@ -5,7 +5,7 @@ import axios from "axios";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import Post from "./Post";
-import usePostSearch from "./usePostSearch";
+// import usePostSearch from "./usePostSearch";
 
 const Megathread = (props) => {
   const navigate = useNavigate();

@@ -9,7 +9,6 @@ import Card from 'react-bootstrap/Card';
 const Register = props => {
     return (
         <>
-            <header className='Register-header'>header section</header>
             <main className='Register'>
                 <div className='Register-tabDiv'>
                     <div className='Register-loginTab'>

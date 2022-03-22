@@ -4,7 +4,6 @@ import "./Account.css"
 const Account = (props) => {
   return (
     <main className="Account">
-      <header className="Account-header">header section</header>
       <img
         className="Account-image"
         src={props.mockImgSource}

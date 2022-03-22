@@ -37,7 +37,8 @@ const Subthread = (props) => {
                         user: "npoulton0",
                         title: "Vestibulum ac est lacinia nisi venenatis tristique fusce congue diam id ornare imperdiet",
                         body: "Fusce lacus purus aliquet at feugiat non pretium quis lectus suspendisse potenti in eleifend quam a odio in hac habitasse platea dictumst maecenas ut massa quis augue luctus tincidunt nulla mollis molestie lorem quisque ut erat curabitur gravida nisi at",
-                        likes: 318
+                        likes: 318,
+                        image: "https://picsum.photos/200"
                     },
                 ]
 
