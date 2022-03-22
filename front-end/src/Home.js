@@ -1,6 +1,7 @@
 // home
 import { Link } from "react-router-dom"
-//import "./Home.css"
+// import "./Home.css"
+import "./App.css"
 
 // import Header from "./Header"
 // import logo from './Components/ranked_arrow.png';
