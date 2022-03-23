@@ -3,15 +3,16 @@ import { useParams } from "react-router-dom"
 import axios from "axios"
 import CommentSection from "./CommentSection"
 import Post from "./Post"
+import backupData from "./mock-backupPosts.json"
 // import comment_info from "./mock-comment-section.json"
 import "./Subthread.css"
 
 const Subthread = (props) => {
     // start a state varaible with a blank array
-    const [data, setData] = useState([]);
+    const [data, setData] = useState([]) 
 
     // from the website link
-    const {postId} = useParams();
+    const {postId} = useParams() 
 
     //   the following side-effect will be called once upon initial render
     useEffect(() => {
@@ -28,21 +29,7 @@ const Subthread = (props) => {
                 console.log(`Sorry, buster.  No more requests allowed today!`)
                 console.error(err) // the server returned an error... probably too many requests... until we pay!
 
-                // make some backup fake data
-                const backupData = [
-                    {
-                        post_id: 1,
-                        game_name: "Black Walnut",
-                        tags: "debate",
-                        user: "npoulton0",
-                        title: "Vestibulum ac est lacinia nisi venenatis tristique fusce congue diam id ornare imperdiet",
-                        body: "Fusce lacus purus aliquet at feugiat non pretium quis lectus suspendisse potenti in eleifend quam a odio in hac habitasse platea dictumst maecenas ut massa quis augue luctus tincidunt nulla mollis molestie lorem quisque ut erat curabitur gravida nisi at",
-                        likes: 318,
-                        image: "https://picsum.photos/200"
-                    },
-                ]
-
-                setData(backupData[0])
+                setData(backupData[postId-1])
             })
     }, [postId])
 
@@ -59,7 +46,7 @@ const Subthread = (props) => {
                 <CommentSection user={props.user} postId={postId}/>
             </div>
         </div>
-    );
-};
+    ) 
+} 
 
-export default Subthread;
+export default Subthread 

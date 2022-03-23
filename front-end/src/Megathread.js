@@ -1,62 +1,40 @@
-import "./Megathread.css";
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Link, useParams } from "react-router-dom";
-import axios from "axios";
-import Button from "react-bootstrap/Button";
-import { useNavigate } from "react-router-dom";
-import Post from "./Post";
-// import usePostSearch from "./usePostSearch";
+import "./Megathread.css" 
+import React, { useState, useEffect, useRef, useCallback } from "react" 
+import { Link, useParams } from "react-router-dom" 
+import axios from "axios" 
+import Button from "react-bootstrap/Button" 
+import { useNavigate } from "react-router-dom" 
+import Post from "./Post" 
+import backupData from "./mock-backupPosts.json"
+// import usePostSearch from "./usePostSearch" 
 
 const Megathread = (props) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate() 
   const [query, setQuery] = useState("")
   const [pageNumber, setPageNumber] = useState(1)
   // start a state varaible with a blank array
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([]) 
   const [selfPostTitle, setTitle] = useState("")
   const [selfPostContent, setContent] = useState("")
 
-  const { gameId } = useParams();
+  const { gameId } = useParams() 
 
   // the following side-effect will be called once upon initial render
   useEffect(() => {
     // fetch mock data for posts
-    console.log(`fetching 10 posts...`);
+    console.log(`fetching 10 posts...`) 
     axios("https://my.api.mockaroo.com/mock_post-feed.json?key=23d25ba0")
       .then((response) => {
         // extract the data from the server response
-        setData(response.data);
+        setData(response.data) 
       })
       .catch((err) => {
-        console.log(`Sorry, buster.  No more requests allowed today!`);
-        console.error(err);
+        console.log(`Sorry, buster.  No more requests allowed today!`) 
+        console.error(err) 
 
-        // make some backup fake data
-        const backupData = [
-          {
-            post_id: 1,
-            game_name: "Dimethicone",
-            tags: ["sed", "varius"],
-            user: "kpolglase0",
-            title: "Nisi at nibh in hac habitasse",
-            body: "Etiam faucibus cursus urna ut tellus nulla ut erat id mauris vulputate elementum nullam varius nulla facilisi cras non velit nec nisi vulputate nonummy maecenas tincidunt lacus at velit vivamus vel nulla",
-            likes: 316,
-          },
-          {
-            post_id: 2,
-            game_name: "Benazepril Hydrochloride and Hydrochlorothiazide",
-            tags: ["luctus", "integer", "eget"],
-            user: "fbaudinot1",
-            title:
-              "A libero nam dui proin leo odio porttitor id consequat in consequat ut nulla sed accumsan felis ut at",
-            body: "Ligula sit amet eleifend pede libero quis orci nullam molestie nibh in lectus pellentesque at nulla suspendisse potenti cras in purus eu magna vulputate luctus cum sociis natoque penatibus et magnis dis",
-            likes: 306,
-          },
-        ];
-
-        setData(backupData);
-      });
-  }, []);
+        setData(backupData) 
+      }) 
+  }, []) 
 
   const handleSubmit = e => {
     e.preventDefault() // prevent the default browser form submission stuff
@@ -165,7 +143,7 @@ const Megathread = (props) => {
         <h2>This is the footer.</h2>
       </div>
     </div>
-  );
-};
+  ) 
+} 
 
-export default Megathread;
+export default Megathread 
