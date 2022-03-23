@@ -28,4 +28,4 @@ const Account = props => {
     )
 }
 
-export default Account;
+export default Account

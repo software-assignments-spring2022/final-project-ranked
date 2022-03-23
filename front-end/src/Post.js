@@ -1,7 +1,7 @@
 import "./Post.css"
 import Tag from "./Tag"
 
-const Post = props => {
+const Post = (props) => {
   return (
     <div className="Post">
         <h1> {props.post.title} </h1>

@@ -1,11 +1,21 @@
 .Megathread {
+  background-color: #495263;
   text-align: left;
 }
 
 .post {
+  background-color: #5C667A;
+  margin: auto;
+  width: 95%;
   padding: 15px;
   border: 2px solid rgb(0, 0, 0);
   border-radius: 10px;
+  transition: all .2s ease-in-out;
+}
+
+.post:hover{
+  background-color: #ff6000; 
+  transform: scale(1.02);
 }
 
 .selfPosting {
@@ -15,6 +25,6 @@
 .selfPosting {
   padding: 15px;
   border: 2px solid rgb(270, 96, 0);
-  background-color: rgb(184, 238, 255);
+  background-color: #9bcedd;
   border-radius: 10px;
 }

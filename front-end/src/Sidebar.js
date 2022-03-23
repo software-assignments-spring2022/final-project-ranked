@@ -16,5 +16,5 @@ export default props => {
         Thread Request
       </a>
     </Menu>
-  );
-};
+  ) 
+} 

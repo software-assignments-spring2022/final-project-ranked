@@ -1,9 +1,6 @@
-<<<<<<< HEAD
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import logo from './logo.svg';
-=======
 // App.js
 // import header features
+import React, { useState } from "react"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import Terms from "./TermsConditions"
 import FAQ from "./FAQ"
@@ -15,46 +12,37 @@ import Register from "./Register"
 import Account from "./Account"
 import ThreadRequest from "./ThreadRequest"
 import Card from 'react-bootstrap/Card'
+import Megathread from "./Megathread"
+import Subthread from "./Subthread"
+import Logout from "./Logout"
 
 // styling
->>>>>>> 94143b1403ccc2d518865ad2c721fff0735a471b
-import './App.css';
-import Megathread from './Megathread'
+import './App.css' 
 
 const App = () => {
+  const [user, setUser] = useState({}) 
+
   const handleResetPwClick = () => {
-    alert('an reset password email has been sent to you!');
-  };
+    alert('an reset password email has been sent to you!') 
+  } 
 
   const handleDelAccClick = () => {
-    alert('hope to see you again soon!');
-  };
+    alert('hope to see you again soon!') 
+  } 
 
   const handleRequestClick = () => {
-    alert('Request submitted! We will get back to you ASAP.');
-  };
+    alert('Request submitted! We will get back to you ASAP.') 
+  } 
 
   const handleLoginClick = () => {
-    alert('Welcome back, Jason!');
-  };
+    alert('Welcome back, Jason!') 
+  } 
 
   const handleRegisterClick = () => {
-    alert('Welcome, M2JT!');
-  };
+    alert('Welcome, M2JT!') 
+  } 
 
   return (
-<<<<<<< HEAD
-    <div className="App">
-      <Router>
-        <main className="App-main">
-          <Routes>
-            {/* a route for the home page */}
-            <Route path="/" element={<Megathread />} />
-          </Routes>
-        </main>
-      </Router>
-    </div>
-=======
     <>
       <div className="App">
         <Router>
@@ -82,13 +70,15 @@ const App = () => {
                 handleDelAccClick={handleDelAccClick}
               />}>
             </Route>
+            <Route path="/logout" element={<Logout user={user} setuser={setUser} />} />
+            <Route path="/megathread/:gameId" element={<Megathread user={user} />} />
+            <Route path="/megathread/:gameId/subthread/:postId" element={<Subthread user={user} />} />
           </Routes>
         </Router>
         {/* <Card.Footer className='App-footer'>© 2022 Ranked </Card.Footer> */}
       </div>
     </>
->>>>>>> 94143b1403ccc2d518865ad2c721fff0735a471b
-  );
+  ) 
 }
 
-export default App;
+export default App 

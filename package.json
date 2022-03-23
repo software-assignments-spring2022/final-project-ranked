@@ -1,5 +1,8 @@
 {
   "dependencies": {
+    "@material/textfield": "^13.0.0",
+    "@mui/material": "^5.5.2",
+    "react-burger-menu": "^3.0.6",
     "react-router-dom": "^6.2.2"
   }
 }

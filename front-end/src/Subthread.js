@@ -18,10 +18,10 @@ const Subthread = (props) => {
         // fetch some mock data about animals for sale
         // the id of the animal that was clicked on is passed as a part of the match field of the props
         console.log(`fetching post id=${postId}...`)
-        axios("https://my.api.mockaroo.com/mock_post.json?key=23d25ba0")
+        axios("https://my.api.mockaroo.com/mock_post-feed.json?key=23d25ba0")
             .then(response => {
                 // extract the data from the server response
-                setData(response.data)
+                setData(response.data[postId-1])
             })
             .catch(err => {
                 // Mockaroo, which we're using for our Mock API, only allows 200 requests per day on the free plan
@@ -37,7 +37,8 @@ const Subthread = (props) => {
                         user: "npoulton0",
                         title: "Vestibulum ac est lacinia nisi venenatis tristique fusce congue diam id ornare imperdiet",
                         body: "Fusce lacus purus aliquet at feugiat non pretium quis lectus suspendisse potenti in eleifend quam a odio in hac habitasse platea dictumst maecenas ut massa quis augue luctus tincidunt nulla mollis molestie lorem quisque ut erat curabitur gravida nisi at",
-                        likes: 318
+                        likes: 318,
+                        image: "https://picsum.photos/200"
                     },
                 ]
 
@@ -54,7 +55,9 @@ const Subthread = (props) => {
         <div className="Subthread">
             {/* <button className="back-button" onClick={goBack}> Back </button> */}
             <Post user={props.user} post={data}></Post>
-            <CommentSection user={props.user} postId={postId}/>
+            <div className="CommentSection">
+                <CommentSection user={props.user} postId={postId}/>
+            </div>
         </div>
     );
 };
