@@ -13,6 +13,7 @@ import Card from 'react-bootstrap/Card'
 import Megathread from "./Megathread"
 import Subthread from "./Subthread"
 import Logout from "./Logout"
+import Admin from "./AdminPanel"
 
 // styling
 import './App.css' 
@@ -52,6 +53,7 @@ const App = () => {
             <Route path="/about" element={<About mockImg={'https://picsum.photos/200/300'} />} ></Route>
             <Route path="/terms" element={<Terms mockImg={'https://picsum.photos/200/300'} />} ></Route>
             <Route path="/faq" element={<FAQ />} ></Route>
+            <Route path="/admin" element={<Admin />} ></Route>
             <Route path="/threadrequest" element={
               <ThreadRequest handleRequestClick={handleRequestClick} />} >
             </Route>

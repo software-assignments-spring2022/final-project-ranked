@@ -1,4 +1,5 @@
 import React from 'react'
+import "./Request.css"
 
 export default function Request({ request, acceptRequests }) {
   function handleClick() {
@@ -6,8 +7,7 @@ export default function Request({ request, acceptRequests }) {
   }
   return (
     <div>
-        <label>
-            <br></br>
+        <label className='Request-eachThreadRequest'>
             <input type="checkbox" checked={request.accepted} onChange={handleClick} />
             {request.title}
             <br></br>

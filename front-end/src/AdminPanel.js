@@ -1,12 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react'
 import ThreadRequestList from './ThreadRequestList'
-import mockRequests from './mockRequests';
-
+import mockRequests from './mockRequests'
 
 const LOCAL_STORAGE_KEY = 'adminPanelApp.threadRequests'
 
-function AdminPanel() {
-
+const AdminPanel = () => {
   const [threadRequests, setThreadRequests] = useState(mockRequests)
 
   useEffect(() => {
@@ -27,17 +25,15 @@ function AdminPanel() {
 
   return (
     <main className="AdminPanel">
-      <header className="header">
-        header here
-      </header>
-      <div clasName="AdminPanelDetails">
+      <div clasName="AdminPanel-reminderDiv">
+        <p><b>Admin Panel</b></p>
         Check a game to mark it as accepted.
       </div>
-      <div className="ListThreadRequests">
+      <div className="AdminPanel-threadRequestsList">
         <ThreadRequestList threadRequests={threadRequests} acceptRequests={acceptRequests} />
       </div>
     </main>
   )
 }
 
-export default AdminPanel;
+export default AdminPanel
