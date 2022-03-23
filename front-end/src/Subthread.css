@@ -1,6 +1,7 @@
-/* .Subthread{
-  background-color: rgb(29, 34, 38)
-} */
+.Subthread{
+    background-color: #5C667A;
+    text-align: left;
+}
 
 .back-button {
     float: left;

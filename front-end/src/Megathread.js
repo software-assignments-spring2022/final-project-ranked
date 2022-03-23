@@ -105,10 +105,10 @@ const Megathread = (props) => {
 
   return (
     <div className="Megathread">
-      <div className="header">
+      {/* <div className="header">
         <h2>This is the header/search bar.</h2>
         <input type="text" value={query} onChange={handleSearch}></input>
-      </div>
+      </div> */}
 
       <div className="selfPosting">
         <h2>Post something!</h2>
@@ -139,12 +139,10 @@ const Megathread = (props) => {
 
       <div className="posts">
         {data && data.map(item => (
-          <div className="post">
-            <Button onClick={() => handleButtonClick(item.post_id)}>
+          <div className="post" onClick={() => handleButtonClick(item.post_id)}>
               {/* <Link to={`subthread/${item.post_id}`}> */}
               <Post user={props.user} post={item}></Post>
               {/* </Link> */}
-            </Button>
           </div>
         ))}
       </div>
