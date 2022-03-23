@@ -1,50 +1,43 @@
-import React, { useState} from "react"
-import logo from './logo.svg';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Card from 'react-bootstrap/Card';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './AdminPanel.css';
-import ThreadRequest from "./ThreadRequest";
-import threadrequests from "./mock-thread-request-section";
+import React, { useState, useRef, useEffect } from 'react';
+import ThreadRequestList from './ThreadRequestList'
+import mockRequests from './mockRequests';
 
 
+const LOCAL_STORAGE_KEY = 'adminPanelApp.threadRequests'
 
-const AdminPanel = (reqList, props) => {
-    const [requestIndex, setRequestIndex] = useState(0)
+function AdminPanel() {
 
-    return (
-        <main className='AdminPanel'>
-            <header className='AdminPanel-header'>
-                header section here
-            </header>
-            <div className='AdminPanel-viewRequestsSection'>
-                {threadrequests && threadrequests.map(item => (
-                    <ThreadRequest id={requestIndex} details={item}></ThreadRequest>
-                ))}
-            </div>
-            <div className='AdminPanel-requestResponseSection'>
-                <button onClickAccept = { ()=> {
-                    setRequestIndex(requestIndex+1) 
-                    props.handleAcceptClick
-                }}>
-                    Click to accept the thread request
-                </button>
-                <button onClickDeny = { ()=> {
-                    setRequestIndex(requestIndex+1)
-                    props.handleDenyClick
-                }}>
-                    Click to deny the thread request
-                </button>
-                <button onClickSkip = { ()=> {
-                    setRequestIndex(requestIndex+1)
-                    props.handleSkipClick
-                }}>
-                    Click to skip the thread request for now
-                </button>
-            </div>
-        </main>
-    );
-};
+  const [threadRequests, setThreadRequests] = useState(mockRequests)
+
+  useEffect(() => {
+    const storedThreadRequests = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY))
+    if (storedThreadRequests) setThreadRequests(storedThreadRequests)
+  }, mockRequests)
+
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(threadRequests))
+  }, [threadRequests])
+
+  function acceptRequests(id) {
+    const newThreadRequests = [...threadRequests]
+    const request = newThreadRequests.find(request => request.id === id)
+    request.accepted = !request.accepted
+    setThreadRequests(newThreadRequests)
+  }
+
+  return (
+    <main className="AdminPanel">
+      <header className="header">
+        header here
+      </header>
+      <div clasName="AdminPanelDetails">
+        Check a game to mark it as accepted.
+      </div>
+      <div className="ListThreadRequests">
+        <ThreadRequestList threadRequests={threadRequests} acceptRequests={acceptRequests} />
+      </div>
+    </main>
+  )
+}
 
 export default AdminPanel;
