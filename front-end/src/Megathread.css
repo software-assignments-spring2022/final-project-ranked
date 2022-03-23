@@ -14,7 +14,7 @@
 }
 
 .post:hover{
-  background-color: #ff6000;
+  background-color: #ff6000; 
   transform: scale(1.02);
 }
 
