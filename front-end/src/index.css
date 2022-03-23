@@ -1,4 +1,7 @@
+<<<<<<< HEAD
+=======
 /* <<<<<<< HEAD */
+>>>>>>> 94143b1403ccc2d518865ad2c721fff0735a471b
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -11,6 +14,8 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+<<<<<<< HEAD
+=======
 }
 
 /* ======= */
@@ -97,4 +102,5 @@ img {
     padding: 0;
   }
 /* >>>>>>> 7ac5b0bb5307db67349d7b130046d8b5484ed778 */
+>>>>>>> 94143b1403ccc2d518865ad2c721fff0735a471b
 }
