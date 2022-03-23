@@ -1,16 +1,5 @@
 body{
-    width: 400px;
-    height: 700px;
-    border: 1px solid black;
     margin: auto;
-    margin-top: 100px;
-}
-
-.Login-header{
-    width: 400px;
-    height: 100px;
-    border: 1px solid red;
-    text-align: center;
 }
 
 .Login-tabDiv{
@@ -37,9 +26,8 @@ body{
     text-decoration: none;
 }
 
-.Login-registerTab:hover{
-    background-color: orange;
-    color: blue;
+.Login-registerTab > p{
+    color: black;
 }
 
 .Login-loginDiv{
@@ -70,12 +58,5 @@ body{
 .Login-submitBtn{
     position: relative;
     top: 80px;
-    left: 245px;
-    color: white;
-}
-
-.Login-footer{
-    text-align: center;
-    position: relative;
-    top: 146px;
+    left: 120px;
 }
