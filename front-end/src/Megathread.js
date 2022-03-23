@@ -1,5 +1,5 @@
 import "./Megathread.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Button from "react-bootstrap/Button";
@@ -9,8 +9,8 @@ import usePostSearch from "./usePostSearch";
 
 const Megathread = (props) => {
   const navigate = useNavigate();
-  const [query, setQuery] = useState("");
-  const [pageNumber, setPageNumber] = useState(1);
+  const [query, setQuery] = useState("")
+  const [pageNumber, setPageNumber] = useState(1)
   // start a state varaible with a blank array
   const [data, setData] = useState([]);
   const [selfPostTitle, setTitle] = useState("")
@@ -93,11 +93,30 @@ const Megathread = (props) => {
     }
 
   }
+  const {
+    posts,
+    hasMore,
+    loading,
+    error
+  } = usePostSearch(query, pageNumber)
+
+  const observer = useRef()
+  const lastPostElementRef = useCallback(node => {
+    if (loading) return
+    if (observer.current) observer.current.disconnect()
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        setPageNumber(prevPageNumber => prevPageNumber + 1)
+      }
+    })
+    if (node) observer.current.observe(node)
+  }, [loading, hasMore])
 
   const handleSearch = e => {
-    setQuery(e.target.value);
-    setPageNumber(1);
+    setQuery(e.target.value)
+    setPageNumber(1)
   }
+
 
   const handleButtonClick = e => {
     navigate(`/megathread/${gameId}/subthread/${e}`)
@@ -148,6 +167,10 @@ const Megathread = (props) => {
           </div>
         ))}
       </div>
+
+
+      <div>{loading && 'Loading...'}</div>
+      <div>{error && 'Error'}</div>
 
       <div className="footer">
         <h2>This is the footer.</h2>
