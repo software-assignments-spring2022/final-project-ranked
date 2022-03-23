@@ -1,12 +1,10 @@
-// App.js
-// import header features
 import React, { useState } from "react"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import Terms from "./TermsConditions"
 import FAQ from "./FAQ"
 import Home from "./Home"
-import About from "./AboutUs"
 import Header from "./Header"
+import About from "./AboutUs"
 import Login from "./Login"
 import Register from "./Register"
 import Account from "./Account"

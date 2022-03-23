@@ -85,10 +85,6 @@ const Home = (props) => {
 
   return (
     <main className="Home">
-      <h1>Home page of the app</h1>
-      <p>
-        Link to <Link to="/about">About</Link> page.
-      </p>
       <div className="game-list">
         {gameData &&
           gameData.map((item) => (

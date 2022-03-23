@@ -51,29 +51,6 @@ const ThreadRequest = props => {
                   </div>
               </Form>
           </div>
-          <div className="ThreadRequest-questionDiv">
-            <p className="ThreadRequest-questonP">
-              2. Do you have other friends who also want to moderate this
-              thread?
-            </p>
-            <div className="ThreadRequest-questonBtns">
-              <Form.Check label="Yes" name="question2" type={"radio"} />
-              <Form.Check label="No" name="question2" type={"radio"} />
-            </div>
-          </div>
-          <div className="ThreadRequest-textArea">
-            <Form.Group>
-              <Form.Label>Reason for the request:</Form.Label>
-              <Form.Control as="textarea" rows={9} />
-            </Form.Group>
-            <Button
-              variant="primary"
-              type="submit"
-              onClick={props.handleRequestClick}
-            >
-              Submit
-            </Button>
-          </div>
       </main>
     </>
   ) 

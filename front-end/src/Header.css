@@ -11,8 +11,9 @@
 }
 
 .Header-navbar {
+  width: 400px;
+  height: 100px;
   color: transparent;
-  width: 100%;
 }
 
 .nav-links {
@@ -22,6 +23,7 @@
   justify-content: left;
   margin: 10px;
 
+  /* background-color: #282c34; */
   /* color: rgb(184, 238, 255); */
   /* padding: 20px; */
 }
