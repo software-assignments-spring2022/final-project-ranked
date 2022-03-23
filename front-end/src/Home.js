@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom"
 import Post from "./Post" 
 import "./App.css" 
 import "./Home.css"
+import backupData from "./mock-backupPosts.json"
 
 const Home = (props) => {
   const navigate = useNavigate() 
@@ -22,29 +23,6 @@ const Home = (props) => {
       .catch((err) => {
         console.log(`Sorry, buster.  No more requests allowed today!`) 
         console.error(err) 
-
-        // make some backup fake data
-        const backupData = [
-          {
-            post_id: 1,
-            game_name: "Dimethicone",
-            tags: ["sed", "varius"],
-            user: "kpolglase0",
-            title: "Nisi at nibh in hac habitasse",
-            body: "Etiam faucibus cursus urna ut tellus nulla ut erat id mauris vulputate elementum nullam varius nulla facilisi cras non velit nec nisi vulputate nonummy maecenas tincidunt lacus at velit vivamus vel nulla",
-            likes: 316,
-          },
-          {
-            post_id: 2,
-            game_name: "Benazepril Hydrochloride and Hydrochlorothiazide",
-            tags: ["luctus", "integer", "eget"],
-            user: "fbaudinot1",
-            title:
-              "A libero nam dui proin leo odio porttitor id consequat in consequat ut nulla sed accumsan felis ut at",
-            body: "Ligula sit amet eleifend pede libero quis orci nullam molestie nibh in lectus pellentesque at nulla suspendisse potenti cras in purus eu magna vulputate luctus cum sociis natoque penatibus et magnis dis",
-            likes: 306,
-          },
-        ] 
 
         setPostData(backupData) 
       }) 
