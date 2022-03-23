@@ -20,8 +20,7 @@ const Megathread = (props) => {
 
   // the following side-effect will be called once upon initial render
   useEffect(() => {
-    // fetch some mock data about animals for sale
-    // the id of the animal that was clicked on is passed as a part of the match field of the props
+    // fetch mock data for posts
     console.log(`fetching 10 posts...`);
     axios("https://my.api.mockaroo.com/mock_post-feed.json?key=23d25ba0")
       .then((response) => {
@@ -29,9 +28,8 @@ const Megathread = (props) => {
         setData(response.data);
       })
       .catch((err) => {
-        // Mockaroo, which we're using for our Mock API, only allows 200 requests per day on the free plan
         console.log(`Sorry, buster.  No more requests allowed today!`);
-        console.error(err); // the server returned an error... probably too many requests... until we pay!
+        console.error(err);
 
         // make some backup fake data
         const backupData = [
@@ -67,7 +65,7 @@ const Megathread = (props) => {
 
       alert(`You posted title: ${selfPostTitle}!`)
 
-      // send the data of the new puppy to a server
+      // send the data of new post to a server
       // this server doesn't exist, so we will see an error in the console
       // axios' get() and post() methods return a promise, so we can use our javascript Promise or async/await expertise here to deal with the resolution or rejection of the request
       axios
@@ -93,29 +91,29 @@ const Megathread = (props) => {
     }
 
   }
-  const {
-    posts,
-    hasMore,
-    loading,
-    error
-  } = usePostSearch(query, pageNumber)
+  // const {
+  //   posts,
+  //   hasMore,
+  //   loading,
+  //   error
+  // } = usePostSearch(query, pageNumber)
 
-  const observer = useRef()
-  const lastPostElementRef = useCallback(node => {
-    if (loading) return
-    if (observer.current) observer.current.disconnect()
-    observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && hasMore) {
-        setPageNumber(prevPageNumber => prevPageNumber + 1)
-      }
-    })
-    if (node) observer.current.observe(node)
-  }, [loading, hasMore])
+  // const observer = useRef()
+  // const lastPostElementRef = useCallback(node => {
+  //   if (loading) return
+  //   if (observer.current) observer.current.disconnect()
+  //   observer.current = new IntersectionObserver(entries => {
+  //     if (entries[0].isIntersecting && hasMore) {
+  //       setPageNumber(prevPageNumber => prevPageNumber + 1)
+  //     }
+  //   })
+  //   if (node) observer.current.observe(node)
+  // }, [loading, hasMore])
 
-  const handleSearch = e => {
-    setQuery(e.target.value)
-    setPageNumber(1)
-  }
+  // const handleSearch = e => {
+  //   setQuery(e.target.value)
+  //   setPageNumber(1)
+  // }
 
 
   const handleButtonClick = e => {
@@ -124,11 +122,6 @@ const Megathread = (props) => {
 
   return (
     <div className="Megathread">
-      {/* <div className="header">
-        <h2>This is the header/search bar.</h2>
-        <input type="text" value={query} onChange={handleSearch}></input>
-      </div> */}
-
       <div className="selfPosting">
         <h2>Post something!</h2>
         <form onSubmit={handleSubmit}>
@@ -159,16 +152,14 @@ const Megathread = (props) => {
       <div className="posts">
         {data && data.map(item => (
           <div className="post" onClick={() => handleButtonClick(item.post_id)}>
-              {/* <Link to={`subthread/${item.post_id}`}> */}
               <Post user={props.user} post={item}></Post>
-              {/* </Link> */}
           </div>
         ))}
       </div>
 
 
-      <div>{loading && 'Loading...'}</div>
-      <div>{error && 'Error'}</div>
+      {/* <div>{loading && 'Loading...'}</div>
+      <div>{error && 'Error'}</div> */}
 
       <div className="footer">
         <h2>This is the footer.</h2>

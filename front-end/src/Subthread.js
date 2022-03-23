@@ -55,7 +55,9 @@ const Subthread = (props) => {
         <div className="Subthread">
             {/* <button className="back-button" onClick={goBack}> Back </button> */}
             <Post user={props.user} post={data}></Post>
-            <CommentSection user={props.user} postId={postId}/>
+            <div className="CommentSection">
+                <CommentSection user={props.user} postId={postId}/>
+            </div>
         </div>
     );
 };
