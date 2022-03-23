@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './ThreadRequest.css';
 import Form from 'react-bootstrap/Form';
@@ -7,9 +6,8 @@ import Button from 'react-bootstrap/Button';
 const ThreadRequest = props => {
     return (
         <main className='ThreadRequest'>
-            <header className='ThreadRequest-header'>header section</header>
             <div className='ThreadRequest-div'>
-                <p> <b>Requesting a New Game Thread</b> </p>
+                <p><b>Requesting a New Game Thread</b></p>
                 <Form>
                     <div className='ThreadRequest-questionDiv'>
                         <p className='ThreadRequest-questonP'>1. Do you want to be the moderator of this game thread?</p>

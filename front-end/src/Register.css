@@ -1,0 +1,67 @@
+body{
+    margin: auto;
+}
+
+.Register-tabDiv{
+    display: flex;
+    position: relative;
+    left: 20px;
+    top: 20px;
+}
+
+.Register-tabDiv > div{
+    width: 110px;
+    height: 60px;
+    border: 1px solid black;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 60px;
+}
+
+.Register-registerTab{
+    background-color: grey;
+}
+
+.Register-loginTab > a{
+    text-decoration: none;
+}
+
+.Register-loginTab > a > p{
+    color: black;
+}
+
+.Register-registerDiv{
+    border: 1px solid black;
+    margin: auto;
+    width: 360px;
+    height: 450px;
+    position: relative;
+    top: 20px;
+    left: 1px;
+}
+
+.Register-form{
+    width: 330px;
+    margin: auto;
+}
+
+.Register-usernameForm{
+    position: relative;
+    top: 20px;
+}
+
+.Register-emailForm{
+    position: relative;
+    top: 30px;
+}
+
+.Register-passwordForm{
+    position: relative;
+    top: 40px;
+}
+
+.Register-submitBtn{
+    position: relative;
+    top: 80px;
+    left: 120px;
+}

@@ -3,12 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.8.2",
+    "@emotion/styled": "^11.8.1",
+    "@mui/material": "^5.5.2",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.3",
     "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^5.1.3",
     "react": "^17.0.2",
     "react-bootstrap": "^2.2.0",
+<<<<<<< HEAD
+=======
+    "react-burger-menu": "^3.0.6",
+>>>>>>> 94143b1403ccc2d518865ad2c721fff0735a471b
     "react-dom": "^17.0.2",
     "react-router-dom": "^6.2.2",
     "react-scripts": "5.0.0",

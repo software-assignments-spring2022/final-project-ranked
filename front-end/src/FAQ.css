@@ -1,46 +1,37 @@
 body{
-    width: 400px;
-    height: 700px;
-    border: 1px solid black;
     margin: auto;
-    margin-top: 100px;
 }
 
-.FAQ-header{
-    width: 400px;
-    height: 100px;
-    border: 1px solid red;
-    text-align: center;
-}
-
-h3{
+.FAQ > h3{
     text-align: center;
 }
 
 .FAQ-question1Div{
     border: 1px solid black;
+    border-radius: 6px;
     width: 370px;
     height: 150px;
     margin: auto;
 }
 
-.FAQ-question2Div{
+.FAQ-question1Div > p > a {
+    color: black;
+}
+
+.FAQ-questionXDiv{
     border: 1px solid black;
+    border-radius: 6px;
     width: 370px;
     height: 110px;
     margin: auto;
     margin-top: 10px;
 }
 
-p{
+.FAQ-questionXDiv > p > a {
+    color: black;
+}
+
+.FAQ > p{
     margin-top: 3px;
     margin-left: 5px;
-}
-
-em{
-    margin-left: 5px;
-}
-
-.FAQ-footer{
-    text-align: center;
 }
