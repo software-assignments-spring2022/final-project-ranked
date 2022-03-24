@@ -3,7 +3,7 @@
 ## Prototype
 [Link To View Our Hosted Version Live on Invision](https://invis.io/NY12EDJ29X54)
 
-## App Map
+## Site Map
 ![siteMap](ux-design/siteMap.png)
 
 ## Wireframes
