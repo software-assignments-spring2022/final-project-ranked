@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import Terms from "./TermsConditions"
 import FAQ from "./FAQ"
@@ -14,6 +14,7 @@ import Megathread from "./Megathread"
 import Subthread from "./Subthread"
 import Logout from "./Logout"
 import Admin from "./AdminPanel"
+import axios from "axios"
 
 // styling
 import './App.css' 
@@ -21,25 +22,37 @@ import './App.css'
 const App = () => {
   const [user, setUser] = useState({}) 
 
+  // for Account.js
+  const [accountInfo, setAccountInfo] = useState({})
   const handleResetPwClick = () => {
-    alert('an reset password email has been sent to you!') 
+      alert('An reset password email has been sent to you!') 
   } 
-
   const handleDelAccClick = () => {
-    alert('hope to see you again soon!') 
-  } 
-
+      alert('Hope to see you again soon!') 
+  }
+  const backUpAccountData = {"username":"wmattisssen0","email":"bsenussi0@eepurl.com","country":"Ecuador"}
+  useEffect(() => {
+      axios("https://my.api.mockaroo.com/ranked_account_page.json?key=9fd06810")
+      .then(res => setAccountInfo(res.data))
+      .catch(err => {
+          console.log("reached 200 requests limit for today :( using backup data as for now")
+          console.log(err)
+          setAccountInfo(backUpAccountData)
+      })  
+  }, [])
+  
+  // for ThreadRequest.js
   const handleRequestClick = () => {
     alert('Request submitted! We will get back to you ASAP.') 
   } 
 
+  // for Login.js and Register.js
   const handleLoginClick = () => {
-    alert('Welcome back, Jason!') 
+    alert(`Welcome back, ${accountInfo.username}!`) 
   } 
-
   const handleRegisterClick = () => {
-    alert('Welcome, M2JT!') 
-  } 
+    alert(`Welcome, ${accountInfo.username}!`) 
+  }
 
   return (
     <>
@@ -60,12 +73,9 @@ const App = () => {
             <Route path="/account" element={
               <Account
                 mockImgSource={'https://picsum.photos/200/300'}
-                username={'jason'}
-                email={'random@something.com'}
-                country={'United States'}
-                // username={jsonData[0]['username']} 
-                // email={jsonData[0]['email']} 
-                // country={jsonData[0]['country']}
+                username={accountInfo.username}
+                email={accountInfo.email}
+                country={accountInfo.country}
                 handleResetPwClick={handleResetPwClick}
                 handleDelAccClick={handleDelAccClick}
               />}>
