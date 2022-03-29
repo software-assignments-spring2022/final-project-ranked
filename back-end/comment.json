@@ -1,33 +1,62 @@
 
 [{
-    "id": 1,
-    "text": "Tag1"
+    "post-id": "1",
+    "user-id":"name",
+    "text":"lorem ipsum",
+    "time": "1530",
+    "likes":"0"
 }, {
-    "id": 2,
-    "text": "Tag2"
+    "post-id": "1",
+    "user-id":"name",
+    "text":"lorem ipsum",
+    "time": "1530",
+    "likes":"0"
 }, {
-    "id": 3,
-    "text": "Tag3"
+    "post-id": "1",
+    "user-id":"name",
+    "text":"lorem ipsum",
+    "time": "1530",
+    "likes":"0"
 }, {
-    "id": 4,
-    "text": "Tag4"
+    "post-id": "1",
+    "user-id":"name",
+    "text":"lorem ipsum",
+    "time": "1530",
+    "likes":"0"
 }, {
-    "id": 5,
-    "text": "Tag5"
+    "post-id": "1",
+    "user-id":"name",
+    "text":"lorem ipsum",
+    "time": "1530",
+    "likes":"0"
 }, {
-    "id": 6,
-    "text": "Tag6"
+    "post-id": "1",
+    "user-id":"name",
+    "text":"lorem ipsum",
+    "time": "1530",
+    "likes":"0"
 }, {
-    "id": 7,
-    "text": "Tag7"
+    "post-id": "1",
+    "user-id":"name",
+    "text":"lorem ipsum",
+    "time": "1530",
+    "likes":"0"
 }, {
-    "id": 8,
-    
-    "text": "Tag8"
+    "post-id": "1",
+    "user-id":"name",
+    "text":"lorem ipsum",
+    "time": "1530",
+    "likes":"0"
 }, {
-    "id": 9,
-    "text": "Tag9"
+    "post-id": "1",
+    "user-id":"name",
+    "text":"lorem ipsum",
+    "time": "1530",
+    "likes":"0"
 }, {
-    "id": 10,
-    "text": "Tag10"
+    "post-id": "1",
+    "user-id":"name",
+    "text":"lorem ipsum",
+    "time": "1530",
+    "likes":"0"
 }]
