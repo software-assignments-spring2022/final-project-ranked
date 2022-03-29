@@ -1,32 +1,33 @@
 
 [{
-    "id": 1,
-    "text": "Tag1"
+    "id":"game-name",
+    "posts":["post-id-1", "post-id-2", "post-id-3"]
+
 }, {
-    "id": 2,
-    "text": "Tag2"
+    "id":"game-name2",
+    "posts":["post-id-1", "post-id-2", "post-id-3"]
 }, {
-    "id": 3,
-    "text": "Tag3"
+    "id":"game-name3",
+    "posts":["post-id-1", "post-id-2", "post-id-3"]
 }, {
-    "id": 4,
-    "text": "Tag4"
+    "id":"game-name4",
+    "posts":["post-id-1", "post-id-2", "post-id-3"]
 }, {
-    "id": 5,
-    "text": "Tag5"
+    "id":"game-name5",
+    "posts":["post-id-1", "post-id-2", "post-id-3"]
 }, {
-    "id": 6,
-    "text": "Tag6"
+    "id":"game-name6",
+    "posts":["post-id-1", "post-id-2", "post-id-3"]
 }, {
-    "id": 7,
-    "text": "Tag7"
+    "id":"game-name7",
+    "posts":["post-id-1", "post-id-2", "post-id-3"]
 }, {
-    "id": 8,
-    "text": "Tag8"
+    "id":"game-name8",
+    "posts":["post-id-1", "post-id-2", "post-id-3"]
 }, {
-    "id": 9,
-    "text": "Tag9"
+    "id":"game-name9",
+    "posts":["post-id-1", "post-id-2", "post-id-3"]
 }, {
-    "id": 10,
-    "text": "Tag10"
+    "id":"game-name10",
+    "posts":["post-id-1", "post-id-2", "post-id-3"]
 }]
