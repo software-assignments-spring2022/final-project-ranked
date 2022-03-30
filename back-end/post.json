@@ -1,92 +1,38 @@
 
-[{
-    "post-id": "1",
-    "user-id":"name",
-    "title":"title",
-    "text":"lorem ipsum",
-    "tags": ["Tag1","Tag2","Tag3"],
-    "time": "1530",
-    "likes":"0",
-    "page-num":"1"
-}, {
-    "post-id": "1",
-    "user-id":"name",
-    "title":"title",
-    "text":"lorem ipsum",
-    "tags": ["Tag1","Tag2","Tag3"],
-    "time": "1530",
-    "likes":"0",
-    "page-num":"1"
-}, {
-    "post-id": "1",
-    "user-id":"name",
-    "title":"title",
-    "text":"lorem ipsum",
-    "tags": ["Tag1","Tag2","Tag3"],
-    "time": "1530",
-    "likes":"0",
-    "page-num":"1"
-}, {
-    "post-id": "1",
-    "user-id":"name",
-    "title":"title",
-    "text":"lorem ipsum",
-    "tags": ["Tag1","Tag2","Tag3"],
-    "time": "1530",
-    "likes":"0",
-    "page-num":"1"
-}, {
-    "post-id": "1",
-    "user-id":"name",
-    "title":"title",
-    "text":"lorem ipsum",
-    "tags": ["Tag1","Tag2","Tag3"],
-    "time": "1530",
-    "likes":"0",
-    "page-num":"1"
-}, {
-    "post-id": "1",
-    "user-id":"name",
-    "title":"title",
-    "text":"lorem ipsum",
-    "tags": ["Tag1","Tag2","Tag3"],
-    "time": "1530",
-    "likes":"0",
-    "page-num":"1"
-}, {
-    "post-id": "1",
-    "user-id":"name",
-    "title":"title",
-    "text":"lorem ipsum",
-    "tags": ["Tag1","Tag2","Tag3"],
-    "time": "1530",
-    "likes":"0",
-    "page-num":"1"
-}, {
-    "post-id": "1",
-    "user-id":"name",
-    "title":"title",
-    "text":"lorem ipsum",
-    "tags": ["Tag1","Tag2","Tag3"],
-    "time": "1530",
-    "likes":"0",
-    "page-num":"1"
-}, {
-    "post-id": "1",
-    "user-id":"name",
-    "title":"title",
-    "text":"lorem ipsum",
-    "tags": ["Tag1","Tag2","Tag3"],
-    "time": "1530",
-    "likes":"0",
-    "page-num":"1"
-}, {
-    "post-id": "1",
-    "user-id":"name",
-    "title":"title",
-    "text":"lorem ipsum",
-    "tags": ["Tag1","Tag2","Tag3"],
-    "time": "1530",
-    "likes":"0",
-    "page-num":"1"
-}]
+[
+    {
+        "megathreadId": "1",
+        "posts": [{
+            "post-id": "1.1",
+            "user-id":"name",
+            "title":"title",
+            "text":"lorem ipsum",
+            "tags": ["Tag1","Tag2","Tag3"],
+            "time": "1530",
+            "likes":"0",
+            "page-num":"1"
+        }, {
+            "post-id": "1.2",
+            "user-id":"name",
+            "title":"title",
+            "text":"lorem ipsum",
+            "tags": ["Tag1","Tag2","Tag3"],
+            "time": "1530",
+            "likes":"0",
+            "page-num":"1"
+        }]
+    },
+    {
+        "megathreadId": "2",
+        "posts": [{
+            "post-id": "2.1",
+            "user-id":"name",
+            "title":"title",
+            "text":"lorem ipsum",
+            "tags": ["Tag1","Tag2","Tag3"],
+            "time": "1530",
+            "likes":"0",
+            "page-num":"1"
+        }]
+    }
+]

@@ -7,7 +7,7 @@ import "./App.css"
 import "./Home.css"
 import backupData from "./mock-backupPosts.json"
 
-const Home = (props) => {
+const Home = props => {
   const navigate = useNavigate() 
   const [postData, setPostData] = useState([]) 
   const [gameData, setGameData] = useState() 

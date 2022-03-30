@@ -1,3 +1,24 @@
-[ { "text": "lorem ipsum!", "likes": 10, "userId": "Elvis", "replies": [ { "text": "shmerp :|", "likes": 6, "userId": "meanie", "replies": [ { "text": "L+patio", "likes": 69, "userId": "middleschooler", "replies": [] } ] }, { "text": "goppers", "likes": 2, "userId": "coolguy22", "replies": [] } ] },
-    { "text": "Lore Loop Lum <3", "likes": 0, "userId": "Jessica", "replies": [] } ]
-  
+[
+  {
+    "text": "lorem ipsum!",
+    "likes": 10,
+    "userId": "Elvis",
+    "replies": [
+      {
+        "text": "shmerp :|",
+        "likes": 6,
+        "userId": "meanie",
+        "replies": [
+          {
+            "text": "L+patio",
+            "likes": 69,
+            "userId": "middleschooler",
+            "replies": []
+          }
+        ]
+      },
+      { "text": "goppers", "likes": 2, "userId": "coolguy22", "replies": [] }
+    ]
+  },
+  { "text": "Lore Loop Lum <3", "likes": 0, "userId": "Jessica", "replies": [] }
+]
