@@ -7,7 +7,7 @@ import backupData from "./mock-backupPosts.json"
 // import comment_info from "./mock-comment-section.json"
 import "./Subthread.css"
 
-const Subthread = (props) => {
+const Subthread = props => {
     // start a state varaible with a blank array
     const [data, setData] = useState([]) 
 

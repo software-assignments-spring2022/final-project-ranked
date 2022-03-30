@@ -1,62 +1,52 @@
-
 [{
     "post-id": "1",
     "user-id":"name",
     "text":"lorem ipsum",
     "time": "1530",
-    "likes":"0"
+    "likes":"0",
+    "replies": [
+        {
+            "post-id": "7",
+            "user-id":"name",
+            "text":"lorem ipsum",
+            "time": "1530",
+            "likes":"0",
+            "replies": []
+        }
+    ]
 }, {
     "post-id": "2",
     "user-id":"name",
     "text":"lorem ipsum",
     "time": "1530",
-    "likes":"0"
-}, {
-    "post-id": "2",
-    "user-id":"name",
-    "text":"lorem ipsum",
-    "time": "1530",
-    "likes":"0"
-}, {
-    "post-id": "2",
-    "user-id":"name",
-    "text":"lorem ipsum",
-    "time": "1530",
-    "likes":"0"
+    "likes":"0",
+    "replies": []
 }, {
     "post-id": "3",
     "user-id":"name",
     "text":"lorem ipsum",
     "time": "1530",
-    "likes":"0"
-}, {
-    "post-id": "3",
-    "user-id":"name",
-    "text":"lorem ipsum",
-    "time": "1530",
-    "likes":"0"
-}, {
-    "post-id": "3",
-    "user-id":"name",
-    "text":"lorem ipsum",
-    "time": "1530",
-    "likes":"0"
+    "likes":"0",
+    "replies": []
 }, {
     "post-id": "4",
     "user-id":"name",
     "text":"lorem ipsum",
     "time": "1530",
-    "likes":"0"
-}, {
-    "post-id": "4",
-    "user-id":"name",
-    "text":"lorem ipsum",
-    "time": "1530",
-    "likes":"0"
+    "likes":"0",
+    "replies": []
 }, {
     "post-id": "5",
     "user-id":"name",
     "text":"lorem ipsum",
     "time": "1530",
-    "likes":"0"
+    "likes":"0",
+    "replies": []
+}, {
+    "post-id": "6",
+    "user-id":"name",
+    "text":"lorem ipsum",
+    "time": "1530",
+    "likes":"0",
+    "replies": []
 }]

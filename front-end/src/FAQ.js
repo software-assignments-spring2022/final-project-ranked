@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import './FAQ.css';
 
-const FAQ = () => {
+const FAQ = props => {
     return (
         <>
             <main className='FAQ'>

@@ -5,7 +5,7 @@ import comments from "./mock-comment-section.json"
 import Comment from "./Comment"
 import "./CommentSection.css"
 
-const CommentSection = (props) => {
+const CommentSection = props => {
   const [comment, setComment] = useState("") 
 
   const handleSubmit = (e) => {

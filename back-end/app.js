@@ -15,5 +15,7 @@ app.get("/", (req, res) => {
     res.send("Welcome to Ranked!")
 })
 
+app.use("/static", express.static("public"))
+
 // export the express app created to make it available to other modules
 module.exports = app

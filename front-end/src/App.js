@@ -19,7 +19,7 @@ import axios from "axios"
 // styling
 import './App.css' 
 
-const App = () => {
+const App = props => {
   const [user, setUser] = useState({}) 
 
   // for Account.js
@@ -63,7 +63,7 @@ const App = () => {
             <Route path="/" element={<Home />} ></Route>
             <Route path="/login" element={<Login handleLoginClick={handleLoginClick} />} ></Route>
             <Route path="/register" element={<Register handleRegisterClick={handleRegisterClick} />}></Route>
-            <Route path="/about" element={<About mockImg={'https://picsum.photos/200/300'} />} ></Route>
+            <Route path="/static/AboutUs.html"></Route>
             <Route path="/terms" element={<Terms mockImg={'https://picsum.photos/200/300'} />} ></Route>
             <Route path="/faq" element={<FAQ />} ></Route>
             <Route path="/admin" element={<Admin />} ></Route>

@@ -8,7 +8,7 @@ import Post from "./Post"
 import backupData from "./mock-backupPosts.json"
 // import usePostSearch from "./usePostSearch" 
 
-const Megathread = (props) => {
+const Megathread = props => {
   const navigate = useNavigate() 
   const [query, setQuery] = useState("")
   const [pageNumber, setPageNumber] = useState(1)
