@@ -35,7 +35,7 @@ const Comment = props => {
       </section>
       <section className="replies">
         {props.details.replies && props.details.replies.map(item => (
-          <Comment type={props.type + 1} details={item}></Comment>
+          <Comment key={item.userId} type={props.type + 1} details={item}></Comment>
         ))}
       </section>
     </div>

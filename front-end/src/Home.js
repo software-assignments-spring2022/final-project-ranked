@@ -15,10 +15,11 @@ const Home = props => {
   useEffect(() => {
     // fetch mock data for posts
     console.log(`fetching 10 posts...`) 
-    axios("https://my.api.mockaroo.com/mock_post-feed.json?key=23d25ba0")
+    axios(`http://localhost:4000/posts`)
       .then((response) => {
         // extract the data from the server response
-        setPostData(response.data) 
+        setPostData(response.data.home_posts) 
+        console.log(postData)
       })
       .catch((err) => {
         console.log(`Sorry, buster.  No more requests allowed today!`) 
@@ -68,6 +69,7 @@ const Home = props => {
           gameData.map((item) => (
             <div
               className="game"
+              key={item.game_id}
               onClick={() =>
                 handleGameClick({
                   gameId: item.game_id,
@@ -80,9 +82,10 @@ const Home = props => {
       </div>
       <div className="posts">
         {postData &&
-          postData.map((item) => (
+          postData.map(item => (
             <div
               className="post"
+              key={`${item.game_id}`.concat(item.post_id)}
               onClick={() =>
                 handleButtonClick({
                   postId: item.post_id,
@@ -90,7 +93,7 @@ const Home = props => {
                 })
               }
             >
-              <Post user={props.user} post={item}></Post>
+              <Post key={item.post_id} user={props.user} post={item}></Post>
             </div>
           ))}
       </div>
