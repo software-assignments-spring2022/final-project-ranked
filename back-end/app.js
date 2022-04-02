@@ -62,6 +62,7 @@ app.get("/megathread/:gameId/subthread/:postId/post", async (req,res) => {
             sub_post: sub_post,
             status: 'all good',
         })
+        console.log(`${sub_post.postId}`)
   } catch (err) {
     console.error(err)
     res.status(400).json({

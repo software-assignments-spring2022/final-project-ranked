@@ -24,7 +24,7 @@ const Megathread = props => {
     // fetch mock data for posts
     console.log(`fetching posts for megathread id=${gameId}...`) 
     axios
-      .get(`http://localhost:4000/megathread/${gameId}/posts`)
+      .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/megathread/${gameId}/posts`)
       .then((response) => {
         // extract the data from the server response
         setData(response.data.game_posts) 

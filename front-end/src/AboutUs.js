@@ -1,61 +1,28 @@
-import { Link } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './AboutUs.css';
+import React, { useState, useEffect } from "react"
+import axios from "axios"
+import "./AboutUs.css"
 
-const AboutUs = props => {
-    return (
-        <main className='aboutUs'>
-            <div className='aboutUsTitle'>
-                <img src={props.mockImg} alt="first image" />
-                <div className='centered'><b>About Us</b></div>
-            </div>
-            <div className='aboutContent'>
-                <div className='aboutPair'>
-                    <div className='aboutImages'>
-                        <img src={props.mockImg}></img>
-                    </div>
-                    <div className='aboutText'>
-                        <p><b>Our Mission</b></p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                            Nulla aliquet nunc bibendum ante mollis iaculis. 
-                            Cras bibendum laoreet elit, rutrum lacinia purus lacinia lacinia. 
-                            Sed semper mi purus, non fringilla justo semper ac.
-                        </p>
-                    </div> 
-                </div>
-                <div className='aboutPair'>
-                    <div className='aboutImages'>
-                        <img src={props.mockImg}></img>
-                    </div>
-                    <div className='aboutText'>
-                        <p><b>Our Values</b></p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                            Nulla aliquet nunc bibendum ante mollis iaculis. 
-                            Cras bibendum laoreet elit, rutrum lacinia purus lacinia lacinia. 
-                            Sed semper mi purus, non fringilla justo semper ac.
-                        </p>
-                    </div> 
-                </div>
-                <div className='aboutPair'>
-                    <div className='aboutImages'>
-                        <img src={props.mockImg}></img>
-                    </div>
-                    <div className='aboutText'>
-                        <p><b>Our Goal</b></p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                            Nulla aliquet nunc bibendum ante mollis iaculis. 
-                            Cras bibendum laoreet elit, rutrum lacinia purus lacinia lacinia. 
-                            Sed semper mi purus, non fringilla justo semper ac.
-                        </p>
-                    </div> 
-                </div>
-            </div>
-            <div className='aboutFooter'>
-                <Link to='/terms'>Terms & Conditions</Link><br></br>
-                <Link to='/faq'>FAQ</Link>
-            </div>
-        </main>
-    )
-};
+const AboutUs = (props) => {
+  const [data, setData] = useState([])
 
-export default AboutUs;
+  useEffect(() => {
+    // fetch static data from server
+    console.log(`fetching static file AboutUs.html`)
+    axios
+      .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/static/AboutUs.html`)
+      .then((response) => {
+        // extract the data from the server response
+        setData(response.data)
+      })
+      .catch((err) => {
+        console.log(`Can't reach backend server`)
+        console.error(err)
+
+        setData(<h>can't reach this page sorry</h>)
+      })
+  }, [])
+
+  return (<main className="aboutUs">{data}</main>)
+}
+
+export default AboutUs
