@@ -22,11 +22,12 @@ const Megathread = props => {
   // the following side-effect will be called once upon initial render
   useEffect(() => {
     // fetch mock data for posts
-    console.log(`fetching 10 posts...`) 
-    axios("https://my.api.mockaroo.com/mock_post-feed.json?key=23d25ba0")
+    console.log(`fetching posts for megathread id=${gameId}...`) 
+    axios
+      .get(`http://localhost:4000/megathread/${gameId}/posts`)
       .then((response) => {
         // extract the data from the server response
-        setData(response.data) 
+        setData(response.data.game_posts) 
       })
       .catch((err) => {
         console.log(`Sorry, buster.  No more requests allowed today!`) 
@@ -129,8 +130,8 @@ const Megathread = props => {
 
       <div className="posts">
         {data && data.map(item => (
-          <div className="post" onClick={() => handleButtonClick(item.post_id)}>
-              <Post user={props.user} post={item}></Post>
+          <div className="post" key={item.post_id} onClick={() => handleButtonClick(item.post_id)}>
+              <Post key={item.post_id} user={props.user} post={item}></Post>
           </div>
         ))}
       </div>

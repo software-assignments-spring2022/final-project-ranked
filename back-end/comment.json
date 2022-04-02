@@ -1,52 +1,70 @@
 [{
-    "post-id": "1",
-    "user-id":"name",
-    "text":"lorem ipsum",
-    "time": "1530",
-    "likes":"0",
-    "replies": [
+    "post-id": 1,
+    "comments":[
         {
-            "post-id": "7",
+            "comment-id": "1-1",
             "user-id":"name",
-            "text":"lorem ipsum",
+            "text":"lorem ipsum 1",
             "time": "1530",
+            "likes":"0",
+            "replies": [
+                {
+                    "comment-id": "1-1-1",
+                    "user-id":"name",
+                    "text":"lorem ipsum 4",
+                    "time": "1630",
+                    "likes":"0",
+                    "replies": []
+                }
+            ]
+        },
+        {
+            "comment-id": "1-2",
+            "user-id":"name",
+            "text":"lorem ipsum 2",
+            "time": "1400",
             "likes":"0",
             "replies": []
         }
     ]
-}, {
-    "post-id": "2",
-    "user-id":"name",
-    "text":"lorem ipsum",
-    "time": "1530",
-    "likes":"0",
-    "replies": []
-}, {
-    "post-id": "3",
-    "user-id":"name",
-    "text":"lorem ipsum",
-    "time": "1530",
-    "likes":"0",
-    "replies": []
-}, {
-    "post-id": "4",
-    "user-id":"name",
-    "text":"lorem ipsum",
-    "time": "1530",
-    "likes":"0",
-    "replies": []
-}, {
-    "post-id": "5",
-    "user-id":"name",
-    "text":"lorem ipsum",
-    "time": "1530",
-    "likes":"0",
-    "replies": []
-}, {
-    "post-id": "6",
-    "user-id":"name",
-    "text":"lorem ipsum",
-    "time": "1530",
-    "likes":"0",
-    "replies": []
-}]
+},
+{
+    "post-id": 2,
+    "comments":[
+        {
+            "comment-id": "2-1",
+            "user-id":"name",
+            "text":"lorem ipsum 3",
+            "time": "1530",
+            "likes":"0",
+            "replies": [
+                {
+                    "post-id": "2-1-1",
+                    "user-id":"name",
+                    "text":"lorem ipsum 5",
+                    "time": "1630",
+                    "likes":"0",
+                    "replies": [
+                        {
+                            "post-id": "2-1-1-1",
+                            "user-id":"name",
+                            "text":"lorem ipsum 7",
+                            "time": "1830",
+                            "likes":"0",
+                            "replies": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "comment-id": "2-2",
+            "user-id":"name",
+            "text":"lorem ipsum 6",
+            "time": "1400",
+            "likes":"0",
+            "replies": []
+        }
+    ]
+}
+]
