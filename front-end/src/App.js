@@ -63,7 +63,7 @@ const App = props => {
             <Route path="/" element={<Home />} ></Route>
             <Route path="/login" element={<Login handleLoginClick={handleLoginClick} />} ></Route>
             <Route path="/register" element={<Register handleRegisterClick={handleRegisterClick} />}></Route>
-            <Route path="/static/AboutUs.html"></Route>
+            <Route path="/aboutus" element={<About />}></Route>
             <Route path="/terms" element={<Terms mockImg={'https://picsum.photos/200/300'} />} ></Route>
             <Route path="/faq" element={<FAQ />} ></Route>
             <Route path="/admin" element={<Admin />} ></Route>

@@ -18,8 +18,6 @@ app.get("/", (req, res) => {
     res.send("Welcome to Ranked!")
 })
 
-app.use("/static", express.static("public"))
-
 app.get("/posts", async (req, res) => {
   try {
     var home_posts = []
@@ -63,6 +61,7 @@ app.get("/megathread/:gameId/subthread/:postId/post", async (req,res) => {
             sub_post: sub_post,
             status: 'all good',
         })
+        console.log(`${sub_post.postId}`)
   } catch (err) {
     console.error(err)
     res.status(400).json({

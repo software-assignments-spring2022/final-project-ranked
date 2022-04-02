@@ -17,10 +17,11 @@ const Subthread = props => {
 
     //   the following side-effect will be called once upon initial render
     useEffect(() => {
+        window.scrollTo(0, 0)
         // fetch some mock data about animals for sale
         // the id of the animal that was clicked on is passed as a part of the match field of the props
         console.log(`fetching post id=${postId}...`)
-        axios(`http://localhost:4000/megathread/${gameId}/subthread/${postId}/post`)
+        axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/megathread/${gameId}/subthread/${postId}/post`)
             .then(response => {
                 // extract the data from the server response
                 setData(response.data.sub_post)
@@ -44,7 +45,7 @@ const Subthread = props => {
             {/* <button className="back-button" onClick={goBack}> Back </button> */}
             <Post user={props.user} post={data}></Post>
             <div className="CommentSection">
-                <CommentSection user={props.user} postId={postId}/>
+                <CommentSection user={props.user} gameId={gameId} postId={postId}/>
             </div>
         </div>
     ) 

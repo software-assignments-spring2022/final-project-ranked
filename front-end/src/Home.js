@@ -14,8 +14,8 @@ const Home = props => {
 
   useEffect(() => {
     // fetch mock data for posts
-    console.log(`fetching 10 posts...`) 
-    axios(`http://localhost:4000/posts`)
+    console.log(`fetching posts from backend...`) 
+    axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/posts`)
       .then((response) => {
         // extract the data from the server response
         setPostData(response.data.home_posts) 
