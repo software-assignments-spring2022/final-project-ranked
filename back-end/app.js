@@ -3,7 +3,8 @@ const path = require("path")
 const morgan = require("morgan") // middleware for nice logging of incoming HTTP requests
 const multer = require("multer") // middleware to handle HTTP POST requests with file uploads
 const mongoose = require("mongoose") // library for MongoDB
-const cors = require("cors")
+const cors = require("cors") // middleware for enabling CORS (Cross-Origin Resource Sharing) requests
+const fs = require("fs") // module to handle readfile or writefile
 const app = express() // instantiate an Express object
 const allPosts = require("./post.json")
 const allComments = require("./comment.json")
@@ -89,6 +90,39 @@ app.get("/megathread/:gameId/subthread/:postId/comments", async (req, res) => {
       status: "failed to retrieve post comments from the database",
     })
   }
+})
+
+// verify user login
+app.post("/login", (req, res) => {
+    const username = req.body.username.toLowerCase()
+    const password = req.body.password
+
+    if(!username.trim() || !password){
+        return res.json({
+            missing: "Username or password missing!"
+        })   
+    }
+    else{
+        fs.readFile("./user.json", (err, data) => {
+            if(err){
+                console.log(err)
+            }
+            else{
+                const user = JSON.parse(data)
+                if(user.username != username){
+                    return res.json({
+                        notFound: "User not found!"
+                    }) 
+                }
+                else{
+                    return res.json({
+                        success: "Login success!",
+                        user: user
+                    }) 
+                }
+            }
+        })
+    }
 })
 
 // export the express app created to make it available to other modules

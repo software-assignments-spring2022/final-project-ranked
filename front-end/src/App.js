@@ -46,10 +46,7 @@ const App = props => {
     alert('Request submitted! We will get back to you ASAP.') 
   } 
 
-  // for Login.js and Register.js
-  const handleLoginClick = () => {
-    alert(`Welcome back, ${accountInfo.username}!`) 
-  } 
+  // for Register.js
   const handleRegisterClick = () => {
     alert(`Welcome, ${accountInfo.username}!`) 
   }
@@ -61,7 +58,7 @@ const App = props => {
           <Header />
           <Routes>
             <Route path="/" element={<Home />} ></Route>
-            <Route path="/login" element={<Login handleLoginClick={handleLoginClick} />} ></Route>
+            <Route path="/login" element={<Login />} ></Route>
             <Route path="/register" element={<Register handleRegisterClick={handleRegisterClick} />}></Route>
             <Route path="/aboutus" element={<About />}></Route>
             <Route path="/terms" element={<Terms mockImg={'https://picsum.photos/200/300'} />} ></Route>
