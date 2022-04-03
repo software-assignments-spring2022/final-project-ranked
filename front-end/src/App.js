@@ -19,7 +19,7 @@ import axios from "axios"
 // styling
 import './App.css' 
 
-const App = props => {
+const App = () => {
   const [user, setUser] = useState({}) 
 
   // for Account.js
@@ -35,7 +35,7 @@ const App = props => {
       axios("https://my.api.mockaroo.com/ranked_account_page.json?key=9fd06810")
       .then(res => setAccountInfo(res.data))
       .catch(err => {
-          console.log("reached 200 requests limit for today :( using backup data as for now")
+          // console.log("reached 200 requests limit for today :( using backup data as for now")
           console.log(err)
           setAccountInfo(backUpAccountData)
       })  

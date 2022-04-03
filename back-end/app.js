@@ -8,11 +8,11 @@ const fs = require("fs") // module to handle readfile or writefile
 const app = express() // instantiate an Express object
 const allPosts = require("./post.json")
 
+app.use(cors())
 app.use(morgan("dev")) // use the morgan middleware to log all incoming http requests
 app.use(express.json()) // decode JSON-formatted incoming POST data
 app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming POST data
 app.use("/static", express.static("public")) // make 'public' directory publicly readable with static content
-app.use(cors())
 
 // demo: route for HTTP GET requests to the root document
 app.get("/", (req, res) => {
@@ -103,6 +103,18 @@ app.post("/login", (req, res) => {
             }
         })
     }
+})
+
+app.get("/aboutus", (req, res) => {
+    res.sendFile("/public/AboutUs.txt", {root: __dirname})
+})
+
+app.get("/terms", (req, res) => {
+    res.sendFile("/public/TermsConditions.txt", {root: __dirname})
+})
+
+app.get("/faq", (req, res) => {
+    res.sendFile("/public/FAQ.txt", {root: __dirname})
 })
 
 // export the express app created to make it available to other modules
