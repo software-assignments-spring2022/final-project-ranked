@@ -1,0 +1,20 @@
+Frequently Asked Questions
+Q: How do I create a new game thread?
+A: You can submit your request to the Ranked administrators by filling out the request form on the
+Request a Thread
+page in order to create a new game thread for the game that you and your friends are interested in.
+Q: How do I create an account?
+A: To register an Ranked account, you can click the hamburger menu in the top right corner and click
+Register
+Q: How do I change my account password?
+A: To change your Ranked account password, you can simply click the
+Reset Password
+button in your
+Account
+page.
+Q: How do I delete my account?
+A: To deactivate your Ranked account, you can click the
+Deactivate Account
+button in your
+Account
+page.
