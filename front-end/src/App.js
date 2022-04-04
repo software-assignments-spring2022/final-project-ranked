@@ -10,6 +10,7 @@ import Register from "./Register"
 import Account from "./Account"
 import ThreadRequest from "./ThreadRequest"
 import Card from 'react-bootstrap/Card'
+import NewPost from "./Newpost"
 import Megathread from "./Megathread"
 import Subthread from "./Subthread"
 import Logout from "./Logout"
@@ -36,6 +37,7 @@ const App = () => {
             <Route path="/threadrequest" element={<ThreadRequest />} ></Route>
             <Route path="/account" element={<Account />}></Route>
             <Route path="/logout" element={<Logout user={user} setuser={setUser} />} />
+            <Route path="/megathread/new" element={<NewPost user={user} />} />
             <Route path="/megathread/:gameId" element={<Megathread user={user} />} />
             <Route path="/megathread/:gameId/subthread/:postId" element={<Subthread user={user} />} />
           </Routes>

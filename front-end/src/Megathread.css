@@ -23,8 +23,10 @@
 }
 
 .selfPosting {
-  padding: 15px;
-  border: 2px solid rgb(270, 96, 0);
-  background-color: #9bcedd;
-  border-radius: 10px;
+  text-align: center;
+  position: fixed;
+  z-index: 10;
+  bottom: 5em;
+  left: 50%;
+  margin-left: -50px;
 }

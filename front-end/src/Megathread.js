@@ -42,7 +42,7 @@ const Megathread = props => {
 
     if (selfPostTitle && selfPostContent) {
 
-      alert(`You posted title: ${selfPostTitle}!`)
+      //alert(`You posted title: ${selfPostTitle}!`)
 
       // send the data of new post to a server
       // this server doesn't exist, so we will see an error in the console
@@ -102,30 +102,7 @@ const Megathread = props => {
   return (
     <div className="Megathread">
       <div className="selfPosting">
-        <h2>Post something!</h2>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <input
-              id="postTitle_field"
-              type="text"
-              placeholder="Title of post"
-              value={selfPostTitle}
-              onChange={e => setTitle(e.target.value)}
-            />
-          </div>
-          <div>
-            <input
-              id="postContent_field"
-              type="text"
-              placeholder="Content of post"
-              value={selfPostContent}
-              onChange={e => setContent(e.target.value)}
-            />
-          </div>
-          <div className="sendButton">
-            <input type="submit" value="Post" />
-          </div>
-        </form>
+      <Button className="btn btn-success" href="/megathread/new">New Post</Button>
       </div>
 
       <div className="posts">
