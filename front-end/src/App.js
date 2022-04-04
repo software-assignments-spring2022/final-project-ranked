@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import Terms from "./TermsConditions"
 import FAQ from "./FAQ"
@@ -15,37 +15,11 @@ import Subthread from "./Subthread"
 import Logout from "./Logout"
 import Admin from "./AdminPanel"
 import axios from "axios"
-
-// styling
 import './App.css' 
 
 const App = () => {
-  const [user, setUser] = useState({}) 
-
-  // for Account.js
-  const [accountInfo, setAccountInfo] = useState({})
-  const handleResetPwClick = () => {
-      alert('An reset password email has been sent to you!') 
-  } 
-  const handleDelAccClick = () => {
-      alert('Hope to see you again soon!') 
-  }
-  const backUpAccountData = {"username":"wmattisssen0","email":"bsenussi0@eepurl.com","country":"Ecuador"}
-  useEffect(() => {
-      axios("https://my.api.mockaroo.com/ranked_account_page.json?key=9fd06810")
-      .then(res => setAccountInfo(res.data))
-      .catch(err => {
-          // console.log("reached 200 requests limit for today :( using backup data as for now")
-          console.log(err)
-          setAccountInfo(backUpAccountData)
-      })  
-  }, [])
-
-  // for Register.js
-  const handleRegisterClick = () => {
-    alert(`Welcome, ${accountInfo.username}!`) 
-  }
-
+  const [user, setUser] = useState({})
+  
   return (
     <>
       <div className="App">
@@ -54,22 +28,13 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} ></Route>
             <Route path="/login" element={<Login />} ></Route>
-            <Route path="/register" element={<Register handleRegisterClick={handleRegisterClick} />}></Route>
+            <Route path="/register" element={<Register />}></Route>
             <Route path="/aboutus" element={<About />}></Route>
-            <Route path="/terms" element={<Terms mockImg={'https://picsum.photos/200/300'} />} ></Route>
+            <Route path="/terms" element={<Terms />} ></Route>
             <Route path="/faq" element={<FAQ />} ></Route>
             <Route path="/admin" element={<Admin />} ></Route>
             <Route path="/threadrequest" element={<ThreadRequest />} ></Route>
-            <Route path="/account" element={
-              <Account
-                mockImgSource={'https://picsum.photos/200/300'}
-                username={accountInfo.username}
-                email={accountInfo.email}
-                country={accountInfo.country}
-                handleResetPwClick={handleResetPwClick}
-                handleDelAccClick={handleDelAccClick}
-              />}>
-            </Route>
+            <Route path="/account" element={<Account />}></Route>
             <Route path="/logout" element={<Logout user={user} setuser={setUser} />} />
             <Route path="/megathread/:gameId" element={<Megathread user={user} />} />
             <Route path="/megathread/:gameId/subthread/:postId" element={<Subthread user={user} />} />
@@ -81,4 +46,4 @@ const App = () => {
   ) 
 }
 
-export default App 
+export default App
