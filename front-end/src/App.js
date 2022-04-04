@@ -17,7 +17,6 @@ import Logout from "./Logout"
 import Admin from "./AdminPanel"
 import axios from "axios"
 import './App.css' 
-
 const App = () => {
   const [user, setUser] = useState({})
   

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import { Navigate } from "react-router-dom"
 import axios from "axios"
 import "./Comment.css"
+import LikeButton from "./Components/likeButton";
 
 const Comment = props => {
 
@@ -22,6 +23,10 @@ const Comment = props => {
         <pre>
           <p>{indent(props.type)}user: {props.details.userId}</p>
         </pre>
+      </section>
+      <section>
+      <LikeButton />
+      <br></br><br></br>
       </section>
       <section className="body">
         <pre>

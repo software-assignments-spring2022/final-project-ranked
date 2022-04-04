@@ -1,19 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import cn from "classnames";
 import { ReactComponent as Hand } from "./hand.svg";
-
+import axios from "axios"
 import "./likeButton.scss";
 
 const particleList = Array.from(Array(10));
 
-const LikeButton = () => {
+const LikeButton = (props) => {
   const [liked, setLiked] = useState(null);
   const [clicked, setClicked] = useState(false);
+  
 
   return (
     <button
       onClick={() => {
+        console.log("Hi!")
         setLiked(!liked);
+        if (liked === true){
+          this.props.details.likes++;
+        }
+        else {
+          this.props.details.likes--;
+    
+        }
+    
         setClicked(true);
       }}
       onAnimationEnd={() => setClicked(false)}
