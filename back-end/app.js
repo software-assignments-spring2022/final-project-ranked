@@ -72,6 +72,62 @@ app.get("/megathread/:gameId/subthread/:postId/post", async (req,res) => {
 }
 })
 
+// handle thread request submitted by user
+app.post("/threadrequest", (req, res) => {
+    const gameName = req.body.gameName
+    const willModerate = req.body.willModerate
+    const friendsWillModerate = req.body.friendsWillModerate
+    const reason = req.body.reason
+
+    if(!gameName.trim() || (willModerate !== 1 && willModerate !== 0) || 
+    (friendsWillModerate !== 1 && friendsWillModerate !== 0) || !reason.trim()){
+        return res.json({
+            missing: "Please fill out all parts!"
+        })
+    }
+    else{
+        fs.readFile("./threadRequestList.json", (err, data) => {
+            // if there is no thread request list currently, create one
+            if(err){
+                const threadRequestArr = []
+                const newRequest = {"gameName": gameName, "willModerate": willModerate, 
+                "friendsWillModerate": friendsWillModerate, "reason": reason}
+                threadRequestArr.push(newRequest)
+                // write new request to file (will write to db later), so that
+                // admin panel can grab data
+                fs.writeFile("./threadRequestList.json", JSON.stringify(threadRequestArr), err => {
+                    if(err){
+                        console.log("An error occured while writing to the file!")
+                    }
+                    else{
+                        return res.json({
+                            success: "Request submitted! We will get back to you ASAP!"
+                        })
+                    }
+                })
+            }
+            // if there already exists a list for the thread request, then
+            // simple append the new request to the exisiting list, and write to file (later db)
+            else{
+                const threadRequestArr = JSON.parse(data)
+                const newRequest = {"gameName": gameName, "willModerate": willModerate, 
+                "friendsWillModerate": friendsWillModerate, "reason": reason}
+                threadRequestArr.push(newRequest) 
+                fs.writeFile("./threadRequestList.json", JSON.stringify(threadRequestArr), err => {
+                    if(err){
+                        console.log("An error occured while writing to the file!")
+                    }
+                    else{
+                        return res.json({
+                            success: "Request submitted! We will get back to you ASAP!"
+                        })
+                    }
+                })
+            }
+        })
+    }
+})
+
 // verify user login
 app.post("/login", (req, res) => {
     const username = req.body.username.toLowerCase()

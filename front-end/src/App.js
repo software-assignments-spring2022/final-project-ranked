@@ -40,11 +40,6 @@ const App = () => {
           setAccountInfo(backUpAccountData)
       })  
   }, [])
-  
-  // for ThreadRequest.js
-  const handleRequestClick = () => {
-    alert('Request submitted! We will get back to you ASAP.') 
-  } 
 
   // for Register.js
   const handleRegisterClick = () => {
@@ -64,9 +59,7 @@ const App = () => {
             <Route path="/terms" element={<Terms mockImg={'https://picsum.photos/200/300'} />} ></Route>
             <Route path="/faq" element={<FAQ />} ></Route>
             <Route path="/admin" element={<Admin />} ></Route>
-            <Route path="/threadrequest" element={
-              <ThreadRequest handleRequestClick={handleRequestClick} />} >
-            </Route>
+            <Route path="/threadrequest" element={<ThreadRequest />} ></Route>
             <Route path="/account" element={
               <Account
                 mockImgSource={'https://picsum.photos/200/300'}
