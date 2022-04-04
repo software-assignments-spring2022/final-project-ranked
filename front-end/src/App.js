@@ -18,13 +18,8 @@ import axios from "axios"
 import './App.css' 
 
 const App = () => {
-  const [user, setUser] = useState({}) 
+  const [user, setUser] = useState({})
   
-  // for ThreadRequest.js
-  const handleRequestClick = () => {
-    alert('Request submitted! We will get back to you ASAP.') 
-  }
-
   return (
     <>
       <div className="App">
@@ -38,9 +33,7 @@ const App = () => {
             <Route path="/terms" element={<Terms />} ></Route>
             <Route path="/faq" element={<FAQ />} ></Route>
             <Route path="/admin" element={<Admin />} ></Route>
-            <Route path="/threadrequest" element={
-              <ThreadRequest handleRequestClick={handleRequestClick} />} >
-            </Route>
+            <Route path="/threadrequest" element={<ThreadRequest />} ></Route>
             <Route path="/account" element={<Account />}></Route>
             <Route path="/logout" element={<Logout user={user} setuser={setUser} />} />
             <Route path="/megathread/:gameId" element={<Megathread user={user} />} />
