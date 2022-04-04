@@ -18,11 +18,11 @@ const AboutUs = (props) => {
         console.log(`Can't reach backend server`)
         console.error(err)
 
-        setData(<h>can't reach this page sorry</h>)
+        setData(<p>can't reach this page sorry</p>)
       })
   }, [])
 
-  return (<main className="aboutUs">{data}</main>)
+  return (<main className="aboutUs"> {data} </main>)
 }
 
 export default AboutUs

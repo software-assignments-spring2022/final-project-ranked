@@ -52,8 +52,8 @@ const CommentSection = props => {
 
   return (
     <div className="CommentSection">
-      {comments &&
-        comments.map((item) => <Comment key={item.userId} type={0} details={item}></Comment>)}
+      {data &&
+        data.map((item) => <Comment key={item.userId} type={0} details={item}></Comment>)}
       <form onSubmit={handleSubmit}>
         <div>
           <input
