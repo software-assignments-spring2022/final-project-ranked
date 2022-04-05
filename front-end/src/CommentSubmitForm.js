@@ -25,8 +25,8 @@ const CommentSection = props => {
       })
       .then((response) => {
         // success
-        console.log(`Received server response: ${response.data.comment}`)
-        props.addCommentToList(response.data.comment)
+        console.log(`Received server response: ${response.data.comments}`)
+        props.setNewComment(response.data.comment)
       })
       .catch((err) => {
         // failure

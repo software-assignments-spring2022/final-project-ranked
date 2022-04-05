@@ -43,7 +43,7 @@ const Comment = props => {
       </div>
       <section className="replyform">
           <pre>
-            {wantReply && <CommentForm user={props.user} replyTo={props.details.comment_id} addCommentToList={props.addCommentToList}/>}
+            {wantReply && <CommentForm user={props.user} replyTo={props.details.comment_id} setNewComment={props.setNewComment}/>}
           </pre>
         </section>
       <section className="replies">

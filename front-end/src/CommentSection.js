@@ -7,11 +7,7 @@ import "./CommentSection.css"
 
 const CommentSection = props => {
   const [data, setData] = useState([])
-
-  const addCommentToList = comment => {
-    const newComments = [...data, comment] // make an array with all the old values plus the new one
-    setData(newComments) // save the new array
-  }
+  const [newComment, setNewComment] = useState({})
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -21,22 +17,21 @@ const CommentSection = props => {
     axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/megathread/${props.gameId}/subthread/${props.postId}/comments`)
         .then(response => {
             // extract the data from the server response
-            console.log(response.data.comments)
+            console.log(`Retrieving comments from backend`)
             setData(response.data.comments)
         })
         .catch(err => {
             console.log(`Couldn't retrieve comments for game:post_id ${props.gameId}:${props.postId}`)
             console.error(err) // the server returned an error... probably too many requests... until we pay!
-
             setData([])
         })
-}, [])
+}, [newComment])
 
   return (
     <div className="CommentSection">
       {data &&
-        data.map((item) => <Comment key={item.comment_id} type={0} details={item} addCommentToList={addCommentToList} ></Comment>)}
-      <CommentForm user={props.user} replyTo={"root"} addCommentToList={addCommentToList} />
+        data.map((item) => <Comment key={item.comment_id} type={0} details={item} setNewComment={setNewComment} ></Comment>)}
+      <CommentForm user={props.user} replyTo={"root"} setNewComment={setNewComment} />
     </div>
   )
 }

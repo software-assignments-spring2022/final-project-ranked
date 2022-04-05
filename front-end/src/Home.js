@@ -17,7 +17,7 @@ const Home = (props) => {
   const fetchPosts = useCallback(() => {
     // fetch data for posts
     console.log(`fetching posts from backend...`)
-    axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/posts`)
+    axios(`http://localhost:4000/posts`)
       .then((response) => {
         // extract the data from the server response
         setPostData(response.data.home_posts)
@@ -90,7 +90,7 @@ const Home = (props) => {
                 })
               }
             >
-              {item.game_name}
+              <pre>{item.game_name}</pre>
             </div>
           ))}
       </div>
