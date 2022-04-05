@@ -6,8 +6,6 @@ const mongoose = require("mongoose") // library for MongoDB
 const cors = require("cors") // middleware for enabling CORS (Cross-Origin Resource Sharing) requests
 const fs = require("fs") // module to handle readfile or writefile
 const app = express() // instantiate an Express object
-const allPosts = require("./post.json")
-const allComments = require("./comment.json")
 
 app.use(cors())
 app.use(morgan("dev")) // use the morgan middleware to log all incoming http requests
@@ -22,11 +20,18 @@ app.get("/", (req, res) => {
 
 app.get("/posts", async (req, res) => {
   try {
-    var home_posts = []
-    allPosts.map((item) => (home_posts = home_posts.concat(item.posts)))
-    res.json({
-      home_posts: home_posts,
-      status: "all good",
+    fs.readFileSync('./post.json', (err, data) => {
+        if (err) {
+            throw err
+        }
+        var home_posts = []
+        // parse JSON object
+        const postJSON = JSON.parse(data)
+        postJSON.map((item) => (home_posts = home_posts.concat(item.posts)))
+        res.json({
+            home_posts: home_posts,
+            status: "all good",
+          })
     })
   } catch (err) {
     console.error(err)
@@ -39,12 +44,19 @@ app.get("/posts", async (req, res) => {
 
 app.get("/megathread/:gameId/posts", async (req, res) => {
   try {
-    const game_posts = allPosts.find(
-      (element) => element.megathreadId == req.params.gameId
-    ).posts
-    res.json({
-      game_posts: game_posts,
-      status: "all good",
+    fs.readFileSync('./post.json', (err, data) => {
+        if (err) {
+            throw err
+        }
+        // parse JSON object
+        const postJSON = JSON.parse(data)
+        const game_posts = postJSON.find(
+            (element) => element.megathreadId === req.params.gameId
+          ).posts
+          res.json({
+            game_posts: game_posts,
+            status: "all good",
+          })
     })
   } catch (err) {
     console.error(err)
@@ -57,12 +69,18 @@ app.get("/megathread/:gameId/posts", async (req, res) => {
 
 app.get("/megathread/:gameId/subthread/:postId/post", async (req, res) => {
   try {
-    const sub_post = allPosts
-      .find((element) => element.megathreadId == req.params.gameId)
-      .posts.find((element) => element.post_id == req.params.postId)
-    res.json({
-      sub_post: sub_post,
-      status: "all good",
+    fs.readFileSync('./post.json', (err, data) => {
+        if (err) {
+            throw err
+        }
+        var sub_post = []
+        // parse JSON object
+        const postJSON = JSON.parse(data)
+        sub_post = postJSON.find((element) => element.megathreadId === req.params.gameId).posts.find((element) => element.post_id === req.params.postId)
+        res.json({
+            sub_post: sub_post,
+            status: "all good",
+          })
     })
   } catch (err) {
     console.error(err)
@@ -75,13 +93,19 @@ app.get("/megathread/:gameId/subthread/:postId/post", async (req, res) => {
 
 app.get("/megathread/:gameId/subthread/:postId/comments", async (req, res) => {
   try {
-    // const comments = allPosts
-    //   .find((element) => element.megathreadId == req.params.gameId)
-    //   .posts.find((element) => element.post_id == req.params.postId).comments
-    const comments = allComments.find((element) => (element.gameId == req.params.gameId && element.postId == req.params.postId)).comments
-    res.json({
-      comments: comments,
-      status: "all good",
+    fs.readFileSync('./comment.json', (err, data) => {
+        if (err) {
+            throw err
+        }
+        var comments = []
+        // parse JSON object
+        const commentJSON = JSON.parse(data)
+        comments = commentJSON.find((element) => (element.game_id === req.params.gameId && element.post_id === req.params.postId)).comments
+
+        res.json({
+            comments: comments,
+            status: "all good",
+        })
     })
   } catch (err) {
     console.error(err)
@@ -91,6 +115,91 @@ app.get("/megathread/:gameId/subthread/:postId/comments", async (req, res) => {
     })
   }
 })
+
+const getNextID = e =>{
+    var level = e.split("_")
+    level[-1]++
+    level.join("_")
+    return level
+}
+
+const getLevelIDs = e =>{
+    var level = e.split("_")
+    var levelID = level[0]
+    level.shift()
+    for(var x of level){
+        level = `${levelID}_${x}`
+    }
+    return level
+}
+
+const addComment = e =>{
+    for( i of e.arr ){
+        if(i.comment_id === e.levels[e.i_levels]) {
+            // if last iteration
+            if(e.levels[-1] === e.levels[e.i_levels]){
+                // if replies isn't empty
+                if(i.replies[-1]){
+                    // set the id for the new comment
+                    e.newComment.comment_id = getNextID(i.replies[-1])
+                }
+                else{
+                    // comment id for new reply to a comment
+                    e.newComment.comment_id = `${e.levels[-1]}_1`
+                }
+                // append the new comment to the end
+                i.replies = [...i.replies, e.newComment]
+                break
+            }
+            e.i_levels++
+            addComment({arr: i.replies, i_levels: e.i_levels, levels: e.levels, newComment: e.newComment})
+        }
+    }
+}
+
+app.post("/megathread/:gameId/subthread/:postId/comments/save", async (req, res) => {
+    // try to save the message to the database
+    try {
+        fs.readFileSync('./comment.json', (err, data) => {
+            if (err) {
+                console.log(`an error occured while trying to read comment.json`)
+            }
+            var newComment = {
+                comment_id: "",
+                user_id: "user",
+                text: req.body.comment,
+                time: "6969",
+                likes: 0,
+                replies: []
+            }
+            // parse JSON object
+            const commentJSON = JSON.parse(data)
+            var i_levels = 0
+            const levels = getLevelIDs(req.body.replyTo)
+            // reccursive function to add nested comment
+            addComment({arr: commentJSON.find((element) => (element.game_id === req.params.gameId && element.post_id === req.params.postId)).comments,
+            i_levels: i_levels, levels: levels, newComment: newComment})
+            // commentJSON[0].comments.push(newComment)
+            fs.writeFileSync("./comment.json", JSON.stringify(commentJSON, null, 2), (err) => {
+                if (err){
+                    console.log(`an error occured while trying to write to comment.json`)
+                }
+                console.log('Data written to file')
+            })
+        })
+
+      return res.json({
+        comment: newComment, // return the message we just saved
+        status: 'all good',
+      })
+    } catch (err) {
+      console.error(err)
+      return res.status(400).json({
+        error: err,
+        status: 'failed to save the message to the database',
+      })
+    }
+  })
 
 // handle thread request submitted by user
 app.post("/threadrequest", (req, res) => {
