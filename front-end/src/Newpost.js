@@ -60,7 +60,7 @@ const Newpost = props => {
         </Form.Group>
 
         <Form.Group className="mb-4"  controlId="newPostContent">
-            <Form.Label>Password</Form.Label>
+            <Form.Label>Content</Form.Label>
             <Form.Control as="textarea" rows = {5} placeholder="Post Text" onChange={e => setContent(e.target.value)} value={postContent}/>
         </Form.Group>
 
