@@ -10,7 +10,7 @@ const FAQ = () => {
       // fetch static data from server
       console.log("fetching static file FAQ.txt from the back-end")
       axios
-        .get("http://localhost:4000/faq")
+        .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/faq`)
         // .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/static/TermsConditions.html`)
         .then((response) => {
           // extract the data from the server response
