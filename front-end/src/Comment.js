@@ -2,9 +2,16 @@ import React, { useState, useEffect } from "react"
 import { Navigate } from "react-router-dom"
 import axios from "axios"
 import "./Comment.css"
+<<<<<<< HEAD
 import LikeButton from "./Components/likeButton";
+=======
+import Button from "react-bootstrap/esm/Button"
+import CommentForm from "./CommentSubmitForm"
+>>>>>>> master
 
 const Comment = props => {
+  const [wantReply, setwantReply] = React.useState(false)
+  var key = 0
 
   const indent = num => {
     const i = "L       "
@@ -17,8 +24,13 @@ const Comment = props => {
     return ans
   }
 
+  const handleClick = () => {
+    setwantReply(!wantReply)
+  }
+
   return (
     <div className="Comment">
+<<<<<<< HEAD
       <section className="user">
         <pre>
           <p>{indent(props.type)}user: {props.details.userId}</p>
@@ -38,9 +50,31 @@ const Comment = props => {
           <p>{indent(props.type)}likes: {props.details.likes}</p>
         </pre>
       </section>
+=======
+      <div className="Comment-body" onClick={handleClick}>
+        <section className="user">
+          <pre>
+            <p>{indent(props.type)}id: {props.details.comment_id}</p>
+            <p>{indent(props.type)}user: {props.details.user_id}</p>
+            <p>{indent(props.type)}time: {props.details.time}</p>
+          </pre>
+        </section>
+        <section className="body">
+          <pre>
+            <p>{indent(props.type)}{props.details.text}</p>
+            <p>{indent(props.type)}likes: {props.details.likes}</p>
+          </pre>
+        </section>
+      </div>
+      <section className="replyform">
+          <pre>
+            {wantReply && <CommentForm user={props.user} replyTo={props.details.comment_id} setNewComment={props.setNewComment}/>}
+          </pre>
+        </section>
+>>>>>>> master
       <section className="replies">
         {props.details.replies && props.details.replies.map(item => (
-          <Comment key={item.userId} type={props.type + 1} details={item}></Comment>
+          <Comment key={key++} type={props.type + 1} details={item}></Comment>
         ))}
       </section>
     </div>

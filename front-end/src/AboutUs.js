@@ -10,7 +10,7 @@ const AboutUs = () => {
     // fetch static data from server
     console.log("fetching static file AboutUs.txt from the back-end")
     axios
-      .get("http://localhost:4000/aboutus")
+      .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/aboutus`)
       // .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/static/AboutUs.html`)
       .then((response) => {
         // extract and parse the data (by each new line) from the server response

@@ -15,7 +15,7 @@ const ThreadRequest = props => {
         e.preventDefault()
         
         axios
-            .post("http://localhost:4000/threadrequest", {
+            .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/threadrequest`, {
                 gameName: gameName,
                 willModerate: question1,
                 friendsWillModerate: question2,
