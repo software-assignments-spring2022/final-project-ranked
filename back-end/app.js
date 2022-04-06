@@ -9,16 +9,12 @@ const app = express() // instantiate an Express object
 const allPosts = require("./post.json")
 const allComments = require("./comment.json")
 
-app.use(cors())
-app.use(morgan("dev")) // use the morgan middleware to log all incoming http requests
+app.use(cors({ origin: process.env.FRONT_END_DOMAIN, credentials: true })) // allow incoming requests only from a "trusted" host
+app.use(morgan("dev", { skip: (req, res) => process.env.NODE_ENV === "test" })) // use the morgan middleware to log all incoming http requests
 app.use(express.json()) // decode JSON-formatted incoming POST data
 app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming POST data
 app.use("/static", express.static("public")) // make 'public' directory publicly readable with static content
 
-// demo: route for HTTP GET requests to the root document
-app.get("/", (req, res) => {
-  res.send("Welcome to Ranked!")
-})
 
 app.get("/posts",  (req, res) => {
   try {
@@ -174,7 +170,7 @@ const addCommentRoot = e =>{
 }
 
 app.post("/megathread/:gameId/subthread/:postId/comments/save",  (req, res) => {
-    // try to save the message to the database
+    // try to save the comment to the database
     try {
         fs.readFile('./comment.json', (err, data) => {
             if (err) {
