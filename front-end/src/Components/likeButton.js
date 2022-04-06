@@ -17,10 +17,10 @@ const LikeButton = (props) => {
         console.log("Hi!")
         setLiked(!liked);
         if (liked === true){
-          this.props.details.likes++;
+         //axios get function for likes, then post function. props.type for post or comment
         }
         else {
-          this.props.details.likes--;
+          //this.props.details.likes--;
     
         }
     

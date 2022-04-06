@@ -2,12 +2,10 @@ import React, { useState, useEffect } from "react"
 import { Navigate } from "react-router-dom"
 import axios from "axios"
 import "./Comment.css"
-<<<<<<< HEAD
 import LikeButton from "./Components/likeButton";
-=======
 import Button from "react-bootstrap/esm/Button"
 import CommentForm from "./CommentSubmitForm"
->>>>>>> master
+
 
 const Comment = props => {
   const [wantReply, setwantReply] = React.useState(false)
@@ -30,27 +28,7 @@ const Comment = props => {
 
   return (
     <div className="Comment">
-<<<<<<< HEAD
-      <section className="user">
-        <pre>
-          <p>{indent(props.type)}user: {props.details.userId}</p>
-        </pre>
-      </section>
-      <section>
-      <LikeButton />
-      <br></br><br></br>
-      </section>
-      <section className="body">
-        <pre>
-          <p>{indent(props.type)}{props.details.text}</p>
-        </pre>
-      </section>
-      <section className="likes">
-        <pre>
-          <p>{indent(props.type)}likes: {props.details.likes}</p>
-        </pre>
-      </section>
-=======
+
       <div className="Comment-body" onClick={handleClick}>
         <section className="user">
           <pre>
@@ -59,6 +37,7 @@ const Comment = props => {
             <p>{indent(props.type)}time: {props.details.time}</p>
           </pre>
         </section>
+        
         <section className="body">
           <pre>
             <p>{indent(props.type)}{props.details.text}</p>
@@ -71,7 +50,7 @@ const Comment = props => {
             {wantReply && <CommentForm user={props.user} replyTo={props.details.comment_id} setNewComment={props.setNewComment}/>}
           </pre>
         </section>
->>>>>>> master
+
       <section className="replies">
         {props.details.replies && props.details.replies.map(item => (
           <Comment key={key++} type={props.type + 1} details={item}></Comment>
