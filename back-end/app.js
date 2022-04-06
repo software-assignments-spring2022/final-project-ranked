@@ -9,7 +9,8 @@ const app = express() // instantiate an Express object
 const allPosts = require("./post.json")
 const allComments = require("./comment.json")
 
-app.use(cors({ origin: process.env.FRONT_END_DOMAIN, credentials: true })) // allow incoming requests only from a "trusted" host
+// app.use(cors({ origin: process.env.FRONT_END_DOMAIN, credentials: true })) // allow incoming requests only from a "trusted" host
+app.use(cors())
 app.use(morgan("dev", { skip: (req, res) => process.env.NODE_ENV === "test" })) // use the morgan middleware to log all incoming http requests
 app.use(express.json()) // decode JSON-formatted incoming POST data
 app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming POST data
@@ -242,7 +243,7 @@ app.post("/threadrequest", (req, res) => {
                 threadRequestArr.push(newRequest)
                 // write new request to file (will write to db later), so that
                 // admin panel can grab data
-                fs.writeFile("./threadRequestList.json", JSON.stringify(threadRequestArr), err => {
+                fs.writeFile("./threadRequestList.json", JSON.stringify(threadRequestArr, null, 2), err => {
                     if(err){
                         console.log("An error occured while writing to the file!")
                     }
