@@ -1,47 +1,31 @@
-import React, { useState, useEffect } from "react"
-import { Link } from 'react-router-dom'
-import axios from "axios"
+import { Link } from 'react-router-dom';
 import './FAQ.css';
 
-const FAQ = () => {
-    const [data, setData] = useState([])
-
-    useEffect(() => {
-      // fetch static data from server
-      console.log("fetching static file FAQ.txt from the back-end")
-      axios
-        .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/faq`)
-        // .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/static/TermsConditions.html`)
-        .then((response) => {
-          // extract the data from the server response
-          setData(response.data.split(/\r?\n/))
-        })
-        .catch((err) => {
-          console.log("Can't reach the back-end server!")
-          console.error(err)
-          alert("There seems to be a problem with the server, please try again later!")
-        })
-    }, [])
-
+const FAQ = props => {
     return (
         <>
             <main className='FAQ'>
-                <h3>{data[0]}</h3>
+                <h3>Frequently Asked Questions</h3>
                 <div className='FAQ-question1Div'>
-                    <em>{data[1]}</em>
-                    <p>{data[2]} <Link to='/threadrequest'>{data[3]}</Link> {data[4]}</p>
+                    <em>Q: How do I create a new game thread?</em>
+                    <p>A: You can submit your request to the Ranked administrators by filling out the request 
+                    form on the <Link to='/threadrequest'>Request a Thread</Link> page in order to create a 
+                    new game thread for the game that you and your friends are interested in.</p>
                 </div>
                 <div className='FAQ-questionXDiv'>
-                    <em>{data[5]}</em>
-                    <p>{data[6]} <b>{data[7]}</b>.</p>
+                    <em>Q: How do I create an account?</em>
+                    <p>A: To register an Ranked account, you can click the hamburger menu in the top right 
+                    corner and click <b>Register</b>.</p>
                 </div>
                 <div className='FAQ-questionXDiv'>
-                    <em>{data[8]}</em>
-                    <p>{data[9]} <b>{data[10]}</b> {data[11]} <Link to='/account'>{data[12]}</Link> {data[13]} </p>
+                    <em>Q: How do I change my account password?</em>
+                    <p>A: To change your Ranked account password, you can simply click the <b>Reset Password</b> button 
+                    in your <Link to='/account'>Account</Link> page.</p>
                 </div>
                 <div className='FAQ-questionXDiv'>
-                    <em>{data[14]}</em>
-                    <p>{data[15]} <b>{data[16]}</b> {data[17]} <Link to='/account'>{data[18]}</Link> {data[19]}</p>
+                    <em>Q: How do I delete my account?</em>
+                    <p>A: To deactivate your Ranked account, you can click the <b>Deactivate Account</b> button 
+                    in your <Link to='/account'>Account</Link> page.</p>
                 </div>
             </main>
         </>
