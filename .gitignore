@@ -126,7 +126,7 @@ typings/
 **/_site/
 
 ## Back-end
-back-end/comments.json
+back-end/comment.json
 back-end/just_posts.json
 back-end/post.json
 back-end/tags.json
