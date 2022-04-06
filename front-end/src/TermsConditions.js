@@ -13,7 +13,7 @@ const TermsCondtions = () => {
       // fetch static data from server
       console.log("fetching static file TermsConditions.txt from the back-end")
       axios
-        .get("http://localhost:4000/terms")
+        .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/terms`)
         // .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/static/TermsConditions.html`)
         .then((response) => {
           // extract the data from the server response
