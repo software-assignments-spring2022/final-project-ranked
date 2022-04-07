@@ -14,10 +14,8 @@ import NewPost from "./Newpost"
 import Megathread from "./Megathread"
 import Subthread from "./Subthread"
 import Logout from "./Logout"
-import Admin from "./AdminPanel"
-import axios from "axios"
+import Admin from "./Admin"
 import './App.css' 
-
 const App = () => {
   const [user, setUser] = useState({})
   
