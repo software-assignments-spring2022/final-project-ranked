@@ -278,73 +278,55 @@ app.post("/threadrequest", (req, res) => {
   const friendsWillModerate = req.body.friendsWillModerate
   const reason = req.body.reason
 
-  if (
-    !gameName.trim() ||
-    (willModerate !== 1 && willModerate !== 0) ||
-    (friendsWillModerate !== 1 && friendsWillModerate !== 0) ||
-    !reason.trim()
-  ) {
-    return res.json({
-      missing: "Please fill out all parts!",
-    })
-  } else {
-    fs.readFile("./threadRequestList.json", (err, data) => {
-      // if there is no thread request list currently, create one
-      if (err) {
-        const threadRequestArr = []
-        const newRequest = {
-          gameName: gameName,
-          willModerate: willModerate,
-          friendsWillModerate: friendsWillModerate,
-          reason: reason,
-          approvalStatus: "",
-        }
-        threadRequestArr.push(newRequest)
-        // write new request to file (will write to db later), so that
-        // admin panel can grab data
-        fs.writeFile(
-          "./threadRequestList.json",
-          JSON.stringify(threadRequestArr),
-          (err) => {
-            if (err) {
-              console.log("An error occured while writing to the file!")
-            } else {
-              return res.json({
-                success: "Request submitted! We will get back to you ASAP!",
-              })
+    if(!gameName.trim() || (willModerate !== 1 && willModerate !== 0) || 
+    (friendsWillModerate !== 1 && friendsWillModerate !== 0) || !reason.trim()){
+        return res.json({
+            missing: "Please fill out all parts!"
+        })
+    }
+    else{
+        fs.readFile("./threadRequestList.json", (err, data) => {
+            // if there is no thread request list currently, create one
+            if(err){
+                const threadRequestArr = []
+                const newRequest = {"gameName": gameName, "willModerate": willModerate, 
+                "friendsWillModerate": friendsWillModerate, "reason": reason, "approvalStatus": ""}
+                threadRequestArr.push(newRequest)
+                // write new request to file (will write to db later), so that
+                // admin panel can grab data
+                fs.writeFile("./threadRequestList.json", JSON.stringify(threadRequestArr), err => {
+                    if(err){
+                        console.log("An error occured while writing to the file!")
+                    }
+                    else{
+                        return res.json({
+                            success: "Request submitted! We will get back to you ASAP!"
+                        })
+                    }
+                })
             }
-          }
-        )
-      }
-      // if there already exists a list for the thread request, then
-      // simple append the new request to the exisiting list, and write to file (later db)
-      else {
-        const threadRequestArr = JSON.parse(data)
-        const newRequest = {
-          gameName: gameName,
-          willModerate: willModerate,
-          friendsWillModerate: friendsWillModerate,
-          reason: reason,
-          approvalStatus: "",
-        }
-        threadRequestArr.push(newRequest)
-        fs.writeFile(
-          "./threadRequestList.json",
-          JSON.stringify(threadRequestArr),
-          (err) => {
-            if (err) {
-              console.log("An error occured while writing to the file!")
-            } else {
-              return res.json({
-                success: "Request submitted! We will get back to you ASAP!",
-              })
+            // if there already exists a list for the thread request, then
+            // simple append the new request to the exisiting list, and write to file (later db)
+            else{
+                const threadRequestArr = JSON.parse(data)
+                const newRequest = {"gameName": gameName, "willModerate": willModerate, 
+                "friendsWillModerate": friendsWillModerate, "reason": reason, "approvalStatus": ""}
+                threadRequestArr.push(newRequest) 
+                fs.writeFile("./threadRequestList.json", JSON.stringify(threadRequestArr), err => {
+                    if(err){
+                        console.log("An error occured while writing to the file!")
+                    }
+                    else{
+                        return res.json({
+                            success: "Request submitted! We will get back to you ASAP!"
+                        })
+                    }
+                })
             }
           }
         )
       }
     })
-  }
-})
 
 // verify user login
 app.post("/login", (req, res) => {
@@ -452,6 +434,70 @@ app.post("/admin", (req, res) => {
       }
     })
   }
+})
+
+app.get("/admin", (req, res) => {
+    fs.readFile("./threadRequestList.json", (err, data) => {
+        if(err){
+            console.log(err)
+        }
+        else{
+            const threadRequestList = JSON.parse(data)
+            return res.json({
+                threadRequestList: threadRequestList
+            })
+        }
+    })
+})
+
+// approve or reject a user submitted thread request
+app.post("/admin", (req, res) => {
+    const adminDecision = req.body.approvalStatus
+    const inputGameName = req.body.gameName
+
+    // process request form cannot be empty
+    if(adminDecision !== 1 && adminDecision !== 0){
+        return res.json({
+            missing: "Please select approve or reject first!"
+        })
+    }
+    else{
+        fs.readFile("./threadRequestList.json", (err, data) => {
+            if(err){
+                console.log(err)
+            }
+            else{
+                const requestList = JSON.parse(data)
+                requestList.forEach(eachRequest => {
+                    // find the matching request first, and if its approval status has not been
+                    // handled yet, update it based on admin's decision
+                    if(inputGameName == eachRequest.gameName){
+                        if(!eachRequest.approvalStatus.trim()){
+                            eachRequest.approvalStatus = adminDecision ? "Approved" : "Rejected"
+                            // update the .json file that stores the thread request list
+                            fs.writeFile("./threadRequestList.json", JSON.stringify(requestList), err => {
+                                if(err){
+                                    console.log("An error occured while writing to the file!")
+                                }
+                                else{
+                                    return res.json({
+                                        success: "Approval status updated!"
+                                    })
+                                }
+                            })
+                        }
+                        // if this request has already been processed, send a message
+                        // back to the admin to remind them
+                        else{
+                            return res.json({
+                                alreadyProcessed: "This request has already been processed!"
+                            })
+                        }
+                    }
+                })
+            }
+        })
+    }
 })
 
 // export the express app created to make it available to other modules
