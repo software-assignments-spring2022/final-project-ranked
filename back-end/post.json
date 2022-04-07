@@ -11,34 +11,7 @@
         "tags": ["vestibulum", "vestibulum", "metus"],
         "time": "3:00",
         "likes": 287,
-        "image": "https://picsum.photos/200?random=1",
-        "comments": [
-          {
-              "comment_id": "1:1_1",
-              "user_id":"name",
-              "text":"lorem ipsum 1",
-              "time": "1530",
-              "likes":"0",
-              "replies": [
-                  {
-                      "comment_id": "1:1_1_1",
-                      "user_id":"name",
-                      "text":"lorem ipsum 4",
-                      "time": "1630",
-                      "likes":"0",
-                      "replies": []
-                  }
-              ]
-          },
-          {
-              "comment_id": "1:1_2",
-              "user_id":"name",
-              "text":"lorem ipsum 2",
-              "time": "1400",
-              "likes":"0",
-              "replies": []
-          }
-        ]
+        "image": "https://picsum.photos/200?random=1"
       },
       {
         "game_id": 1,
@@ -49,43 +22,7 @@
         "tags": ["eget", "ante", "dui"],
         "time": "4:07",
         "likes": 124,
-        "image": "https://picsum.photos/200?random=2",
-        "comments": [
-          {
-              "comment_id": "1:2_1",
-              "user_id":"name",
-              "text":"lorem ipsum 3",
-              "time": "1530",
-              "likes":"0",
-              "replies": [
-                  {
-                      "post_id": "1:2_1_1",
-                      "user_id":"name",
-                      "text":"lorem ipsum 5",
-                      "time": "1630",
-                      "likes":"0",
-                      "replies": [
-                          {
-                              "post_id": "1:2_1_1_1",
-                              "user_id":"name",
-                              "text":"lorem ipsum 7",
-                              "time": "1830",
-                              "likes":"0",
-                              "replies": []
-                          }
-                      ]
-                  }
-              ]
-          },
-          {
-              "comment_id": "1:2_2",
-              "user_id":"name",
-              "text":"lorem ipsum 6",
-              "time": "1400",
-              "likes":"0",
-              "replies": []
-          }
-        ]
+        "image": "https://picsum.photos/200?random=2"
       }
     ]
   },
@@ -101,8 +38,7 @@
         "tags": ["nec", "parturient", "vestibulum", "eget"],
         "time": "5:23",
         "likes": 424,
-        "image": "https://picsum.photos/200?random=3",
-        "comments": []
+        "image": "https://picsum.photos/200?random=3"
       }
     ]
   },
@@ -118,8 +54,7 @@
         "tags": ["elit", "nulla", "in", "ac"],
         "time": "20:51",
         "likes": 586,
-        "image": "https://picsum.photos/200?random=4",
-        "comments": []
+        "image": "https://picsum.photos/200?random=4"
       }
     ]
   },
@@ -135,8 +70,7 @@
         "tags": ["varius", "rutrum"],
         "time": "9:03",
         "likes": 343,
-        "image": "https://picsum.photos/200?random=5",
-        "comments": []
+        "image": "https://picsum.photos/200?random=5"
       }
     ]
   },
@@ -152,8 +86,7 @@
         "tags": ["morbi", "sapien"],
         "time": "9:43",
         "likes": 600,
-        "image": "https://picsum.photos/200?random=6",
-        "comments": []
+        "image": "https://picsum.photos/200?random=6"
       }
     ]
   },
@@ -169,8 +102,7 @@
         "tags": ["rhoncus", "sit"],
         "time": "16:36",
         "likes": 281,
-        "image": "https://picsum.photos/200?random=7",
-        "comments": []
+        "image": "https://picsum.photos/200?random=7"
       }
     ]
   },
@@ -186,8 +118,7 @@
         "tags": ["lorem", "convallis", "lacus"],
         "time": "22:51",
         "likes": 345,
-        "image": "https://picsum.photos/200?random=8",
-        "comments": []
+        "image": "https://picsum.photos/200?random=8"
       }
     ]
   },
@@ -203,8 +134,7 @@
         "tags": ["eleifend", "ullamcorper", "donec"],
         "time": "4:22",
         "likes": 381,
-        "image": "https://picsum.photos/200?random=9",
-        "comments": []
+        "image": "https://picsum.photos/200?random=9"
       }
     ]
   },
@@ -220,8 +150,7 @@
         "tags": ["morbi", "sit"],
         "time": "18:00",
         "likes": 590,
-        "image": "https://picsum.photos/200?random=10",
-        "comments": []
+        "image": "https://picsum.photos/200?random=10"
       }
     ]
   },
@@ -237,8 +166,7 @@
         "tags": ["nec", "parturient", "vestibulum", "eget"],
         "time": "5:23",
         "likes": 424,
-        "image": "https://picsum.photos/200?random=3",
-        "comments": []
+        "image": "https://picsum.photos/200?random=3"
       }
     ]
   }

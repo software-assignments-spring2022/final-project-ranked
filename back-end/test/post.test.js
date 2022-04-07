@@ -48,8 +48,7 @@ describe("Posts", () => {
               "tags",
               "time",
               "likes",
-              "image",
-              "comments"
+              "image"
             )
           }
           done() // resolve the Promise that these tests create so mocha can move on
@@ -91,8 +90,7 @@ describe("Posts", () => {
               "tags",
               "time",
               "likes",
-              "image",
-              "comments"
+              "image"
             )
           }
           done() // resolve the Promise that these tests create so mocha can move on
@@ -133,8 +131,7 @@ describe("Posts", () => {
             "tags",
             "time",
             "likes",
-            "image",
-            "comments"
+            "image"
           )
           done() // resolve the Promise that these tests create so mocha can move on
         })

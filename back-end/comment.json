@@ -35,6 +35,39 @@
             "replies": []
           }
         ]
+      },
+      {
+        "comment_id": "1:1_3",
+        "user_id": "user",
+        "text": "a sample comment",
+        "time": "2048",
+        "likes": 0,
+        "replies": []
+      },
+      {
+        "comment_id": "1:1_4",
+        "user_id": "user",
+        "text": "a sample comment",
+        "time": "2048",
+        "likes": 0,
+        "replies": [
+          {
+            "comment_id": "1:1_4_1",
+            "user_id": "user",
+            "text": "a sample nested comment",
+            "time": "2048",
+            "likes": 0,
+            "replies": []
+          },
+          {
+            "comment_id": "1:1_4_2",
+            "user_id": "user",
+            "text": "a sample nested comment",
+            "time": "2048",
+            "likes": 0,
+            "replies": []
+          }
+        ]
       }
     ]
   }
