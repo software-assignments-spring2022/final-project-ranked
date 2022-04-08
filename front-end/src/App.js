@@ -9,7 +9,6 @@ import Login from "./Login"
 import Register from "./Register"
 import Account from "./Account"
 import ThreadRequest from "./ThreadRequest"
-import Card from 'react-bootstrap/Card'
 import NewPost from "./Newpost"
 import Megathread from "./Megathread"
 import Subthread from "./Subthread"
@@ -28,7 +27,7 @@ const App = () => {
             <Route path="/" element={<Home />} ></Route>
             <Route path="/login" element={<Login />} ></Route>
             <Route path="/register" element={<Register />}></Route>
-            <Route path="/aboutus" element={<About />}></Route>
+            <Route path="/about" element={<About />}></Route>
             <Route path="/terms" element={<Terms />} ></Route>
             <Route path="/faq" element={<FAQ />} ></Route>
             <Route path="/admin" element={<Admin />} ></Route>
@@ -40,7 +39,6 @@ const App = () => {
             <Route path="/megathread/:gameId/subthread/:postId" element={<Subthread user={user} />} />
           </Routes>
         </Router>
-        {/* <Card.Footer className='App-footer'>© 2022 Ranked </Card.Footer> */}
       </div>
     </>
   ) 

@@ -9,12 +9,11 @@ const app = express() // instantiate an Express object
 const allPosts = require("./post.json")
 const allComments = require("./comment.json")
 
-app.use(cors({ origin: process.env.FRONT_END_DOMAIN, credentials: true })) // allow incoming requests only from a "trusted" host
+app.use(cors())
 app.use(morgan("dev", { skip: (req, res) => process.env.NODE_ENV === "test" })) // use the morgan middleware to log all incoming http requests
 app.use(express.json()) // decode JSON-formatted incoming POST data
 app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming POST data
 app.use("/static", express.static("public")) // make 'public' directory publicly readable with static content
-
 
 app.get("/posts",  (req, res) => {
   try {
@@ -306,18 +305,6 @@ app.post("/login", (req, res) => {
             }
         })
     }
-})
-
-app.get("/aboutus", (req, res) => {
-    res.sendFile("/public/AboutUs.txt", {root: __dirname})
-})
-
-app.get("/terms", (req, res) => {
-    res.sendFile("/public/TermsConditions.txt", {root: __dirname})
-})
-
-app.get("/faq", (req, res) => {
-    res.sendFile("/public/FAQ.txt", {root: __dirname})
 })
 
 app.get("/admin", (req, res) => {
