@@ -371,5 +371,18 @@ app.post("/admin", (req, res) => {
     }
 })
 
+app.get("/account", (req, res) => {
+    fs.readFile("./user.json", (err, data) => {
+        if(err){
+            console.log(err)
+        }
+        else{
+            return res.json({
+                user: JSON.parse(data)
+            })
+        }
+    })
+})
+
 // export the express app created to make it available to other modules
 module.exports = app
