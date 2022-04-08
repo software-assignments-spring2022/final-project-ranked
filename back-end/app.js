@@ -218,6 +218,94 @@ app.post("/megathread/:gameId/subthread/:postId/comments/save",  (req, res) => {
     }
   })
 
+  //hard coded for now
+  //wait for the actual database to work on
+  const gameNameToId = e =>{
+      if(e == "Valorant"){return 1}
+      if(e == "LOL"){return 2}
+      if(e == "CSGO"){return 3}
+  }
+
+// handle new post submitted by user
+app.post("/megathread/new", (req, res) => {
+    const gameName = req.body.game_name
+    const gameId = gameNameToId(gameName)
+    const title = req.body.title
+    const content = req.body.body
+    const tags = req.body.tags
+    const time = req.body.time
+
+    if(!gameName.trim() || !title.trim() || !content.trim() || !tags.trim() || !time.trim()){
+        return res.json({
+            missing: "Please fill out all parts!"
+        })
+    }
+    else{
+        fs.readFile("./post.json", (err, data) => {
+            // creat file
+            if(err){
+                const postArray = []
+                const newPost = {
+                    "game_id": gameId,
+                    "post_id": 1,
+                    //hard coded wait for later update
+                    "user_id": "user",
+                    "title": title,
+                    "body": content,
+                    "tags": [tags],
+                    "time": time,
+                    "likes": 0,
+                    //image upload not implemented
+                    "image": "https://picsum.photos/200?random=1",
+                    "comments": []
+                }
+                postArray.push(newPost)
+
+                fs.writeFile("./post.json", JSON.stringify(postArray), err => {
+                    if(err){
+                        console.log("An error occured while writing to the file!")
+                    }
+                    else{
+                        return res.json({
+                            success: "New post created!"
+                        })
+                    }
+                })
+            }
+
+            //write to file if the file exists
+            else{
+                const postArray = JSON.parse(data)
+                const newPost = {
+                    "game_id": gameId,
+                    "post_id": 1,
+                    //hard coded wait for later update
+                    "user_id": "user",
+                    "title": title,
+                    "body": content,
+                    "tags": [tags],
+                    "time": time,
+                    "likes": 0,
+                    //image upload not implemented
+                    "image": "https://picsum.photos/200?random=1",
+                    "comments": []
+                }
+                postArray.push(newPost) 
+                fs.writeFile("./post.json", JSON.stringify(postArray), err => {
+                    if(err){
+                        console.log("An error occured while writing to the file!")
+                    }
+                    else{
+                        return res.json({
+                            success: "Request submitted! We will get back to you ASAP!"
+                        })
+                    }
+                })
+            }
+        })
+    }
+})
+
 // handle thread request submitted by user
 app.post("/threadrequest", (req, res) => {
     const gameName = req.body.gameName
