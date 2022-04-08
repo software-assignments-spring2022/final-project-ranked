@@ -8,6 +8,8 @@ const fs = require("fs") // module to handle readfile or writefile
 const app = express() // instantiate an Express object
 const allPosts = require("./post.json")
 const allComments = require("./comment.json")
+require('./db');
+
 
 app.use(cors())
 app.use(morgan("dev", { skip: (req, res) => process.env.NODE_ENV === "test" })) // use the morgan middleware to log all incoming http requests
