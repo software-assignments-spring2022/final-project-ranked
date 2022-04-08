@@ -2,17 +2,19 @@ import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './AboutUs.css';
 
-const AboutUs = props => {
+const AboutUs = () => {
+    const mockImg = 'https://picsum.photos/200/300'
+    
     return (
         <main className='aboutUs'>
             <div className='aboutUsTitle'>
-                <img src={props.mockImg} alt="first image" />
+                <img src={mockImg} alt="first image" />
                 <div className='centered'><b>About Us</b></div>
             </div>
             <div className='aboutContent'>
                 <div className='aboutPair'>
                     <div className='aboutImages'>
-                        <img src={props.mockImg}></img>
+                        <img src={mockImg}></img>
                     </div>
                     <div className='aboutText'>
                         <p><b>Our Mission</b></p>
@@ -25,7 +27,7 @@ const AboutUs = props => {
                 </div>
                 <div className='aboutPair'>
                     <div className='aboutImages'>
-                        <img src={props.mockImg}></img>
+                        <img src={mockImg}></img>
                     </div>
                     <div className='aboutText'>
                         <p><b>Our Values</b></p>
@@ -38,7 +40,7 @@ const AboutUs = props => {
                 </div>
                 <div className='aboutPair'>
                     <div className='aboutImages'>
-                        <img src={props.mockImg}></img>
+                        <img src={mockImg}></img>
                     </div>
                     <div className='aboutText'>
                         <p><b>Our Goal</b></p>

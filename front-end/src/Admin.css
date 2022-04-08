@@ -1,0 +1,18 @@
+.Admin-eachThreadRequest{
+    border: 1px solid black;
+    border-radius: 20px;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    padding: 12px;
+}
+
+.Admin-eachRequestFormDiv{
+    width: 100px;
+    margin: auto;
+}
+
+.Admin-eachRequestFormBtn{
+    margin-top: 0px;
+    width: 100px;
+    line-height: 0px;
+}

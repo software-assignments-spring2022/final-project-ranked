@@ -7,22 +7,24 @@ import backupData from "./mock-backupPosts.json"
 // import comment_info from "./mock-comment-section.json"
 import "./Subthread.css"
 
-const Subthread = (props) => {
+const Subthread = props => {
     // start a state varaible with a blank array
     const [data, setData] = useState([]) 
 
     // from the website link
+    const {gameId} = useParams()
     const {postId} = useParams() 
 
     //   the following side-effect will be called once upon initial render
     useEffect(() => {
+        window.scrollTo(0, 0)
         // fetch some mock data about animals for sale
         // the id of the animal that was clicked on is passed as a part of the match field of the props
         console.log(`fetching post id=${postId}...`)
-        axios("https://my.api.mockaroo.com/mock_post-feed.json?key=23d25ba0")
+        axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/megathread/${gameId}/subthread/${postId}/post`)
             .then(response => {
                 // extract the data from the server response
-                setData(response.data[postId-1])
+                setData(response.data.sub_post)
             })
             .catch(err => {
                 // Mockaroo, which we're using for our Mock API, only allows 200 requests per day on the free plan
@@ -43,7 +45,7 @@ const Subthread = (props) => {
             {/* <button className="back-button" onClick={goBack}> Back </button> */}
             <Post user={props.user} post={data}></Post>
             <div className="CommentSection">
-                <CommentSection user={props.user} postId={postId}/>
+                <CommentSection user={props.user} gameId={gameId} postId={postId}/>
             </div>
         </div>
     ) 

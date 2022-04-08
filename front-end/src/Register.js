@@ -1,11 +1,14 @@
-import logo from './logo.svg';
-import { Link } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './Register.css';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import { Link } from 'react-router-dom'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import './Register.css'
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
 
-const Register = props => {
+const Register = () => {
+    const handleRegisterClick = () => {
+        alert('Welcome, wmattisssen0!') 
+    }
+
     return (
         <>
             <main className='Register'>
@@ -33,7 +36,7 @@ const Register = props => {
                             <Form.Control type="password" placeholder="Password" />
                         </div>
                         <Button className='Register-submitBtn' href="/account" 
-                        onClick={props.handleRegisterClick}>Register</Button>
+                        onClick={handleRegisterClick}>Register</Button>
                     </Form>
                 </div>
             </main>
@@ -41,4 +44,4 @@ const Register = props => {
     )
 }
 
-export default Register;
+export default Register
