@@ -86,6 +86,29 @@ describe("POST request to /threadrequest route", () => {
     })
 })
 
+describe("POST request to /megathread/new route", () => {
+    it("it should respond with an HTTP 200 status code and a missing JSON data in the response body", done => {
+        let newRequest = {
+            game_name:"Valorant",
+            title: "Test title",
+            body: "dsadsadsadsadsadsa",
+            tags: "Meme",
+            time: "2020"
+        }
+        chai 
+        .request("http://localhost:4000")
+        .post("/megathread/new")
+        .send(newRequest) 
+        .end((err, res) => {
+            res.should.have.status(200) // BDD-style assertions
+            res.should.be.a("object") // our route sends back a JSON data
+            // body property should be missing, since gameName and reason fields are missing
+            res.body.should.have.property("success")
+            done()
+        }) 
+    })
+})
+
 describe("POST request to /login route", () => {
     it("it should respond with an HTTP 200 status code and a JSON data (success & user) in the response body", done => {
         let credentials = {
