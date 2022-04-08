@@ -60,7 +60,7 @@ const Header = props => {
               />
             </div>
             {/* this will be the backend tag file */}
-            {/* <List input={inputText}/>   */}
+            <List input={inputText}/>  
           </li>
           <li className="nav-item">
             {/* burger menu */}
