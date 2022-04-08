@@ -43,4 +43,5 @@ body{
 .ThreadRequest-textArea > button{
     margin-top: 10px;
     width: 120px;
+    line-height: 0px;
 }

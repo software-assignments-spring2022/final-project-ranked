@@ -11,14 +11,14 @@ const Account = () => {
     const handleDelAccClick = () => {
         alert('Hope to see you again soon!') 
     }
-    const backUpAccountData = {"username":"wmattisssen0","email":"bsenussi0@eepurl.com","country":"Ecuador"}
+
     useEffect(() => {
-        axios("https://my.api.mockaroo.com/ranked_account_page.json?key=9fd06810")
-        .then(res => setAccountInfo(res.data))
+        axios
+        .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/account`)
+        .then(res => setAccountInfo(res.data.user))
         .catch(err => {
-            console.log("reached 200 requests limit for today :( using backup data as for now")
+            console.log('There seems to be a problem with the server, please try again later!')
             console.log(err)
-            setAccountInfo(backUpAccountData)
         })  
     }, [])
 

@@ -1,47 +1,8 @@
-let chai = require('chai')
-let chaiHttp = require('chai-http')
-let server = require('../server')
-let should = chai.should()
+const chai = require('chai')
+const chaiHttp = require('chai-http')
+const server = require('../app')
+const should = chai.should()
 chai.use(chaiHttp)
-
-describe("GET request to /aboutus route", () => {
-    it("it should respond with an HTTP 200 status code and a .txt file in the response body", done => {
-        chai 
-        .request("http://localhost:4000")
-        .get("/aboutus") 
-        .end((err, res) => {
-            res.should.have.status(200) // BDD-style assertions
-            res.should.have.text // aboutus route sends back a text file
-            done()
-        }) 
-    })
-})
-
-describe("GET request to /terms route", () => {
-    it("it should respond with an HTTP 200 status code and a .txt file in the response body", done => {
-        chai 
-        .request("http://localhost:4000")
-        .get("/terms") 
-        .end((err, res) => {
-            res.should.have.status(200) // BDD-style assertions
-            res.should.have.text // terms route sends back a text file
-            done()
-        }) 
-    })
-})
-
-describe("GET request to /faq route", () => {
-    it("it should respond with an HTTP 200 status code and a .txt file in the response body", done => {
-        chai 
-        .request("http://localhost:4000")
-        .get("/faq") 
-        .end((err, res) => {
-            res.should.have.status(200) // BDD-style assertions
-            res.should.have.text // faq route sends back a text file
-            done()
-        }) 
-    })
-})
 
 describe("POST request to /threadrequest route", () => {
     it("it should respond with an HTTP 200 status code and a success JSON data in the response body", done => {
@@ -52,7 +13,7 @@ describe("POST request to /threadrequest route", () => {
             reason: "fun game!"
         }
         chai 
-        .request("http://localhost:4000")
+        .request(server)
         .post("/threadrequest")
         .send(newRequest) 
         .end((err, res) => {
@@ -73,7 +34,7 @@ describe("POST request to /threadrequest route", () => {
             reason: ""
         }
         chai 
-        .request("http://localhost:4000")
+        .request(server)
         .post("/threadrequest")
         .send(newRequest) 
         .end((err, res) => {
@@ -116,7 +77,7 @@ describe("POST request to /login route", () => {
             password: "secret"
         }
         chai 
-        .request("http://localhost:4000")
+        .request(server)
         .post("/login")
         .send(credentials) 
         .end((err, res) => {
@@ -136,7 +97,7 @@ describe("POST request to /login route", () => {
             password: "secret"
         }
         chai 
-        .request("http://localhost:4000")
+        .request(server)
         .post("/login")
         .send(credentials) 
         .end((err, res) => {
@@ -155,13 +116,27 @@ describe("POST request to /login route", () => {
             password: "secret"
         }
         chai 
-        .request("http://localhost:4000")
+        .request(server)
         .post("/login")
         .send(credentials) 
         .end((err, res) => {
             res.should.have.status(200) // BDD-style assertions
             res.should.be.a("object") // our route sends back a JSON data
             res.body.should.have.property("missing")
+            done()
+        }) 
+    })
+})
+
+describe("GET request to /account route", () => {
+    it("it should respond with an HTTP 200 status code and a user JSON data in the response body", done => {
+        chai 
+        .request(server)
+        .get("/account") 
+        .end((err, res) => {
+            res.should.have.status(200) // BDD-style assertions
+            res.should.be.a("object") // our route sends back a JSON data
+            res.body.should.have.property("user")
             done()
         }) 
     })
