@@ -14,8 +14,6 @@ const Megathread = props => {
   const [pageNumber, setPageNumber] = useState(1)
   // start a state varaible with a blank array
   const [data, setData] = useState([]) 
-  const [selfPostTitle, setTitle] = useState("")
-  const [selfPostContent, setContent] = useState("")
 
   const { gameId } = useParams() 
 
@@ -36,40 +34,6 @@ const Megathread = props => {
         setData(backupData) 
       }) 
   }, []) 
-
-  const handleSubmit = e => {
-    e.preventDefault() // prevent the default browser form submission stuff
-
-    if (selfPostTitle && selfPostContent) {
-
-      //alert(`You posted title: ${selfPostTitle}!`)
-
-      // send the data of new post to a server
-      // this server doesn't exist, so we will see an error in the console
-      // axios' get() and post() methods return a promise, so we can use our javascript Promise or async/await expertise here to deal with the resolution or rejection of the request
-      axios
-        .post("https://someserversomehwere.com/puppy/save", {
-          selfPostTitle: selfPostTitle,
-        })
-        .post("https://someserversomehwere.com/puppy/save", {
-          selfPostContent: selfPostContent,
-        })
-        .then(response => {
-          // success
-          console.log(`Received server response: ${response.data}`)
-        })
-        .catch(err => {
-          // failure
-          console.log(`Received server error: ${err}`)
-        })
-
-
-    }
-    else {
-      alert(`Make sure to fill in the title and content before posting!`)
-    }
-
-  }
   // const {
   //   posts,
   //   hasMore,
