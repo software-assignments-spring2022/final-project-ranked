@@ -41,7 +41,7 @@ const Comment = props => {
         <section className="body">
           <pre>
             <p>{indent(props.type)}{props.details.text}</p>
-            <p>{indent(props.type)}likes: {props.details.likes}</p>
+            <p>{indent(props.type)}<LikeButton></LikeButton>likes: {props.details.likes}</p>
           </pre>
         </section>
       </div>
