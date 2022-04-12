@@ -3,29 +3,29 @@ const Schema = mongoose.Schema;
 
 const commentSchema = new Schema(
   {
+    comment_id: {
+      type: String,
+      required: true
+    },
     user_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      type: String,
       required: true
     },
     text: {
       type: String,
       required: true
     },
+    time: {
+      type: String,
+      required: true
+    },
     likes: {
-      type: Number,
-      required: true,
-      default: 0
+      type: String,
+      required: true
     },
-    reply_to: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Comment',
-      required: false
-    },
-    post_to: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Post',
-      required: false
+    replies: {
+      type: [ this ],
+      required: true
     }
   },
   {
