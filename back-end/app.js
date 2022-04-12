@@ -1,28 +1,68 @@
+require('dotenv').config({ silent: true }) // load environmental variables from a hidden file named .env
 const express = require("express") // import and instantiate express
-const path = require("path")
 const morgan = require("morgan") // middleware for nice logging of incoming HTTP requests
 const multer = require("multer") // middleware to handle HTTP POST requests with file uploads
 const mongoose = require("mongoose") // library for MongoDB
 const cors = require("cors") // middleware for enabling CORS (Cross-Origin Resource Sharing) requests
 const fs = require("fs") // module to handle readfile or writefile
+const bcrypt = require("bcrypt") // module to hash incoming plain text password
+const jwt = require("jsonwebtoken") // module for jwt authentication
+const passport = require("passport") // middleware for handling authentication requests
+const passportJWT = require("passport-jwt") // module to authenticate endpoints using a jwt
+const ExtractJwt = passportJWT.ExtractJwt
+const JwtStrategy = passportJWT.Strategy
 const app = express() // instantiate an Express object
-const allPosts = require("./post.json")
-const allComments = require("./comment.json")
-require('./db');
 
-import axios from 'axios'
-import e from 'express'
-
+app.use(passport.initialize()) // tell express to use passport middleware
 app.use(cors())
 app.use(morgan("dev", { skip: (req, res) => process.env.NODE_ENV === "test" })) // use the morgan middleware to log all incoming http requests
 app.use(express.json()) // decode JSON-formatted incoming POST data
 app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming POST data
 app.use("/static", express.static("public")) // make 'public' directory publicly readable with static content
 
-mongoose // connect to mongoose db
+// connect to database
+mongoose
     .connect(`${process.env.DB_CONNECTION_STRING}`)
     .then(data => console.log(`Connected to MongoDB`))
     .catch(err => console.error(`Failed to connect to MongoDB: ${err}`))
+
+// grab db models
+const { User } = require('./models/User')
+
+// set up some jwt authentication options
+let jwtOptions = {}
+jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme("jwt") // look for the Authorization request header
+jwtOptions.secretOrKey = process.env.JWT_SECRET // an arbitrary string used during encryption
+
+// a middleware code for using JWT that will be passed to passport
+const jwtStrategy = new JwtStrategy(jwtOptions, (payload, done) => {
+    // find matching user in DB using the unique user ID stored in jwt's payload section
+    const user = User.findById(payload.sub, (err, user) => {
+        // error while fetching data from DB
+        if(err){
+            done(null, false)
+        }
+        // user not found
+        else if(!user){
+            done(null, false)
+        }
+        // user found
+        else{
+            done(null, user)
+        }
+    })
+})
+passport.use(jwtStrategy)
+
+// GET route to check if a user is logged in or not
+// if yes, return the user object to the front-end
+// if not, passport will throw error so the front-end can catch it
+app.get("/isLoggedIn", passport.authenticate("jwt", { session: false }), (req, res) => {
+    return res.json({
+        success: true,
+        user: req.user
+    })
+})
 
 app.get("/posts",  (req, res) => {
   try {
@@ -425,7 +465,88 @@ app.post("/threadrequest", (req, res) => {
     }
 })
 
-// verify user login
+// helper function to generate a jwt
+// payload (sub) section contains the id of that user
+const signToken = user => {
+    return jwt.sign({
+        sub: user.id
+    }, jwtOptions.secretOrKey)
+}
+
+// handle user registration, using JWT authentication
+app.post("/register", (req, res) => {
+    const dateObj = new Date()
+    const year = dateObj.getFullYear()
+    const month = ("0" + (dateObj.getMonth() + 1)).slice(-2)
+    const date = ("0" + dateObj.getDate()).slice(-2)
+    const username = req.body.username.toLowerCase()
+    const password = req.body.password
+    const email = req.body.email.toLowerCase()
+
+    // missing essential info from the register form
+    if(!username.trim() || !email.trim() || !password){
+        return res.json({
+            missing: "Please fill out all parts!"
+        })  
+    }
+    else if(!/^[A-Za-z0-9]+$/.test(username)){
+        return res.json({
+            invalidNameFormat: "Only alphanumeric characters are allowed in username!"
+        })
+    }
+    else{
+        User.findOne({username}, (err, result) => {
+            // error retrieving data from the DB
+            if(err){
+                console.log(err)
+            }
+            // prevent two users having the same username
+            else if(result != null){
+                return res.json({
+                    duplicated: "User already exists!"
+                }) 
+            }
+            // begin the registration and authentication process
+            else{
+                // hash the incoming plain text password and store it in DB
+                bcrypt.hash(password, 10, (err, hashedPassword) => {
+                    // something wrong while hashing the plain text password
+                    if(err){
+                        console.log(err)
+                    }
+                    else{
+                        // create a new user object using the User schema
+                        // that we've defined in models/User.js
+                        const newUser = new User({
+                            username: username,
+                            password: hashedPassword,
+                            email: email,
+                            joinDate: year + "-" + month + "-" + date
+                        })
+
+                        // try to save this new user object into DB
+                        newUser.save((err, user) => {
+                            if(err){
+                                console.log(err)
+                            }
+                            // user successfully saved to db
+                            else{
+                                // generate the jwt using our signToken helper function
+                                const token = signToken(user)
+                                return res.json({
+                                    success: `Welcome to Ranked, ${user.username}!`,
+                                    token: token
+                                }) 
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    }
+})
+
+// POST route to handle user login authentication
 app.post("/login", (req, res) => {
     const username = req.body.username.toLowerCase()
     const password = req.body.password
@@ -436,23 +557,39 @@ app.post("/login", (req, res) => {
         })   
     }
     else{
-        fs.readFile("./user.json", (err, data) => {
+        User.findOne({username: username}, (err, user) => {
+            // error while retrieving data from the DB
             if(err){
                 console.log(err)
             }
+            // user not found
+            else if(!user){
+                return res.json({
+                    notFound: "User not found!"
+                }) 
+            }
+            // user found, check for password match
             else{
-                const user = JSON.parse(data)
-                if(user.username != username){
-                    return res.json({
-                        notFound: "User not found!"
-                    }) 
-                }
-                else{
-                    return res.json({
-                        success: "Login success!",
-                        user: user
-                    }) 
-                }
+                bcrypt.compare(password, user.password, (err, result) => {
+                    // something wrong while using the bcrypt module
+                    if(err){
+                        console.log(err)
+                    }
+                    // input password does not match with what we have on file
+                    else if(result == false){
+                        return res.json({
+                            incorrect: "Password incorrect!"
+                        }) 
+                    }
+                    // sign-in successful
+                    else{
+                        const token = signToken(user)
+                        return res.json({
+                            success: `Welcome back, ${user.username}!`,
+                            token: token
+                        }) 
+                    }
+                })
             }
         })
     }
@@ -520,19 +657,6 @@ app.post("/admin", (req, res) => {
             }
         })
     }
-})
-
-app.get("/account", (req, res) => {
-    fs.readFile("./user.json", (err, data) => {
-        if(err){
-            console.log(err)
-        }
-        else{
-            return res.json({
-                user: JSON.parse(data)
-            })
-        }
-    })
 })
 
 // export the express app created to make it available to other modules
