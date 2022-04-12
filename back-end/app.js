@@ -1,23 +1,70 @@
+require('dotenv').config({ silent: true }) // load environmental variables from a hidden file named .env
 const express = require("express") // import and instantiate express
-const path = require("path")
 const morgan = require("morgan") // middleware for nice logging of incoming HTTP requests
 const multer = require("multer") // middleware to handle HTTP POST requests with file uploads
 const mongoose = require("mongoose") // library for MongoDB
 const cors = require("cors") // middleware for enabling CORS (Cross-Origin Resource Sharing) requests
 const fs = require("fs") // module to handle readfile or writefile
+const bcrypt = require("bcrypt") // module to hash incoming plain text password
+const jwt = require("jsonwebtoken") // module for jwt authentication
+const passport = require("passport") // middleware for handling authentication requests
+const passportJWT = require("passport-jwt") // module to authenticate endpoints using a jwt
+const ExtractJwt = passportJWT.ExtractJwt
+const JwtStrategy = passportJWT.Strategy
 const app = express() // instantiate an Express object
-const allPosts = require("./post.json")
-const allComments = require("./comment.json")
-const { getSystemErrorMap } = require("util")
 
-// app.use(cors({ origin: process.env.FRONT_END_DOMAIN, credentials: true })) // allow incoming requests only from a "trusted" host
+app.use(passport.initialize()) // tell express to use passport middleware
 app.use(cors())
 app.use(morgan("dev", { skip: (req, res) => process.env.NODE_ENV === "test" })) // use the morgan middleware to log all incoming http requests
 app.use(express.json()) // decode JSON-formatted incoming POST data
 app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming POST data
 app.use("/static", express.static("public")) // make 'public' directory publicly readable with static content
 
-app.get("/posts", (req, res) => {
+// connect to database
+mongoose
+    .connect(`${process.env.DB_CONNECTION_STRING}`)
+    .then(data => console.log(`Connected to MongoDB`))
+    .catch(err => console.error(`Failed to connect to MongoDB: ${err}`))
+
+// grab db models
+const { User } = require('./models/User')
+
+// set up some jwt authentication options
+let jwtOptions = {}
+jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme("jwt") // look for the Authorization request header
+jwtOptions.secretOrKey = process.env.JWT_SECRET // an arbitrary string used during encryption
+
+// a middleware code for using JWT that will be passed to passport
+const jwtStrategy = new JwtStrategy(jwtOptions, (payload, done) => {
+    // find matching user in DB using the unique user ID stored in jwt's payload section
+    const user = User.findById(payload.sub, (err, user) => {
+        // error while fetching data from DB
+        if(err){
+            done(null, false)
+        }
+        // user not found
+        else if(!user){
+            done(null, false)
+        }
+        // user found
+        else{
+            done(null, user)
+        }
+    })
+})
+passport.use(jwtStrategy)
+
+// GET route to check if a user is logged in or not
+// if yes, return the user object to the front-end
+// if not, passport will throw error so the front-end can catch it
+app.get("/isLoggedIn", passport.authenticate("jwt", { session: false }), (req, res) => {
+    return res.json({
+        success: true,
+        user: req.user
+    })
+})
+
+app.get("/posts",  (req, res) => {
   try {
     fs.readFile("./post.json", (err, data) => {
       if (err) {
@@ -271,6 +318,148 @@ app.post("/megathread/:gameId/subthread/:postId/comments/save", (req, res) => {
   }
 })
 
+  //hard coded for now
+  //wait for the actual database to work on
+  const gameNameToId = e =>{
+      if(e == "Valorant"){return 1}
+      if(e == "LOL"){return 2}
+      if(e == "CSGO"){return 3}
+  }
+
+app.post("/megathread/:gameId/subthread/:postId/comments", (req, res) => {
+    /* 
+    Update indivdual comments in our db (primarily dealing with upvoting/downvoting, but can be altered to help with replies).
+    Request BODY should look like:
+        {
+            'comment_id': int,
+            'likes': int,
+            'likedUsers': User[]
+        }
+    Updating is done by setting the array of comments associated with the Post object (gotten by props.postId) to a new array variable.
+    Then it loops through the comments until a Comment object object has the same comment_id as in the request body.
+    Once a match is found, it changes the data in the individual Comment object.
+    Finally, the endpoint updates the ENTIRE comments array (Post.comments) associated with the Post object with the new comments array variable.
+    Returns successful if response.acknowledged is true and the new comments array, otherwise prints an extremely vague error to console.
+    */
+    const comments = await Post.find({'post_id':props.postId}).comments
+    for (const i in comments) {
+        if (i.comment_id === req.data.comment_id) {
+            i.likes = req.data.likes;
+            i.likedUsers = req.data.likedUsers;
+        }
+    }
+    const response = await Post.updateOne({'comments':comments});
+    if (response.acknowledged) {
+        return res.json({
+            success: 'Comment has been updated.',
+            comments: Post.find({'post_id':props.postId}).comments
+        })
+    } else {
+        console.log('Something went wrong in updating the comment.')
+    }
+
+})
+
+app.post("/megathread/:gameId/subthread/:postId/comments/search", (req, res) => {
+    /*
+    Find individual comments
+    Body:
+        {
+            'comment_id': int
+        }
+    */
+    const comments = await Post.find({'post_id':props.postId}).comments;
+    for (const i in comments) {
+        if (i.comment_id === req.data.comment_id) {
+            return res.json({
+                success: "Comment found and returned successfully",
+                comment: i
+            })
+        }
+    }
+    console.log("Failed: Could not find comment.")
+})
+
+// handle new post submitted by user
+app.post("/megathread/new", (req, res) => {
+    const gameName = req.body.game_name
+    const gameId = gameNameToId(gameName)
+    const title = req.body.title
+    const content = req.body.body
+    const tags = req.body.tags
+    const time = req.body.time
+
+    if(!gameName.trim() || !title.trim() || !content.trim() || !tags.trim() || !time.trim()){
+        return res.json({
+            missing: "Please fill out all parts!"
+        })
+    }
+    else{
+        fs.readFile("./post.json", (err, data) => {
+            // creat file
+            if(err){
+                const postArray = []
+                const newPost = {
+                    "game_id": gameId,
+                    "post_id": 1,
+                    //hard coded wait for later update
+                    "user_id": "user",
+                    "title": title,
+                    "body": content,
+                    "tags": [tags],
+                    "time": time,
+                    "likes": 0,
+                    //image upload not implemented
+                    "image": "https://picsum.photos/200?random=1",
+                    "comments": []
+                }
+                postArray.push(newPost)
+
+                fs.writeFile("./post.json", JSON.stringify(postArray), err => {
+                    if(err){
+                        console.log("An error occured while writing to the file!")
+                    }
+                    else{
+                        return res.json({
+                            success: "New post created!"
+                        })
+                    }
+                })
+            }
+
+            //write to file if the file exists
+            else{
+                const postArray = JSON.parse(data)
+                const newPost = {
+                    "game_id": gameId,
+                    "post_id": 1,
+                    //hard coded wait for later update
+                    "user_id": "user",
+                    "title": title,
+                    "body": content,
+                    "tags": [tags],
+                    "time": time,
+                    "likes": 0,
+                    //image upload not implemented
+                    "image": "https://picsum.photos/200?random=1",
+                    "comments": []
+                }
+                postArray.push(newPost) 
+                fs.writeFile("./post.json", JSON.stringify(postArray), err => {
+                    if(err){
+                        console.log("An error occured while writing to the file!")
+                    }
+                    else{
+                        return res.json({
+                            success: "Request submitted! We will get back to you ASAP!"
+                        })
+                    }
+                })
+            }
+        })
+    }
+})
+
 // handle thread request submitted by user
 app.post("/threadrequest", (req, res) => {
   const gameName = req.body.gameName
@@ -328,112 +517,134 @@ app.post("/threadrequest", (req, res) => {
       }
     })
 
-// verify user login
+// helper function to generate a jwt
+// payload (sub) section contains the id of that user
+const signToken = user => {
+    return jwt.sign({
+        sub: user.id
+    }, jwtOptions.secretOrKey)
+}
+
+// handle user registration, using JWT authentication
+app.post("/register", (req, res) => {
+    const dateObj = new Date()
+    const year = dateObj.getFullYear()
+    const month = ("0" + (dateObj.getMonth() + 1)).slice(-2)
+    const date = ("0" + dateObj.getDate()).slice(-2)
+    const username = req.body.username.toLowerCase()
+    const password = req.body.password
+    const email = req.body.email.toLowerCase()
+
+    // missing essential info from the register form
+    if(!username.trim() || !email.trim() || !password){
+        return res.json({
+            missing: "Please fill out all parts!"
+        })  
+    }
+    else if(!/^[A-Za-z0-9]+$/.test(username)){
+        return res.json({
+            invalidNameFormat: "Only alphanumeric characters are allowed in username!"
+        })
+    }
+    else{
+        User.findOne({username}, (err, result) => {
+            // error retrieving data from the DB
+            if(err){
+                console.log(err)
+            }
+            // prevent two users having the same username
+            else if(result != null){
+                return res.json({
+                    duplicated: "User already exists!"
+                }) 
+            }
+            // begin the registration and authentication process
+            else{
+                // hash the incoming plain text password and store it in DB
+                bcrypt.hash(password, 10, (err, hashedPassword) => {
+                    // something wrong while hashing the plain text password
+                    if(err){
+                        console.log(err)
+                    }
+                    else{
+                        // create a new user object using the User schema
+                        // that we've defined in models/User.js
+                        const newUser = new User({
+                            username: username,
+                            password: hashedPassword,
+                            email: email,
+                            joinDate: year + "-" + month + "-" + date
+                        })
+
+                        // try to save this new user object into DB
+                        newUser.save((err, user) => {
+                            if(err){
+                                console.log(err)
+                            }
+                            // user successfully saved to db
+                            else{
+                                // generate the jwt using our signToken helper function
+                                const token = signToken(user)
+                                return res.json({
+                                    success: `Welcome to Ranked, ${user.username}!`,
+                                    token: token
+                                }) 
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    }
+})
+
+// POST route to handle user login authentication
 app.post("/login", (req, res) => {
   const username = req.body.username.toLowerCase()
   const password = req.body.password
 
-  if (!username.trim() || !password) {
-    return res.json({
-      missing: "Username or password missing!",
-    })
-  } else {
-    fs.readFile("./user.json", (err, data) => {
-      if (err) {
-        console.log(err)
-      } else {
-        const user = JSON.parse(data)
-        if (user.username != username) {
-          return res.json({
-            notFound: "User not found!",
-          })
-        } else {
-          return res.json({
-            success: "Login success!",
-            user: user,
-          })
-        }
-      }
-    })
-  }
-})
-
-app.get("/aboutus", (req, res) => {
-  res.sendFile("/public/AboutUs.txt", { root: __dirname })
-})
-
-app.get("/terms", (req, res) => {
-  res.sendFile("/public/TermsConditions.txt", { root: __dirname })
-})
-
-app.get("/faq", (req, res) => {
-  res.sendFile("/public/FAQ.txt", { root: __dirname })
-})
-
-app.get("/admin", (req, res) => {
-  fs.readFile("./threadRequestList.json", (err, data) => {
-    if (err) {
-      console.log(err)
-    } else {
-      const threadRequestList = JSON.parse(data)
-      return res.json({
-        threadRequestList: threadRequestList,
-      })
+    if(!username.trim() || !password){
+        return res.json({
+            missing: "Username or password missing!"
+        })   
     }
-  })
-})
-
-// approve or reject a user submitted thread request
-app.post("/admin", (req, res) => {
-  const adminDecision = req.body.approvalStatus
-  const inputGameName = req.body.gameName
-
-  // process request form cannot be empty
-  if (adminDecision !== 1 && adminDecision !== 0) {
-    return res.json({
-      missing: "Please select approve or reject first!",
-    })
-  } else {
-    fs.readFile("./threadRequestList.json", (err, data) => {
-      if (err) {
-        console.log(err)
-      } else {
-        const requestList = JSON.parse(data)
-        requestList.forEach((eachRequest) => {
-          // find the matching request first, and if its approval status has not been
-          // handled yet, update it based on admin's decision
-          if (inputGameName == eachRequest.gameName) {
-            if (!eachRequest.approvalStatus.trim()) {
-              eachRequest.approvalStatus = adminDecision
-                ? "Approved"
-                : "Rejected"
-              // update the .json file that stores the thread request list
-              fs.writeFile(
-                "./threadRequestList.json",
-                JSON.stringify(requestList),
-                (err) => {
-                  if (err) {
-                    console.log("An error occured while writing to the file!")
-                  } else {
-                    return res.json({
-                      success: "Approval status updated!",
-                    })
-                  }
-                }
-              )
+    else{
+        User.findOne({username: username}, (err, user) => {
+            // error while retrieving data from the DB
+            if(err){
+                console.log(err)
             }
-            // if this request has already been processed, send a message
-            // back to the admin to remind them
-            else {
-              return res.json({
-                alreadyProcessed: "This request has already been processed!",
-              })
+            // user not found
+            else if(!user){
+                return res.json({
+                    notFound: "User not found!"
+                }) 
             }
-          }
+            // user found, check for password match
+            else{
+                bcrypt.compare(password, user.password, (err, result) => {
+                    // something wrong while using the bcrypt module
+                    if(err){
+                        console.log(err)
+                    }
+                    // input password does not match with what we have on file
+                    else if(result == false){
+                        return res.json({
+                            incorrect: "Password incorrect!"
+                        }) 
+                    }
+                    // sign-in successful
+                    else{
+                        const token = signToken(user)
+                        return res.json({
+                            success: `Welcome back, ${user.username}!`,
+                            token: token
+                        }) 
+                    }
+                })
+            }
         })
-      }
-    })
-  }
+    }
 })
 
 app.get("/admin", (req, res) => {

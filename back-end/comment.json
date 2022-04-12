@@ -5,10 +5,49 @@
     "comments": [
       {
         "comment_id": "1:1_1",
-        "user_id": "user",
-        "text": "a sample comment",
-        "time": "2048",
-        "likes": 0,
+        "user_id": "name",
+        "text": "lorem ipsum 1",
+        "time": "1530",
+        "likes": "0",
+        "likedUsers":[],
+        "replies": [
+          {
+            "comment_id": "1:1_1_1",
+            "user_id": "name",
+            "text": "lorem ipsum 4",
+            "time": "1630",
+            "likes": "0",
+            "likedUsers":[],
+            "replies": []
+          },
+          {
+            "comment_id": "1:1_1_2",
+            "user_id": "user",
+            "text": "x",
+            "time": "6969",
+            "likes": 0,
+            "likedUsers":[],
+            "replies": [
+              {
+                "comment_id": "1:1_1_2_1",
+                "user_id": "user",
+                "text": "xxxx",
+                "time": "6969",
+                "likes": 0,
+                "likedUsers":[],
+                "replies": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "comment_id": "1:1_2",
+        "user_id": "name",
+        "text": "lorem ipsum 2",
+        "time": "1400",
+        "likes": "0",
+        "likedUsers":[],
         "replies": []
       },
       {
@@ -17,6 +56,7 @@
         "text": "a sample comment",
         "time": "2048",
         "likes": 0,
+        "likedUsers":[],
         "replies": [
           {
             "comment_id": "1:1_2_1",
@@ -24,7 +64,18 @@
             "text": "a sample nested comment",
             "time": "2048",
             "likes": 0,
-            "replies": []
+            "likedUsers":[],
+            "replies": [
+              {
+                "comment_id": "1:1_3_1_1",
+                "user_id": "user",
+                "text": "double nested",
+                "time": "2048",
+                "likes": 0,
+                "likedUsers":[],
+                "replies": []
+              }
+            ]
           },
           {
             "comment_id": "1:1_2_2",
@@ -32,24 +83,132 @@
             "text": "a sample nested comment",
             "time": "2048",
             "likes": 0,
-            "replies": []
+            "likedUsers":[],
+            "replies": [
+              {
+                "comment_id": "1:1_3_2_1",
+                "user_id": "user",
+                "text": "second double nested",
+                "time": "2048",
+                "likes": 0,
+                "likedUsers":[],
+                "replies": [
+                  {
+                    "comment_id": "1:1_3_2_1_1",
+                    "user_id": "user",
+                    "text": "triple nested",
+                    "time": "2048",
+                    "likes": 0,
+                    "likedUsers":[],
+                    "replies": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "game_id": 1,
+    "post_id": 2,
+    "comments": [
+      {
+        "comment_id": "1:2_1",
+        "user_id": "name",
+        "text": "lorem ipsum 3",
+        "time": "1530",
+        "likes": "0",
+        "likedUsers":[],
+        "replies": [
+          {
+            "post_id": "1:2_1_1",
+            "user_id": "name",
+            "text": "lorem ipsum 5",
+            "time": "1630",
+            "likes": "0",
+            "likedUsers":[],
+            "replies": [
+              {
+                "post_id": "1:2_1_1_1",
+                "user_id": "name",
+                "text": "lorem ipsum 7",
+                "time": "1830",
+                "likes": "0",
+                "likedUsers":[],
+                "replies": []
+              }
+            ]
           }
         ]
       },
       {
-        "comment_id": "1:1_3",
+        "comment_id": "1:2_2",
+        "user_id": "name",
+        "text": "lorem ipsum 6",
+        "time": "1400",
+        "likes": "0",
+        "likedUsers":[],
+        "replies": []
+      },
+      {
+        "comment_id": "1:2_3",
         "user_id": "user",
         "text": "a sample comment",
         "time": "2048",
         "likes": 0,
-        "replies": []
-      },
+        "likedUsers":[],
+        "replies": [
+          {
+            "comment_id": "1:2_3_1",
+            "user_id": "user",
+            "text": "nested comment",
+            "time": "2048",
+            "likes": 0,
+            "likedUsers":[],
+            "replies": [
+              {
+                "comment_id": "1:2_3_1_1",
+                "user_id": "user",
+                "text": "double nested",
+                "time": "2048",
+                "likes": 0,
+                "likedUsers":[],
+                "replies": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "game_id": 2,
+    "post_id": 1,
+    "comments": []
+  },
+  {
+    "game_id": 3,
+    "post_id": 1,
+    "comments": []
+  },
+  {
+    "game_id": 4,
+    "post_id": 1,
+    "comments": []
+  },
+  {
+    "game_id": 5,
+    "post_id": 1,
+    "comments": [
       {
         "comment_id": "1:1_4",
         "user_id": "user",
         "text": "a sample comment",
         "time": "2048",
         "likes": 0,
+        "likedUsers":[],
         "replies": [
           {
             "comment_id": "1:1_4_1",
@@ -57,17 +216,78 @@
             "text": "a sample nested comment",
             "time": "2048",
             "likes": 0,
-            "replies": []
-          },
+            "likedUsers":[],
+            "replies": [
+              {
+                "comment_id": "5:1_1_1_1",
+                "user_id": "user",
+                "text": "double nested",
+                "time": "2048",
+                "likes": 0,
+                "likedUsers":[],
+                "replies": [
+                  {
+                    "comment_id": "5:1_1_1_1_1",
+                    "user_id": "user",
+                    "text": "triple nested",
+                    "time": "2048",
+                    "likes": 0,
+                    "likedUsers":[],
+                    "replies": [
+                      {
+                        "comment_id": "5:1_1_1_1_1_1",
+                        "user_id": "user",
+                        "text": "quadruple nested",
+                        "time": "2048",
+                        "likes": 0,
+                        "likedUsers":[],
+                        "replies": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "comment_id": "5:1_2",
+        "user_id": "user",
+        "text": "x",
+        "time": "2048",
+        "likes": 0,
+        "likedUsers":[],
+        "replies": [
           {
             "comment_id": "1:1_4_2",
             "user_id": "user",
             "text": "a sample nested comment",
             "time": "2048",
             "likes": 0,
-            "replies": []
+            "likedUsers":[],
+            "replies": [
+              {
+                "comment_id": "5:1_2_1_1",
+                "user_id": "user",
+                "text": "double nested",
+                "time": "2048",
+                "likes": 0,
+                "likedUsers":[],
+                "replies": []
+              }
+            ]
           }
         ]
+      },
+      {
+        "comment_id": "5:1_3",
+        "user_id": "user",
+        "text": "smth",
+        "time": "2048",
+        "likes": 0,
+        "likedUsers":[],
+        "replies": []
       }
     ]
   }
