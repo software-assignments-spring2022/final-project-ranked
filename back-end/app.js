@@ -10,12 +10,19 @@ const allPosts = require("./post.json")
 const allComments = require("./comment.json")
 require('./db');
 
+import axios from 'axios'
+import e from 'express'
 
 app.use(cors())
 app.use(morgan("dev", { skip: (req, res) => process.env.NODE_ENV === "test" })) // use the morgan middleware to log all incoming http requests
 app.use(express.json()) // decode JSON-formatted incoming POST data
 app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming POST data
 app.use("/static", express.static("public")) // make 'public' directory publicly readable with static content
+
+mongoose // connect to mongoose db
+    .connect(`${process.env.DB_CONNECTION_STRING}`)
+    .then(data => console.log(`Connected to MongoDB`))
+    .catch(err => console.error(`Failed to connect to MongoDB: ${err}`))
 
 app.get("/posts",  (req, res) => {
   try {
@@ -227,6 +234,60 @@ app.post("/megathread/:gameId/subthread/:postId/comments/save",  (req, res) => {
       if(e == "LOL"){return 2}
       if(e == "CSGO"){return 3}
   }
+
+app.post("/megathread/:gameId/subthread/:postId/comments", (req, res) => {
+    /* 
+    Update indivdual comments in our db (primarily dealing with upvoting/downvoting, but can be altered to help with replies).
+    Request BODY should look like:
+        {
+            'comment_id': int,
+            'likes': int,
+            'likedUsers': User[]
+        }
+    Updating is done by setting the array of comments associated with the Post object (gotten by props.postId) to a new array variable.
+    Then it loops through the comments until a Comment object object has the same comment_id as in the request body.
+    Once a match is found, it changes the data in the individual Comment object.
+    Finally, the endpoint updates the ENTIRE comments array (Post.comments) associated with the Post object with the new comments array variable.
+    Returns successful if response.acknowledged is true and the new comments array, otherwise prints an extremely vague error to console.
+    */
+    const comments = await Post.find({'post_id':props.postId}).comments
+    for (const i in comments) {
+        if (i.comment_id === req.data.comment_id) {
+            i.likes = req.data.likes;
+            i.likedUsers = req.data.likedUsers;
+        }
+    }
+    const response = await Post.updateOne({'comments':comments});
+    if (response.acknowledged) {
+        return res.json({
+            success: 'Comment has been updated.',
+            comments: Post.find({'post_id':props.postId}).comments
+        })
+    } else {
+        console.log('Something went wrong in updating the comment.')
+    }
+
+})
+
+app.post("/megathread/:gameId/subthread/:postId/comments/search", (req, res) => {
+    /*
+    Find individual comments
+    Body:
+        {
+            'comment_id': int
+        }
+    */
+    const comments = await Post.find({'post_id':props.postId}).comments;
+    for (const i in comments) {
+        if (i.comment_id === req.data.comment_id) {
+            return res.json({
+                success: "Comment found and returned successfully",
+                comment: i
+            })
+        }
+    }
+    console.log("Failed: Could not find comment.")
+})
 
 // handle new post submitted by user
 app.post("/megathread/new", (req, res) => {
