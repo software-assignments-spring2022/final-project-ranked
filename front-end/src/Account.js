@@ -4,6 +4,9 @@ import axios from 'axios'
 import './Account.css'
 
 const Account = () => {
+    const jwtToken = localStorage.getItem('token')
+    console.log(`JWT token from Account page: ${jwtToken}`)
+
     const [accountInfo, setAccountInfo] = useState({})
     const handleResetPwClick = () => {
         alert('An reset password email has been sent to you!') 
@@ -14,12 +17,22 @@ const Account = () => {
 
     useEffect(() => {
         axios
-        .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/account`)
-        .then(res => setAccountInfo(res.data.user))
+        .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/isLoggedIn`, {
+            headers: { Authorization: `JWT ${jwtToken}` }
+        })
+        // set user's account info if logged-in
+        .then(res => {
+            if(res.data.success){
+                console.log(res.data.user)
+                setAccountInfo(res.data.user)
+            }
+        })
         .catch(err => {
-            console.log('There seems to be a problem with the server, please try again later!')
-            console.log(err)
-        })  
+            if(err){
+                window.location.href = '/login'
+                alert('Account page is only accessible for authenticated user. Please login or register first!')
+            }
+        })
     }, [])
 
     return (
@@ -39,7 +52,7 @@ const Account = () => {
                     <p> <b>Email address:</b> {accountInfo.email}</p>
                 </div>
                 <div className='Account-details'>
-                    <p> <b>Country:</b> {accountInfo.country}</p>
+                    <p> <b>Joined on:</b> {accountInfo.joinDate}</p>
                 </div>
                 <button className='Account-resetPwBtn' onClick={handleResetPwClick}>Reset Password</button>
                 <button className='Account-delAccBtn' onClick={handleDelAccClick}>Deactivate Account</button>

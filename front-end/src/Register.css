@@ -62,6 +62,8 @@ body{
 
 .Register-submitBtn{
     position: relative;
-    top: 80px;
-    left: 120px;
+    top: 60px;
+    left: 110px;
+    line-height: 0px;
+    width: 90px;
 }
