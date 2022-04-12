@@ -19,6 +19,10 @@ const userSchema = new Schema(
         type: String,
         required: true,
     }
+    /*
+    likedPost:  [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
+    likedComment: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }]
+    */
   }
 )
 
