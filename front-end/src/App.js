@@ -33,7 +33,7 @@ const App = () => {
             <Route path="/admin" element={<Admin />} ></Route>
             <Route path="/threadrequest" element={<ThreadRequest />} ></Route>
             <Route path="/account" element={<Account />}></Route>
-            <Route path="/logout" element={<Logout user={user} setuser={setUser} />} />
+            <Route path="/logout" element={<Logout />} />
             <Route path="/megathread/new" element={<NewPost user={user} />} />
             <Route path="/megathread/:gameId" element={<Megathread user={user} />} />
             <Route path="/megathread/:gameId/subthread/:postId" element={<Subthread user={user} />} />
