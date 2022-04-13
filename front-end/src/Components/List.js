@@ -1,10 +1,12 @@
 import { React, useState } from 'react'
 // pick up tags.json data
 // import data from "./ListData.json"
+
+// this brings in all the tags id's
+// e.g. filters thru all of the tag titles
 // import data from "../../../back-end/tags.json"
 
-
-function List(props) {
+const List = props => {
     // create a new array by filtering the original array
     // filteredData --> element.id
     // this will return the "game-name" of each tag
@@ -14,6 +16,7 @@ function List(props) {
         //if no input the return the original
         // in order to hide the suggested tags before any text appears, 
             // i may !== the conditional
+            // on Change
         if (props.input === '') {
             return el;
         }
@@ -31,7 +34,7 @@ function List(props) {
         // fetch some mock data about animals for sasle
         // the id of the animal that was clicked on is passed as a part of the match field of the props
         console.log(`fetching post id=${id}...`)
-        axios("/subthread/get-tags")        // empty file for .get() requests
+        axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/search`)        // empty file for .get() requests
             .then(response => {
                 // extract the data from the server response
                 setData(response.data[id])      // i changed the param to 'id'

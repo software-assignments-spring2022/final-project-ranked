@@ -19,7 +19,7 @@ code {
 }
 @font-face {
   font-family: ManropeFont;
-  src: url(../public/Manrope/Manrope-VariableFont_wght.ttf);
+  src: url('../public/Manrope/Manrope-VariableFont_wght.ttf');
 }
 a:link {
   color: black;
