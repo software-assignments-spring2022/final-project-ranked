@@ -12,6 +12,7 @@ const passportJWT = require("passport-jwt") // module to authenticate endpoints 
 const ExtractJwt = passportJWT.ExtractJwt
 const JwtStrategy = passportJWT.Strategy
 const app = express() // instantiate an Express object
+const _ = require('lodash')
 
 app.use(passport.initialize()) // tell express to use passport middleware
 app.use(cors())
@@ -28,6 +29,9 @@ mongoose
 
 // grab db models
 const { User } = require('./models/User')
+const { Comment } = require('./models/Comment')
+const { Post } = require('./models/Post')
+const { Megathread } = require('./models/Megathread')
 
 // set up some jwt authentication options
 let jwtOptions = {}
@@ -64,7 +68,23 @@ app.get("/isLoggedIn", passport.authenticate("jwt", { session: false }), (req, r
     })
 })
 
-app.get("/posts",  (req, res) => {
+app.get("/games", async (req, res) => {
+  try{
+    const allGames = await Megathread.find({})
+    res.json({
+      games: allGames,
+      status: "all good",
+    })
+  } catch (err){
+    console.error(err)
+    res.status(400).json({
+      error: err,
+      status: "failed to retrieve GAMES from the database",
+    })
+  }
+})
+
+app.get("/posts", async (req, res) => {
   try {
     fs.readFile("./post.json", (err, data) => {
       if (err) {
@@ -88,21 +108,12 @@ app.get("/posts",  (req, res) => {
   }
 })
 
-app.get("/megathread/:gameId/posts", (req, res) => {
+app.get("/megathread/:gameId/posts", async (req, res) => {
   try {
-    fs.readFile("./post.json", (err, data) => {
-      if (err) {
-        throw err
-      }
-      // parse JSON object
-      const postJSON = JSON.parse(data)
-      const game_posts = postJSON.find(
-        (element) => element.megathreadId == req.params.gameId
-      ).posts
-      res.json({
-        game_posts: game_posts,
-        status: "all good",
-      })
+    const allPosts = await Post.find({toMegathread: req.params.gameId})
+    res.json({
+      game_posts: allPosts,
+      status: "all good",
     })
   } catch (err) {
     console.error(err)
@@ -139,184 +150,59 @@ app.get("/megathread/:gameId/subthread/:postId/post", (req, res) => {
   }
 })
 
-app.get("/megathread/:gameId/subthread/:postId/comments", (req, res) => {
+
+const populateReplies = async (e) => {
+  for (i of e.comments) {
+    i.replies = await Comment.find({ replyTo: i._id })
+    populateReplies(i.replies)
+  }
+}
+
+app.get("/:postId/comments", async (req, res) => {
   try {
-    fs.readFile("./comment.json", (err, data) => {
-      if (err) {
-        throw err
-      }
-      var comments = []
-      // parse JSON object
-      const commentJSON = JSON.parse(data)
-      comments = commentJSON.find(
-        (element) =>
-          element.game_id == req.params.gameId &&
-          element.post_id == req.params.postId
-      )
-      // if couldn't find the post, return empty array
-      typeof comments != "undefined"
-        ? (comments = comments.comments)
-        : (comments = [])
-      res.json({
-        comments: comments,
-        status: "all good",
-      })
+    var comments = await Comment.find({ postTo: req.params.postId })
+    populateReplies(comments)
+    res.json({
+      comments: comments,
+      status: "all good",
     })
   } catch (err) {
     console.error(err)
     res.status(400).json({
       error: err,
-      status: "failed to retrieve post comments from the database",
+      status: "failed to retrieve comments from the database",
     })
   }
 })
 
-const getNextID = (e) => {
-  var level = e.split("_")
-  level.splice(-1, 1, parseInt(level.at(-1)) + 1)
-  level = level.join("_")
-  return level
-}
-
-const getLevelIDs = (e) => {
-  var level = e.split("_")
-  var levelID = level[0]
-  level.shift()
-  for (x in level) {
-    levelID = `${levelID}_${level[x]}`
-    level[x] = levelID
-  }
-  return level
-}
-
-const addComment = (e) => {
-  for (i of e.arr) {
-    if (i.comment_id == e.levels[e.i_levels]) {
-      // if last iteration
-      if (e.levels.slice(-1) == e.levels[e.i_levels]) {
-        // if replies isn't empty
-        if (i.replies.length > 0) {
-          // set the id for the new comment
-          e.newComment.comment_id = getNextID(i.replies.at(-1).comment_id)
-        } else {
-          // comment id for new reply to a comment
-          e.newComment.comment_id = `${e.levels.slice(-1)}_1`
-        }
-        // append the new comment to the end
-        i.replies.push(e.newComment)
-        break
-      }
-      e.i_levels++
-      addComment({
-        arr: i.replies,
-        i_levels: e.i_levels,
-        levels: e.levels,
-        newComment: e.newComment,
+app.post( "/:postId/comments/save", async (req, res) => {
+    try {
+      console.log(`trying`)
+      // try to save the comment to the database
+      console.assert(!_.isEmpty(req.body.user))
+      console.assert(!_.isEmpty(req.body.comment))
+      var newComment = new Comment({
+        user_id: req.body.user.username,
+        text: req.body.comment,
+      })
+      console.log(newComment)
+      req.body.replyTo == "root"
+        ? (newComment.postTo = new mongoose.Types.ObjectId())
+        : (newComment.replyTo = req.body.replyTo)
+      const saveComment = await newComment.save()
+      return res.json({
+        success: `You commented!`,
+        comment: saveComment,
+      })
+    } catch (err) {
+      console.error(err)
+      return res.status(400).json({
+        error: err,
+        status: "failed to save the message to the database",
       })
     }
   }
-}
-
-const addCommentRoot = (e) => {
-  if (e.arr.length > 0) {
-    // set the id for the new comment
-    e.newComment.comment_id = getNextID(e.arr.at(-1).comment_id)
-  } else {
-    // comment id for new reply to a comment
-    e.newComment.comment_id = `${e.root}_1`
-  }
-  e.arr.push(e.newComment)
-}
-
-const makePostComment = (e) => {
-  const newPost = {
-    game_id: e.gameId,
-    post_id: e.postId,
-    comments: [],
-  }
-  e.arr.push(newPost)
-}
-
-app.post("/megathread/:gameId/subthread/:postId/comments/save", (req, res) => {
-  // try to save the comment to the database
-  try {
-    fs.readFile("./comment.json", (err, data) => {
-      if (err) {
-        console.log(`an error occured while trying to read comment.json`)
-      }
-      var newComment = {
-        comment_id: "",
-        user_id: "user",
-        text: req.body.comment,
-        time: "2048",
-        likes: 0,
-        replies: [],
-      }
-      // parse JSON object
-      const commentJSON = JSON.parse(data)
-      var commentArr = commentJSON.find(
-        (element) =>
-          element.game_id == req.params.gameId &&
-          element.post_id == req.params.postId
-      )
-      // if the post isn't in comment.json yet
-      if (!commentArr) {
-        makePostComment({
-          gameId: req.params.gameId,
-          postId: req.params.postId,
-          arr: commentJSON,
-        })
-      }
-      commentArr = commentJSON.find(
-        (element) =>
-          element.game_id == req.params.gameId &&
-          element.post_id == req.params.postId
-      ).comments
-      // if this is a reply to the post itself
-      if (req.body.replyTo == "root") {
-        addCommentRoot({
-          arr: commentArr,
-          root: `${req.params.gameId}:${req.params.postId}`,
-          newComment: newComment,
-        })
-      }
-      // if it is a reply to a comment
-      else {
-        var i_levels = 0
-        const levels = getLevelIDs(req.body.replyTo)
-        // reccursive function to add nested comment
-        addComment({
-          arr: commentArr,
-          i_levels: i_levels,
-          levels: levels,
-          newComment: newComment,
-        })
-      }
-      fs.writeFile(
-        "./comment.json",
-        JSON.stringify(commentJSON, null, 2),
-        (err) => {
-          if (err) {
-            console.log(
-              `an error occured while trying to write to comment.json`
-            )
-          }
-          console.log("Data written to file")
-        }
-      )
-      return res.json({
-        comment: newComment, // return the message we just saved
-        status: "all good",
-      })
-    })
-  } catch (err) {
-    console.error(err)
-    return res.status(400).json({
-      error: err,
-      status: "failed to save the message to the database",
-    })
-  }
-})
+)
 
   //hard coded for now
   //wait for the actual database to work on
@@ -341,14 +227,14 @@ app.post("/megathread/:gameId/subthread/:postId/comments", (req, res) => {
     Finally, the endpoint updates the ENTIRE comments array (Post.comments) associated with the Post object with the new comments array variable.
     Returns successful if response.acknowledged is true and the new comments array, otherwise prints an extremely vague error to console.
     */
-    const comments = await Post.find({'post_id':props.postId}).comments
+    const comments = Post.find({'post_id':props.postId}).comments
     for (const i in comments) {
         if (i.comment_id === req.data.comment_id) {
             i.likes = req.data.likes;
             i.likedUsers = req.data.likedUsers;
         }
     }
-    const response = await Post.updateOne({'comments':comments});
+    const response = Post.updateOne({'comments':comments});
     if (response.acknowledged) {
         return res.json({
             success: 'Comment has been updated.',
@@ -368,7 +254,7 @@ app.post("/megathread/:gameId/subthread/:postId/comments/search", (req, res) => 
             'comment_id': int
         }
     */
-    const comments = await Post.find({'post_id':props.postId}).comments;
+    const comments = Post.find({'post_id':props.postId}).comments;
     for (const i in comments) {
         if (i.comment_id === req.data.comment_id) {
             return res.json({
@@ -378,6 +264,33 @@ app.post("/megathread/:gameId/subthread/:postId/comments/search", (req, res) => 
         }
     }
     console.log("Failed: Could not find comment.")
+})
+
+app.post(`/megathread/:gameId/save`, async (req, res) => {
+  try {
+    console.log(`trying to make a post`)
+    // try to save the comment to the database
+    // console.assert(!_.isEmpty(req.body.user))
+    // console.assert(!_.isEmpty(req.body.comment))
+    var newPost = new Post({
+      user_id: req.body.username,
+      title: req.body.title,
+      body: req.body.body,
+      tags: req.body.tags,
+      toMegathread: req.params.gameId
+    })
+    const savePost = await newPost.save()
+    return res.json({
+      success: `You commented!`,
+      post: savePost,
+    })
+  } catch (err) {
+    console.error(err)
+    return res.status(400).json({
+      error: err,
+      status: "failed to save the message to the database",
+    })
+  }
 })
 
 // handle new post submitted by user
@@ -474,46 +387,64 @@ app.post("/threadrequest", (req, res) => {
         })
     }
     else{
-        fs.readFile("./threadRequestList.json", (err, data) => {
-            // if there is no thread request list currently, create one
-            if(err){
-                const threadRequestArr = []
-                const newRequest = {"gameName": gameName, "willModerate": willModerate, 
-                "friendsWillModerate": friendsWillModerate, "reason": reason, "approvalStatus": ""}
-                threadRequestArr.push(newRequest)
-                // write new request to file (will write to db later), so that
-                // admin panel can grab data
-                fs.writeFile("./threadRequestList.json", JSON.stringify(threadRequestArr), err => {
-                    if(err){
-                        console.log("An error occured while writing to the file!")
-                    }
-                    else{
-                        return res.json({
-                            success: "Request submitted! We will get back to you ASAP!"
-                        })
-                    }
-                })
-            }
-            // if there already exists a list for the thread request, then
-            // simple append the new request to the exisiting list, and write to file (later db)
-            else{
-                const threadRequestArr = JSON.parse(data)
-                const newRequest = {"gameName": gameName, "willModerate": willModerate, 
-                "friendsWillModerate": friendsWillModerate, "reason": reason, "approvalStatus": ""}
-                threadRequestArr.push(newRequest) 
-                fs.writeFile("./threadRequestList.json", JSON.stringify(threadRequestArr), err => {
-                    if(err){
-                        console.log("An error occured while writing to the file!")
-                    }
-                    else{
-                        return res.json({
-                            success: "Request submitted! We will get back to you ASAP!"
-                        })
-                    }
-                })
-            }
-          }
-        )
+      const newMegathread = new Megathread({
+        gamename: gameName,
+        moderators: []
+      })
+      newMegathread.save((err, user) => {
+        if(err){
+            console.log(err)
+        }
+        // user successfully saved to db
+        else{
+            // generate the jwt using our signToken helper function
+            return res.json({
+                success: `${newMegathread._id}`,
+                megathread: newMegathread
+            }) 
+        }
+    })
+
+      //   fs.readFile("./threadRequestList.json", (err, data) => {
+      //       // if there is no thread request list currently, create one
+      //       if(err){
+      //           const threadRequestArr = []
+      //           const newRequest = {"gameName": gameName, "willModerate": willModerate, 
+      //           "friendsWillModerate": friendsWillModerate, "reason": reason, "approvalStatus": ""}
+      //           threadRequestArr.push(newRequest)
+      //           // write new request to file (will write to db later), so that
+      //           // admin panel can grab data
+      //           fs.writeFile("./threadRequestList.json", JSON.stringify(threadRequestArr), err => {
+      //               if(err){
+      //                   console.log("An error occured while writing to the file!")
+      //               }
+      //               else{
+      //                   return res.json({
+      //                       success: "Request submitted! We will get back to you ASAP!"
+      //                   })
+      //               }
+      //           })
+      //       }
+      //       // if there already exists a list for the thread request, then
+      //       // simple append the new request to the exisiting list, and write to file (later db)
+      //       else{
+      //           const threadRequestArr = JSON.parse(data)
+      //           const newRequest = {"gameName": gameName, "willModerate": willModerate, 
+      //           "friendsWillModerate": friendsWillModerate, "reason": reason, "approvalStatus": ""}
+      //           threadRequestArr.push(newRequest) 
+      //           fs.writeFile("./threadRequestList.json", JSON.stringify(threadRequestArr), err => {
+      //               if(err){
+      //                   console.log("An error occured while writing to the file!")
+      //               }
+      //               else{
+      //                   return res.json({
+      //                       success: "Request submitted! We will get back to you ASAP!"
+      //                   })
+      //               }
+      //           })
+      //       }
+        //   }
+        // )
       }
     })
 

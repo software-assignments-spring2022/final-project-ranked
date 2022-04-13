@@ -5,6 +5,7 @@ import "./Comment.css"
 import LikeButton from "./Components/likeButton";
 import Button from "react-bootstrap/esm/Button"
 import CommentForm from "./CommentSubmitForm"
+import _ from 'lodash'
 
 
 const Comment = props => {
@@ -41,19 +42,19 @@ const Comment = props => {
         <section className="body">
           <pre>
             <p>{indent(props.type)}{props.details.text}</p>
-            <p>{indent(props.type)}<LikeButton></LikeButton>likes: {props.details.likes}</p>
+            {/* <p>{indent(props.type)}<LikeButton></LikeButton>likes: {props.details.likes}</p> */}
           </pre>
         </section>
       </div>
       <section className="replyform">
           <pre>
-            {wantReply && <CommentForm user={props.user} replyTo={props.details.comment_id} setNewComment={props.setNewComment}/>}
+            {wantReply && !_.isEmpty(props.user) && <CommentForm user={props.user} replyTo={props.details.comment_id} setNewComment={props.setNewComment}/>}
           </pre>
         </section>
 
       <section className="replies">
         {props.details.replies && props.details.replies.map(item => (
-          <Comment key={key++} type={props.type + 1} details={item}></Comment>
+          <Comment user={props.user} key={key++} type={props.type + 1} details={item}></Comment>
         ))}
       </section>
     </div>

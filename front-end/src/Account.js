@@ -5,7 +5,7 @@ import './Account.css'
 
 const Account = () => {
     const jwtToken = localStorage.getItem('token')
-    console.log(`JWT token from Account page: ${jwtToken}`)
+    // console.log(`JWT token from Account page: ${jwtToken}`)
 
     const [accountInfo, setAccountInfo] = useState({})
     const handleResetPwClick = () => {

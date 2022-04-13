@@ -1,33 +1,44 @@
-import "./Newpost.css";
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Link, useParams } from "react-router-dom";
-import axios from "axios";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import { useNavigate } from "react-router-dom";
+import "./Newpost.css"
+import React, { useState, useEffect, useRef, useCallback } from "react"
+import { Link, useParams } from "react-router-dom"
+import axios from "axios"
+import Button from "react-bootstrap/Button"
+import Form from "react-bootstrap/Form"
+import { useNavigate } from "react-router-dom"
 
 const Newpost = (props) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   // start a state varaible with a blank array
-  const [postTitle, setTitle] = useState("");
-  const [postContent, setContent] = useState("");
-  const [tags, setTags] = useState("")
-  const [gameName, setName] = useState("")
+  const [postTitle, setTitle] = useState("")
+  const [postContent, setContent] = useState("")
+  const [postGame, setPostGame] = useState({})
+  const [tags, setTags] = useState([])
+  const [gameData, setGameData] = useState([])
 
-  const { gameId } = useParams();
+  const { gameId } = useParams()
+
+  const fetchGameNames = () => {
+    // fetch data for game names
+    axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/games`)
+      .then((response) => {
+        // extract the data from the server response
+        setGameData(response.data.games)
+      })
+      .catch((err) => {
+        console.log(`Sorry, buster.  No more requests allowed today!`)
+        console.error(err)
+      })
+  }
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // prevent the default browser form submission stuff
-
-
+    e.preventDefault() // prevent the default browser form submission stuff
       // send the data of new post to a server
       axios
-      .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/megathread/new`, {
-        game_name:gameName,
+      .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/megathread/${gameId}/save`, {
         title: postTitle,
         body: postContent,
-        tags: tags,
-        time: date
+        tags: [],
+        username: props.user.username
         })
     .then(res => {
         if(res.data.missing){
@@ -44,7 +55,7 @@ const Newpost = (props) => {
   }
 
   var today = new Date(),
-  date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + today.getHours() + ':' + '  ' + today.getMinutes() + ':' + today.getSeconds();  
+  date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + today.getHours() + ':' + '  ' + today.getMinutes() + ':' + today.getSeconds()  
 
 
   return (
@@ -74,33 +85,18 @@ const Newpost = (props) => {
 
           <Form>
             <Form.Label>Related Game</Form.Label>
-            {["radio"].map((type) => (
-              <div key={`${type}`} className="mb-3">
-                <Form.Check
+              {gameData.map((item)=>{
+                <div key={"radio"} className="mb-3">
+                  <Form.Check 
                   inline
-                  label="Valorant"
-                  name="group1"
-                  type={type}
-                  id={`${type}-Game1`}
-                  onClick={e => setName("Valorant")}
-                />
-                <Form.Check
-                  inline
-                  label="LOL"
-                  name="group1"
-                  type={type}
-                  id={`${type}-Game2`}
-                  onClick={e => setName("LOL")}
-                />
-                <Form.Check
-                  inline
-                  label="CSGO"
-                  type={type}
-                  id={`${type}-Game3`}
-                  onClick={e => setName("CSGO")}
-                />
-              </div>
-            ))}
+                  label={item.gamename}
+                  type={"radio"}
+                  id={item._id}
+                  key={item._id}
+                  onClick={e=> setPostGame(item)}
+                  />
+                </div>
+              })}
           </Form>
 
           <Form>
@@ -142,7 +138,7 @@ const Newpost = (props) => {
         <h2>This is the footer.</h2>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Newpost;
+export default Newpost

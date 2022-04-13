@@ -6,16 +6,18 @@ import Button from "react-bootstrap/Button"
 import { useNavigate } from "react-router-dom"
 import Post from "./Post"
 import backupData from "./mock-backupPosts.json"
+import Newpost from "./Newpost"
 // import usePostSearch from "./usePostSearch"
 
 const Megathread = (props) => {
+  const jwtToken = localStorage.getItem("token")
+  const [user, setUser] = useState({})
   const navigate = useNavigate()
   const [query, setQuery] = useState("")
   const [pageNumber, setPageNumber] = useState(1)
   // start a state varaible with a blank array
-  const [data, setData] = useState([]) 
-
-
+  const [data, setData] = useState([])
+  const [wantComent, setWantComment] = useState(false)
 
   const { gameId } = useParams()
 
@@ -34,9 +36,24 @@ const Megathread = (props) => {
       .catch((err) => {
         console.log(`Sorry, buster.  No more requests allowed today!`)
         console.error(err)
-        setData(backupData) 
-      }) 
-  }, []) 
+        setData(backupData)
+      })
+    console.log(`fetching account info...`)
+    axios
+      .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/isLoggedIn`, {
+        headers: { Authorization: `JWT ${jwtToken}` },
+      })
+      // set user's account info if logged-in
+      .then((res) => {
+        if (res.data.success) {
+          //   console.log(res.data.user)
+          setUser(res.data.user)
+        }
+      })
+      .catch((err) => {
+        if (err) console.log(`Log-in first if you want to post!`)
+      })
+  }, [])
 
   // const {
   //   posts,
@@ -69,9 +86,15 @@ const Megathread = (props) => {
   return (
     <div className="Megathread">
       <div className="selfPosting">
-        <Button className="btn btn-success" href="/megathread/new">
+        {wantComent && <Newpost user={user} />}
+        <button
+          className="btn"
+          onClick={() => {
+            setWantComment(!wantComent)
+          }}
+        >
           New Post
-        </Button>
+        </button>
       </div>
 
       <div className="posts">
