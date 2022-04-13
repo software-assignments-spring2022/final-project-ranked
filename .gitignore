@@ -126,10 +126,5 @@ typings/
 **/_site/
 
 ## Back-end
-back-end/comment.json
-back-end/just_posts.json
-back-end/post.json
-back-end/tags.json
-back-end/threadRequestList.json
-back-end/user.json
-back-end/old_models/*
+**.json
+**/old_models/
