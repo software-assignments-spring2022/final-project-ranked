@@ -1,4 +1,4 @@
-import "./Post.css" 
+import "./css/Post.css" 
 import Tag from "./Tag"
 
 const Post = (props) => {

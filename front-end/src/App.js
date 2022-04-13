@@ -14,7 +14,7 @@ import Megathread from "./Megathread"
 import Subthread from "./Subthread"
 import Logout from "./Logout"
 import Admin from "./Admin"
-import './App.css' 
+import './css/App.css' 
 const App = () => {
   const [user, setUser] = useState({})
   

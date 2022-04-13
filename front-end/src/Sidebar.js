@@ -1,7 +1,7 @@
 // sidebar
 import { useState, useEffect } from 'react'
 import { slide as Menu } from 'react-burger-menu'
-import './Sidebar.css'
+import './css/Sidebar.css'
 import axios from 'axios'
 
 export default props => {

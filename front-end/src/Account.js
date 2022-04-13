@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-import './Account.css'
+import './css/Account.css'
 
 const Account = () => {
     const jwtToken = localStorage.getItem('token')

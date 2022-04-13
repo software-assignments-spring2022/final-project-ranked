@@ -1,5 +1,5 @@
 import React from 'react'
-import "./Request.css"
+import "./css/Request.css"
 
 export default function Request({ request, acceptRequests }) {
   function handleClick() {

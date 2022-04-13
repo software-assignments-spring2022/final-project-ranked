@@ -1,4 +1,4 @@
-import "./Megathread.css"
+import "./css/Megathread.css"
 import React, { useState, useEffect, useRef, useCallback } from "react"
 import { Link, useParams } from "react-router-dom"
 import axios from "axios"

@@ -1,4 +1,4 @@
-import "./Newpost.css";
+import "./css/Newpost.css";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
