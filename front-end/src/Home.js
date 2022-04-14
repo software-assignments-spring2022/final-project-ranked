@@ -68,7 +68,7 @@ const Home = (props) => {
           gameData.map((item) => (
             <div
               className="game"
-              key={item.game_id}
+              key={item._id}
               onClick={() =>
                 handleGameClick({
                   gameId: item._id,

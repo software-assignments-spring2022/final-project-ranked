@@ -111,8 +111,11 @@ app.get("/posts", async (req, res) => {
 app.get("/megathread/:gameId/posts", async (req, res) => {
   try {
     const allPosts = await Post.find({toMegathread: req.params.gameId})
+    const game = await Megathread.findOne({_id: req.params.gameId})
+    console.log(game.gamename)
     res.json({
       game_posts: allPosts,
+      gamename: game.gamename,
       status: "all good",
     })
   } catch (err) {
@@ -124,22 +127,12 @@ app.get("/megathread/:gameId/posts", async (req, res) => {
   }
 })
 
-app.get("/megathread/:gameId/subthread/:postId/post", (req, res) => {
+app.get("/megathread/:gameId/subthread/:postId/post", async (req, res) => {
   try {
-    fs.readFile("./post.json", (err, data) => {
-      if (err) {
-        throw err
-      }
-      var sub_post = []
-      // parse JSON object
-      const postJSON = JSON.parse(data)
-      sub_post = postJSON
-        .find((element) => element.megathreadId == req.params.gameId)
-        .posts.find((element) => element.post_id == req.params.postId)
-      res.json({
-        sub_post: sub_post,
-        status: "all good",
-      })
+    const thisPost = await Post.findOne({_id: req.params.postId})
+    res.json({
+      sub_post: thisPost,
+      status: "all good",
     })
   } catch (err) {
     console.error(err)
@@ -152,6 +145,7 @@ app.get("/megathread/:gameId/subthread/:postId/post", (req, res) => {
 
 
 const populateReplies = async (e) => {
+  if(_.isEmpty(e.comments)) return
   for (i of e.comments) {
     i.replies = await Comment.find({ replyTo: i._id })
     populateReplies(i.replies)
@@ -161,6 +155,7 @@ const populateReplies = async (e) => {
 app.get("/:postId/comments", async (req, res) => {
   try {
     var comments = await Comment.find({ postTo: req.params.postId })
+    console.log(comments)
     populateReplies(comments)
     res.json({
       comments: comments,
@@ -184,11 +179,12 @@ app.post( "/:postId/comments/save", async (req, res) => {
       var newComment = new Comment({
         user_id: req.body.user.username,
         text: req.body.comment,
+        tags: req.body.tags
       })
-      console.log(newComment)
       req.body.replyTo == "root"
-        ? (newComment.postTo = new mongoose.Types.ObjectId())
+        ? (newComment.postTo = req.params.postId)
         : (newComment.replyTo = req.body.replyTo)
+      console.log(newComment)
       const saveComment = await newComment.save()
       return res.json({
         success: `You commented!`,
@@ -279,6 +275,7 @@ app.post(`/megathread/:gameId/save`, async (req, res) => {
       tags: req.body.tags,
       toMegathread: req.params.gameId
     })
+    console.log(newPost)
     const savePost = await newPost.save()
     return res.json({
       success: `You commented!`,

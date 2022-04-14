@@ -18,6 +18,8 @@ const Megathread = (props) => {
   // start a state varaible with a blank array
   const [data, setData] = useState([])
   const [wantComent, setWantComment] = useState(false)
+  const [newPost, setNewPost] = useState({})
+  const [gamename, setGamename] = useState("")
 
   const { gameId } = useParams()
 
@@ -32,12 +34,14 @@ const Megathread = (props) => {
       .then((response) => {
         // extract the data from the server response
         setData(response.data.game_posts)
+        setGamename(response.data.gamename)
       })
       .catch((err) => {
         console.log(`Sorry, buster.  No more requests allowed today!`)
         console.error(err)
         setData(backupData)
       })
+
     console.log(`fetching account info...`)
     axios
       .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/isLoggedIn`, {
@@ -53,7 +57,7 @@ const Megathread = (props) => {
       .catch((err) => {
         if (err) console.log(`Log-in first if you want to post!`)
       })
-  }, [])
+  }, [newPost])
 
   // const {
   //   posts,
@@ -85,8 +89,17 @@ const Megathread = (props) => {
 
   return (
     <div className="Megathread">
+      <div className="header">
+        Game: {gamename}
+      </div>
       <div className="selfPosting">
-        {wantComent && <Newpost user={user} />}
+        {wantComent && (
+          <Newpost
+            user={user}
+            setNewPost={setNewPost}
+            setWantComment={setWantComment}
+          />
+        )}
         <button
           className="btn"
           onClick={() => {
@@ -102,8 +115,8 @@ const Megathread = (props) => {
           data.map((item) => (
             <div
               className="post"
-              key={item.post_id}
-              onClick={() => handleButtonClick(item.post_id)}
+              key={item._id}
+              onClick={() => handleButtonClick(item._id)}
             >
               <Post key={item.post_id} user={props.user} post={item}></Post>
             </div>

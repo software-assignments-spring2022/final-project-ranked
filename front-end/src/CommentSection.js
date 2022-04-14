@@ -30,7 +30,7 @@ const CommentSection = props => {
             console.error(err) // the server returned an error... probably too many requests... until we pay!
             setData([])
         })
-}, [newComment])
+  }, [newComment])
 
   return (
     <div className="CommentSection">

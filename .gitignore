@@ -126,5 +126,5 @@ typings/
 **/_site/
 
 ## Back-end
-**.json
+*.json
 **/old_models/
