@@ -16,11 +16,10 @@ const server = require("../app")
 const checkComments = (arr) => {
   for (i of arr) {
     i.should.have.keys(
-      "comment_id",
       "user_id",
       "text",
-      "time",
       "likes",
+      "time",
       "replies"
     )
     for (j of i.replies) {
@@ -34,12 +33,12 @@ describe("Comments", () => {
   /**
    * test the GET /megathread/:gameId/subthread/:postId/comments route
    */
-  describe("GET request to /megathread/1/subthread/1/comments route", () => {
+  describe("GET request to /:postId/comments route", () => {
     // test if it causes an error
     it("it should return a 200 HTTP response code", (done) => {
       chai
         .request(server)
-        .get("/megathread/1/subthread/1/comments")
+        .get("/6257466b0a32ffedeecabcd1/comments")
         .end((err, res) => {
           res.should.have.status(200) // use should to make BDD-style assertions
           done() // resolve the Promise that these tests create so mocha can move on
@@ -49,7 +48,7 @@ describe("Comments", () => {
     it("it should return an array of comment objects with specific properties", (done) => {
       chai
         .request(server)
-        .get("/megathread/1/subthread/1/comments")
+        .get("/6257466b0a32ffedeecabcd1/comments")
         .end((err, res) => {
           expect(res.body).to.have.deep.property("comments") //should contain sub_post element
           res.body.comments.should.be.a("array") // our route sends back an object
@@ -63,7 +62,7 @@ describe("Comments", () => {
   /**
    * test the POST /megathread/:gameId/subthread/:postId/comments/save route
    */
-  describe("POST request to /megathread/1/subthread/1/comments/save route", () => {
+  describe("POST request to /:id/comments/save route", () => {
     var newComment = {
       comment: "a sample comment",
       replyTo: "root",
@@ -71,7 +70,7 @@ describe("Comments", () => {
     it("it should return a 200 HTTP response code (for comment to root post)", (done) => {
       chai
         .request(server)
-        .post("/megathread/1/subthread/1/comments/save")
+        .post("/6257466b0a32ffedeecabcd1/comments/save")
         .send(newComment)
         .end((err, res) => {
           res.should.have.status(200) // BDD-style assertions
@@ -82,7 +81,7 @@ describe("Comments", () => {
     it("it should return the new post object with specific properties (for comment to root post)", (done) => {
       chai
         .request(server)
-        .post("/megathread/1/subthread/1/comments/save")
+        .post("/6257466b0a32ffedeecabcd1/comments/save")
         .send(newComment)
         .end((err, res) => {
           res.body.should.be.a("object")
@@ -90,11 +89,10 @@ describe("Comments", () => {
           res.body.comment.should.be.a("object") // our route sends back an object
           // checks if the object follows the post schema
           res.body.comment.should.have.keys(
-            "comment_id",
             "user_id",
             "text",
-            "time",
             "likes",
+            "time",
             "replies"
           )
           res.body.comment.text.should.equal("a sample comment")
@@ -125,11 +123,10 @@ describe("Comments", () => {
           res.body.comment.should.be.a("object") // our route sends back an object
           // checks if the object follows the post schema
           res.body.comment.should.have.keys(
-            "comment_id",
             "user_id",
             "text",
-            "time",
             "likes",
+            "time",
             "replies"
           )
           res.body.comment.text.should.equal("a sample nested comment")

@@ -87,18 +87,10 @@ app.get("/games", async (req, res) => {
 
 app.get("/posts", async (req, res) => {
   try {
-    fs.readFile("./post.json", (err, data) => {
-      if (err) {
-        throw err
-      }
-      var home_posts = []
-      // parse JSON object
-      const postJSON = JSON.parse(data)
-      postJSON.map((item) => (home_posts = home_posts.concat(item.posts)))
-      res.json({
-        home_posts: home_posts,
-        status: "all good",
-      })
+    const allPosts = await Post.find({})
+    res.json({
+      home_posts: allPosts,
+      status: "all good",
     })
   } catch (err) {
     console.error(err)
@@ -113,7 +105,6 @@ app.get("/megathread/:gameId/posts", async (req, res) => {
   try {
     const allPosts = await Post.find({toMegathread: req.params.gameId})
     const game = await Megathread.findOne({_id: req.params.gameId})
-    console.log(game.gamename)
     res.json({
       game_posts: allPosts,
       gamename: game.gamename,
@@ -128,7 +119,7 @@ app.get("/megathread/:gameId/posts", async (req, res) => {
   }
 })
 
-app.get("/megathread/:gameId/subthread/:postId/post", async (req, res) => {
+app.get("/:postId/post", async (req, res) => {
   try {
     const thisPost = await Post.findOne({_id: req.params.postId})
     res.json({
@@ -151,10 +142,10 @@ const populateReplies = async (arr) => {
       for(i of arr){
         const tempArr = await Comment.find({ replyTo: i._id })
         i.replies.push(...tempArr)
-        console.log("i.replies: ", i.replies)
+        // console.log("i.replies: ", i.replies)
         populateReplies(i.replies)
       }
-      console.log("Arr: ",arr)
+      // console.log("Arr: ",arr)
     }
   } catch(err) {
     throw err
@@ -171,7 +162,7 @@ app.get("/:postId/comments", async (req, res) => {
     //   console.log(i.replies)
     //   populateReplies(i.replies)
     // }
-    console.log("~~~~~~~POPULATED", comments)
+    // console.log("~~~~~~~POPULATED", comments)
     res.json({
       comments: comments,
       status: "all good",

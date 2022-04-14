@@ -23,7 +23,7 @@ const Subthread = (props) => {
     // the id of the animal that was clicked on is passed as a part of the match field of the props
     console.log(`fetching post id=${postId}...`)
     axios(
-      `${process.env.REACT_APP_SERVER_HOSTNAME}/megathread/${gameId}/subthread/${postId}/post`
+      `${process.env.REACT_APP_SERVER_HOSTNAME}/${postId}/post`
     )
       .then((response) => {
         // extract the data from the server response

@@ -12,6 +12,17 @@ const should = chai.should() // the same assertion library in the style using th
 // import the server
 const server = require("../app")
 
+const checkPostSchema = obj =>{
+  obj.should.have.keys(
+    "toMegathread",
+    "user_id",
+    "title",
+    "body",
+    "tags",
+    "likes",
+    "image")
+}
+
 // a group of tests related to all the routes that give back posts or send posts
 describe("Posts", () => {
   /**
@@ -39,17 +50,7 @@ describe("Posts", () => {
           res.body.home_posts.should.be.a("array") // our route sends back an array of objects
           // checks if each object of the array follows the post schema
           for (i of res.body.home_posts) {
-            i.should.have.keys(
-              "game_id",
-              "post_id",
-              "user_id",
-              "title",
-              "body",
-              "tags",
-              "time",
-              "likes",
-              "image"
-            )
+            checkPostSchema(i)
           }
           done() // resolve the Promise that these tests create so mocha can move on
         })
@@ -59,12 +60,12 @@ describe("Posts", () => {
   /**
    * test the GET /megathread/:gameId/posts route
    */
-  describe("GET request to /megathread/1/posts route", () => {
+  describe("GET request to /megathread/625746510a32ffedeecabccb/posts route", () => {
     // test if it causes an error
     it("it should return a 200 HTTP response code", (done) => {
       chai
         .request(server)
-        .get("/megathread/1/posts")
+        .get("/megathread/625746510a32ffedeecabccb/posts")
         .end((err, res) => {
           res.should.have.status(200) // use should to make BDD-style assertions
           done() // resolve the Promise that these tests create so mocha can move on
@@ -74,24 +75,14 @@ describe("Posts", () => {
     it("it should return an array of comment objects specific properties", (done) => {
       chai
         .request(server)
-        .get("/megathread/1/posts")
+        .get("/megathread/625746510a32ffedeecabccb/posts")
         .end((err, res) => {
             res.body.should.be.a("object")
           expect(res.body).to.have.deep.property("game_posts") //should contain game_post element
           res.body.game_posts.should.be.a("array") // our route sends back an array of objects
           // checks if each object of the array follows the post schema
           for (i of res.body.game_posts) {
-            i.should.have.keys(
-              "game_id",
-              "post_id",
-              "user_id",
-              "title",
-              "body",
-              "tags",
-              "time",
-              "likes",
-              "image"
-            )
+            checkPostSchema(i)
           }
           done() // resolve the Promise that these tests create so mocha can move on
         })
@@ -99,14 +90,14 @@ describe("Posts", () => {
   })
 
   /**
-   * test the GET /megathread/:gameId/subthread/:postId/post route
+   * test the GET /:postId/post route
    */
-  describe("GET request to /megathread/1/subthread/1/post route", () => {
+  describe("GET request to /:postId/post route", () => {
     // test if it causes an error
     it("it should return a 200 HTTP response code", (done) => {
       chai
         .request(server)
-        .get("/megathread/1/subthread/1/post")
+        .get("/6257466b0a32ffedeecabcd1/post")
         .end((err, res) => {
           res.should.have.status(200) // use should to make BDD-style assertions
           done() // resolve the Promise that these tests create so mocha can move on
@@ -116,23 +107,13 @@ describe("Posts", () => {
     it("it should return a single post object with specific properties", (done) => {
       chai
         .request(server)
-        .get("/megathread/1/subthread/1/post")
+        .get("6257466b0a32ffedeecabcd1/post")
         .end((err, res) => {
             res.body.should.be.a("object")
           expect(res.body).to.have.deep.property("sub_post") //should contain sub_post element
           res.body.sub_post.should.be.a("object") // our route sends back an object
           // checks if the object follows the post schema
-          res.body.sub_post.should.have.keys(
-            "game_id",
-            "post_id",
-            "user_id",
-            "title",
-            "body",
-            "tags",
-            "time",
-            "likes",
-            "image"
-          )
+          checkPostSchema(res.body.sub_post)
           done() // resolve the Promise that these tests create so mocha can move on
         })
     })

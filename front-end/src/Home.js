@@ -84,7 +84,7 @@ const Home = (props) => {
           postData.map((item) => (
             <div
               className="post"
-              key={`${item.game_id}`.concat(item.post_id)}
+              key={`${item._id}`.concat(item.post_id)}
               onClick={() =>
                 handleButtonClick({
                   postId: item.post_id,
@@ -92,7 +92,7 @@ const Home = (props) => {
                 })
               }
             >
-              <Post key={item.post_id} user={props.user} post={item}></Post>
+              <Post key={item._id} user={props.user} post={item}></Post>
             </div>
           ))}
       </div>
