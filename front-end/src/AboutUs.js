@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './AboutUs.css';
+import './css/AboutUs.css';
 
 const AboutUs = () => {
     const mockImg = 'https://picsum.photos/200/300'

@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-import './Account.css'
+import './css/Account.css'
 
 const Account = () => {
     const jwtToken = localStorage.getItem('token')
     // console.log(`JWT token from Account page: ${jwtToken}`)
 
     const [accountInfo, setAccountInfo] = useState({})
-    const handleResetPwClick = () => {
-        alert('An reset password email has been sent to you!') 
+    const handleCheckRequest = () => {
+        alert('Here is the status of your previsouly submitted requests...!') 
     } 
     const handleDelAccClick = () => {
         alert('Hope to see you again soon!') 
@@ -23,7 +23,6 @@ const Account = () => {
         // set user's account info if logged-in
         .then(res => {
             if(res.data.success){
-                console.log(res.data.user)
                 setAccountInfo(res.data.user)
             }
         })
@@ -54,7 +53,7 @@ const Account = () => {
                 <div className='Account-details'>
                     <p> <b>Joined on:</b> {accountInfo.joinDate}</p>
                 </div>
-                <button className='Account-resetPwBtn' onClick={handleResetPwClick}>Reset Password</button>
+                <button className='Account-resetPwBtn' onClick={handleCheckRequest}>Check Requests Status</button>
                 <button className='Account-delAccBtn' onClick={handleDelAccClick}>Deactivate Account</button>
             </div>
         </main>

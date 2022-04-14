@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Navigate } from "react-router-dom"
 import axios from "axios"
-import "./Comment.css"
+import "./css/Comment.css"
 import LikeButton from "./Components/likeButton";
 import Button from "react-bootstrap/esm/Button"
 import CommentForm from "./CommentSubmitForm"

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import axios from "axios"
-import "./Subthread.css"
-import "./CommentSection.css"
+import "./css/Subthread.css"
+import "./css/CommentSection.css"
 
 const CommentSection = props => {
   const [comment, setComment] = useState("") 

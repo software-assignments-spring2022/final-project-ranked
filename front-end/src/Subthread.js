@@ -5,7 +5,7 @@ import CommentSection from "./CommentSection"
 import Post from "./Post"
 import backupData from "./mock-backupPosts.json"
 // import comment_info from "./mock-comment-section.json"
-import "./Subthread.css"
+import "./css/Subthread.css"
 
 const Subthread = (props) => {
   const jwtToken = localStorage.getItem("token")

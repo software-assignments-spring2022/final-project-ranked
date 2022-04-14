@@ -1,6 +1,4 @@
-import './Header.css'
-// import './App.css';
-// import Home from "./Home"
+import './css/Header.css'
 
 // home menu button imports
 // import { Link } from "react-router-dom"   // may change this to 'NavLink' later on
@@ -60,7 +58,7 @@ const Header = props => {
               />
             </div>
             {/* this will be the backend tag file */}
-            {/* <List input={inputText}/>   */}
+            <List input={inputText}/>  
           </li>
           <li className="nav-item">
             {/* burger menu */}

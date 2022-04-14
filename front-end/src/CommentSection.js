@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
-import "./Subthread.css"
+import "./css/Subthread.css"
 import Comment from "./Comment"
 import CommentForm from "./CommentSubmitForm"
-import "./CommentSection.css"
 import _ from 'lodash'
+import "./css/CommentSection.css"
 
 const CommentSection = props => {
   const [data, setData] = useState([])

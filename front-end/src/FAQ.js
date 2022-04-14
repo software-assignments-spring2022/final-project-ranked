@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import './FAQ.css';
+import './css/FAQ.css';
 
 const FAQ = () => {
     return (

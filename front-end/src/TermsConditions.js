@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import DropdownButton from 'react-bootstrap/DropdownButton'
 import Dropdown from 'react-bootstrap/Dropdown'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import './TermsConditions.css'
+import './css/TermsConditions.css'
 
 const TermsCondtions = () => {
   const mockImg = 'https://picsum.photos/200/300'

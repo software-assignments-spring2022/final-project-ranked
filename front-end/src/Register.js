@@ -3,7 +3,7 @@ import { Link, Navigate } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
-import './Register.css'
+import './css/Register.css'
 import axios from 'axios'
 
 const Register = () => {

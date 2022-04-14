@@ -1,5 +1,7 @@
 # README.md
 
+[![CircleCI](https://circleci.com/gh/software-assignments-spring2022/final-project-ranked/tree/master.svg?style=shield)](https://circleci.com/gh/software-assignments-spring2022/final-project-ranked/tree/master)
+
 ## Product Vision Statement
 Ranked is a game forum site that provides developers with instant access to feedback on game updates, balance changes, and more, along with creating a community that players can refer to when looking for advice, ideas, or even whether or not the game is worth it. Players can create threads on any aspect of a game and get answers from other verified players. This creates a community for the players, all the while building trust with our platform (something near impossible in the gaming space).
 
