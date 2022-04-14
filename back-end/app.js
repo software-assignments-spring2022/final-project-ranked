@@ -255,7 +255,6 @@ app.post( "/:id/comments/save", async (req, res) => {
 
 app.post(`/megathread/:gameId/save`, async (req, res) => {
   try {
-    console.log(`trying to make a post`)
     // try to save the comment to the database
     // console.assert(!_.isEmpty(req.body.user))
     // console.assert(!_.isEmpty(req.body.comment))
@@ -266,7 +265,6 @@ app.post(`/megathread/:gameId/save`, async (req, res) => {
       tags: req.body.tags,
       toMegathread: req.params.gameId
     })
-    console.log(newPost)
     const savePost = await newPost.save()
     return res.json({
       success: `You commented!`,
