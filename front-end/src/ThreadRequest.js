@@ -5,7 +5,9 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button' 
 import axios from 'axios'
 
-const ThreadRequest = props => {
+const ThreadRequest = () => {
+    const jwtToken = localStorage.getItem('token')
+    console.log(`JWT token from ThreadRequest page: ${jwtToken}`)
     const [gameName, setGameName] = useState("")
     const [reason, setReason] = useState("")
     const [question1, setQuestion1] = useState("")
@@ -13,25 +15,46 @@ const ThreadRequest = props => {
 
     const HandleThreadRequest = (e) => {
         e.preventDefault()
-        
+
+        // only logged-in user can submit a thread request
         axios
-            .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/threadrequest`, {
-                gameName: gameName,
-                willModerate: question1,
-                friendsWillModerate: question2,
-                reason: reason
+            .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/isLoggedIn`, {
+                headers: { Authorization: `JWT ${jwtToken}` }
             })
+            // grab userID and username if logged-in, since admin
+            // needs to have access to this info
             .then(res => {
-                if(res.data.missing){
-                    alert(res.data.missing)
-                }
-                else{
-                    alert(res.data.success)
+                if(res.data.success){
+                    // let back-end handles the thread request
+                    axios
+                        .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/threadrequest`, {
+                            gameName: gameName,
+                            willModerate: question1,
+                            friendsWillModerate: question2,
+                            reason: reason,
+                            username: res.data.user.username,
+                            userID: res.data.user._id
+                        })
+                        .then(res => {
+                            if(res.data.missing){
+                                alert(res.data.missing)
+                            }
+                            else{
+                                window.location.href = '/'
+                                alert(res.data.success)
+                            }
+                        })
+                        .catch(err => {
+                            alert("There seems to be a problem with the server. Please try again later!")
+                            console.log(err)
+                        })
                 }
             })
             .catch(err => {
-                alert("There seems to be a problem with the server. Please try again later!")
-                console.log(err)
+                if(err){
+                    window.location.href = '/login'
+                    alert('Please login or register first before trying to submit a thread request!')
+                }
             })
     }
 
@@ -90,7 +113,7 @@ const ThreadRequest = props => {
                             <Form.Control as='textarea' rows={9} value={reason} 
                                 onChange={e => setReason(e.target.value)} />
                         </Form.Group>
-                        <Button type="submit" >Submit</Button>
+                        <Button type='submit'>Submit</Button>
                     </div>
                 </Form>
             </div>

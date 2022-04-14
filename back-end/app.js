@@ -28,6 +28,7 @@ mongoose
 
 // grab db models
 const { User } = require('./models/User')
+const { ThreadRequest } = require('./models/ThreadRequest')
 
 // set up some jwt authentication options
 let jwtOptions = {}
@@ -275,59 +276,58 @@ app.post("/megathread/:gameId/subthread/:postId/comments/save",  (req, res) => {
       if(e == "CSGO"){return 3}
   }
 
-app.post("/megathread/:gameId/subthread/:postId/comments", (req, res) => {
-    /* 
-    Update indivdual comments in our db (primarily dealing with upvoting/downvoting, but can be altered to help with replies).
-    Request BODY should look like:
-        {
-            'comment_id': int,
-            'likes': int,
-            'likedUsers': User[]
-        }
-    Updating is done by setting the array of comments associated with the Post object (gotten by props.postId) to a new array variable.
-    Then it loops through the comments until a Comment object object has the same comment_id as in the request body.
-    Once a match is found, it changes the data in the individual Comment object.
-    Finally, the endpoint updates the ENTIRE comments array (Post.comments) associated with the Post object with the new comments array variable.
-    Returns successful if response.acknowledged is true and the new comments array, otherwise prints an extremely vague error to console.
-    */
-    const comments = await Post.find({'post_id':props.postId}).comments
-    for (const i in comments) {
-        if (i.comment_id === req.data.comment_id) {
-            i.likes = req.data.likes;
-            i.likedUsers = req.data.likedUsers;
-        }
-    }
-    const response = await Post.updateOne({'comments':comments});
-    if (response.acknowledged) {
-        return res.json({
-            success: 'Comment has been updated.',
-            comments: Post.find({'post_id':props.postId}).comments
-        })
-    } else {
-        console.log('Something went wrong in updating the comment.')
-    }
+// app.post("/megathread/:gameId/subthread/:postId/comments", (req, res) => {
+//     /* 
+//     Update indivdual comments in our db (primarily dealing with upvoting/downvoting, but can be altered to help with replies).
+//     Request BODY should look like:
+//         {
+//             'comment_id': int,
+//             'likes': int,
+//             'likedUsers': User[]
+//         }
+//     Updating is done by setting the array of comments associated with the Post object (gotten by props.postId) to a new array variable.
+//     Then it loops through the comments until a Comment object object has the same comment_id as in the request body.
+//     Once a match is found, it changes the data in the individual Comment object.
+//     Finally, the endpoint updates the ENTIRE comments array (Post.comments) associated with the Post object with the new comments array variable.
+//     Returns successful if response.acknowledged is true and the new comments array, otherwise prints an extremely vague error to console.
+//     */
+//     const comments = await Post.find({'post_id':props.postId}).comments
+//     for (const i in comments) {
+//         if (i.comment_id === req.data.comment_id) {
+//             i.likes = req.data.likes;
+//             i.likedUsers = req.data.likedUsers;
+//         }
+//     }
+//     const response = await Post.updateOne({'comments':comments});
+//     if (response.acknowledged) {
+//         return res.json({
+//             success: 'Comment has been updated.',
+//             comments: Post.find({'post_id':props.postId}).comments
+//         })
+//     } else {
+//         console.log('Something went wrong in updating the comment.')
+//     }
+// })
 
-})
-
-app.post("/megathread/:gameId/subthread/:postId/comments/search", (req, res) => {
-    /*
-    Find individual comments
-    Body:
-        {
-            'comment_id': int
-        }
-    */
-    const comments = await Post.find({'post_id':props.postId}).comments;
-    for (const i in comments) {
-        if (i.comment_id === req.data.comment_id) {
-            return res.json({
-                success: "Comment found and returned successfully",
-                comment: i
-            })
-        }
-    }
-    console.log("Failed: Could not find comment.")
-})
+// app.post("/megathread/:gameId/subthread/:postId/comments/search", (req, res) => {
+//     /*
+//     Find individual comments
+//     Body:
+//         {
+//             'comment_id': int
+//         }
+//     */
+//     const comments = await Post.find({'post_id':props.postId}).comments;
+//     for (const i in comments) {
+//         if (i.comment_id === req.data.comment_id) {
+//             return res.json({
+//                 success: "Comment found and returned successfully",
+//                 comment: i
+//             })
+//         }
+//     }
+//     console.log("Failed: Could not find comment.")
+// })
 
 // handle new post submitted by user
 app.post("/megathread/new", (req, res) => {
@@ -411,11 +411,21 @@ app.post("/megathread/new", (req, res) => {
 
 // handle thread request submitted by user
 app.post("/threadrequest", (req, res) => {
+    const dateObj = new Date()
+    const year = dateObj.getFullYear()
+    const month = ("0" + (dateObj.getMonth() + 1)).slice(-2)
+    const date = ("0" + dateObj.getDate()).slice(-2)
+    const hours = dateObj.getHours()
+    const minutes = dateObj.getMinutes()
+    const seconds = dateObj.getSeconds()
     const gameName = req.body.gameName
     const willModerate = req.body.willModerate
     const friendsWillModerate = req.body.friendsWillModerate
     const reason = req.body.reason
+    const username = req.body.username
+    const userID = req.body.userID
 
+    // each field of the form should not be empty or missing
     if(!gameName.trim() || (willModerate !== 1 && willModerate !== 0) || 
     (friendsWillModerate !== 1 && friendsWillModerate !== 0) || !reason.trim()){
         return res.json({
@@ -423,42 +433,25 @@ app.post("/threadrequest", (req, res) => {
         })
     }
     else{
-        fs.readFile("./threadRequestList.json", (err, data) => {
-            // if there is no thread request list currently, create one
+        const newThreadRequest = new ThreadRequest({
+            gameName: gameName,
+            willModerate: willModerate,
+            friendsWillModerate: friendsWillModerate,
+            reason: reason,
+            requestedUsername: username,
+            requestedUserId: userID,
+            dateRequested: `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`,
+            approvalStatus: "pending"
+        })
+
+        newThreadRequest.save(err => {
+            // something went wrong during the saving
             if(err){
-                const threadRequestArr = []
-                const newRequest = {"gameName": gameName, "willModerate": willModerate, 
-                "friendsWillModerate": friendsWillModerate, "reason": reason, "approvalStatus": ""}
-                threadRequestArr.push(newRequest)
-                // write new request to file (will write to db later), so that
-                // admin panel can grab data
-                fs.writeFile("./threadRequestList.json", JSON.stringify(threadRequestArr), err => {
-                    if(err){
-                        console.log("An error occured while writing to the file!")
-                    }
-                    else{
-                        return res.json({
-                            success: "Request submitted! We will get back to you ASAP!"
-                        })
-                    }
-                })
+                console.log(err)
             }
-            // if there already exists a list for the thread request, then
-            // simple append the new request to the exisiting list, and write to file (later db)
             else{
-                const threadRequestArr = JSON.parse(data)
-                const newRequest = {"gameName": gameName, "willModerate": willModerate, 
-                "friendsWillModerate": friendsWillModerate, "reason": reason, "approvalStatus": ""}
-                threadRequestArr.push(newRequest) 
-                fs.writeFile("./threadRequestList.json", JSON.stringify(threadRequestArr), err => {
-                    if(err){
-                        console.log("An error occured while writing to the file!")
-                    }
-                    else{
-                        return res.json({
-                            success: "Request submitted! We will get back to you ASAP!"
-                        })
-                    }
+                return res.json({
+                    success: "Request submitted! We will get back to you ASAP!"
                 })
             }
         })
@@ -596,14 +589,13 @@ app.post("/login", (req, res) => {
 })
 
 app.get("/admin", (req, res) => {
-    fs.readFile("./threadRequestList.json", (err, data) => {
+    ThreadRequest.find({}, (err, result) => {
         if(err){
             console.log(err)
         }
         else{
-            const threadRequestList = JSON.parse(data)
             return res.json({
-                threadRequestList: threadRequestList
+                threadRequestList: result
             })
         }
     })
@@ -612,7 +604,7 @@ app.get("/admin", (req, res) => {
 // approve or reject a user submitted thread request
 app.post("/admin", (req, res) => {
     const adminDecision = req.body.approvalStatus
-    const inputGameName = req.body.gameName
+    const inputRequestID = req.body.requestID
 
     // process request form cannot be empty
     if(adminDecision !== 1 && adminDecision !== 0){
@@ -621,39 +613,28 @@ app.post("/admin", (req, res) => {
         })
     }
     else{
-        fs.readFile("./threadRequestList.json", (err, data) => {
+        // find the matching request based on ID
+        ThreadRequest.findOne({_id: inputRequestID}, (err, result) => {
+            // something wrong while quering the DB
             if(err){
                 console.log(err)
             }
             else{
-                const requestList = JSON.parse(data)
-                requestList.forEach(eachRequest => {
-                    // find the matching request first, and if its approval status has not been
-                    // handled yet, update it based on admin's decision
-                    if(inputGameName == eachRequest.gameName){
-                        if(!eachRequest.approvalStatus.trim()){
-                            eachRequest.approvalStatus = adminDecision ? "Approved" : "Rejected"
-                            // update the .json file that stores the thread request list
-                            fs.writeFile("./threadRequestList.json", JSON.stringify(requestList), err => {
-                                if(err){
-                                    console.log("An error occured while writing to the file!")
-                                }
-                                else{
-                                    return res.json({
-                                        success: "Approval status updated!"
-                                    })
-                                }
-                            })
-                        }
-                        // if this request has already been processed, send a message
-                        // back to the admin to remind them
-                        else{
-                            return res.json({
-                                alreadyProcessed: "This request has already been processed!"
-                            })
-                        }
-                    }
-                })
+                const matchedRequest = result
+                // update request's approval status based on admin's decision
+                if(matchedRequest.approvalStatus === "pending"){
+                    matchedRequest.approvalStatus = adminDecision ? "Approved" : "Rejected"
+                    matchedRequest.save()
+                    return res.json({
+                        success: "Approval status updated!"
+                    })
+                }
+                // this request has been handled already
+                else{
+                    return res.json({
+                        alreadyProcessed: "This request has already been processed!"
+                    })
+                }
             }
         })
     }
