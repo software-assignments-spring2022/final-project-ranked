@@ -10,7 +10,7 @@ const CommentSection = props => {
 
   const handleSubmit = (e) => {
     e.preventDefault()  // prevent the default browser form submission stuff
-    var id = ""
+    let id = ""
     props.replyTo == "root" ? id = postId : id = props.replyTo
 
     alert(`You commented!`) 

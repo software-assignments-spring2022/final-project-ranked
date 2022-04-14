@@ -63,7 +63,7 @@ describe("Comments", () => {
    * test the POST /megathread/:gameId/subthread/:postId/comments/save route
    */
   describe("POST request to /:id/comments/save route", () => {
-    var newComment = {
+    let newComment = {
       comment: "a sample comment",
       replyTo: "root",
     }

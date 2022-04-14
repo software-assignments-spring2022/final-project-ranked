@@ -84,11 +84,11 @@ const Home = (props) => {
           postData.map((item) => (
             <div
               className="post"
-              key={`${item._id}`.concat(item.post_id)}
+              key={item._id}
               onClick={() =>
                 handleButtonClick({
-                  postId: item.post_id,
-                  gameId: item.game_id,
+                  postId: item._id,
+                  gameId: item.toMegathread,
                 })
               }
             >

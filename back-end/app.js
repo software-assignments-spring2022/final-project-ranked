@@ -138,14 +138,10 @@ app.get("/:postId/post", async (req, res) => {
 
 const populateReplies = async (arr) => {
   try{
-    if(!_.isEmpty(arr)){
-      for(i of arr){
+    for(i of arr){
         const tempArr = await Comment.find({ replyTo: i._id })
         i.replies.push(...tempArr)
-        // console.log("i.replies: ", i.replies)
-        populateReplies(i.replies)
-      }
-      // console.log("Arr: ",arr)
+        await populateReplies(i.replies)
     }
   } catch(err) {
     throw err
@@ -154,15 +150,8 @@ const populateReplies = async (arr) => {
 
 app.get("/:postId/comments", async (req, res) => {
   try {
-    const comments = await Comment.find({ postTo: req.params.postId })
-    populateReplies(comments)
-    // for(i of comments){
-    //   const tempArr = await Comment.find({ replyTo: i._id })
-    //   i.replies.push(...tempArr)
-    //   console.log(i.replies)
-    //   populateReplies(i.replies)
-    // }
-    // console.log("~~~~~~~POPULATED", comments)
+    let comments = await Comment.find({ postTo: req.params.postId })
+    await populateReplies(comments)
     res.json({
       comments: comments,
       status: "all good",
@@ -178,18 +167,16 @@ app.get("/:postId/comments", async (req, res) => {
 
 app.post( "/:id/comments/save", async (req, res) => {
     try {
-      console.log(`trying`)
       // try to save the comment to the database
       console.assert(!_.isEmpty(req.body.user))
       console.assert(!_.isEmpty(req.body.comment))
-      var newComment = new Comment({
+      let newComment = new Comment({
         user_id: req.body.user.username,
         text: req.body.comment
       })
       req.body.replyTo == "root"
         ? (newComment.postTo = req.params.id)
         : (newComment.replyTo = req.params.id)
-      console.log(newComment)
       const saveComment = await newComment.save()
       return res.json({
         success: `You commented!`,
@@ -272,7 +259,7 @@ app.post(`/megathread/:gameId/save`, async (req, res) => {
     // try to save the comment to the database
     // console.assert(!_.isEmpty(req.body.user))
     // console.assert(!_.isEmpty(req.body.comment))
-    var newPost = new Post({
+    let newPost = new Post({
       user_id: req.body.username,
       title: req.body.title,
       body: req.body.body,

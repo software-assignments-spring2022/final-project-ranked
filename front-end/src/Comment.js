@@ -10,7 +10,7 @@ import _ from 'lodash'
 
 const Comment = props => {
   const [wantReply, setwantReply] = React.useState(false)
-  var key = 0
+  let key = 0
 
   const indent = num => {
     const i = "L       "
@@ -54,7 +54,7 @@ const Comment = props => {
 
       <section className="replies">
         {props.details.replies && props.details.replies.map(item => (
-          <Comment user={props.user} key={item._id} type={props.type + 1} details={item}></Comment>
+          <Comment user={props.user} key={item._id} type={props.type + 1} details={item} setNewComment={props.setNewComment}></Comment>
         ))}
       </section>
     </div>
