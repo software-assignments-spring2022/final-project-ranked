@@ -1,6 +1,8 @@
 .Megathread {
   background-color: #495263;
   text-align: left;
+  display: flex;
+  flex-direction: column;
 }
 
 .post {
@@ -21,7 +23,7 @@
 .selfPosting {
   text-align: center;
 }
-
+/* 
 .selfPosting {
   text-align: center;
   position: fixed;
@@ -29,4 +31,4 @@
   bottom: 5em;
   left: 50%;
   margin-left: -50px;
-}
+} */

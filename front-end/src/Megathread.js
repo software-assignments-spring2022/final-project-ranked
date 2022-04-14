@@ -6,16 +6,20 @@ import Button from "react-bootstrap/Button"
 import { useNavigate } from "react-router-dom"
 import Post from "./Post"
 import backupData from "./mock-backupPosts.json"
+import Newpost from "./Newpost"
 // import usePostSearch from "./usePostSearch"
 
 const Megathread = (props) => {
+  const jwtToken = localStorage.getItem("token")
+  const [user, setUser] = useState({})
   const navigate = useNavigate()
   const [query, setQuery] = useState("")
   const [pageNumber, setPageNumber] = useState(1)
   // start a state varaible with a blank array
-  const [data, setData] = useState([]) 
-
-
+  const [data, setData] = useState([])
+  const [wantComent, setWantComment] = useState(false)
+  const [newPost, setNewPost] = useState({})
+  const [gamename, setGamename] = useState("")
 
   const { gameId } = useParams()
 
@@ -30,13 +34,30 @@ const Megathread = (props) => {
       .then((response) => {
         // extract the data from the server response
         setData(response.data.game_posts)
+        setGamename(response.data.gamename)
       })
       .catch((err) => {
         console.log(`Sorry, buster.  No more requests allowed today!`)
         console.error(err)
-        setData(backupData) 
-      }) 
-  }, []) 
+        setData(backupData)
+      })
+
+    console.log(`fetching account info...`)
+    axios
+      .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/isLoggedIn`, {
+        headers: { Authorization: `JWT ${jwtToken}` },
+      })
+      // set user's account info if logged-in
+      .then((res) => {
+        if (res.data.success) {
+          //   console.log(res.data.user)
+          setUser(res.data.user)
+        }
+      })
+      .catch((err) => {
+        if (err) console.log(`Log-in first if you want to post!`)
+      })
+  }, [newPost])
 
   // const {
   //   posts,
@@ -68,10 +89,25 @@ const Megathread = (props) => {
 
   return (
     <div className="Megathread">
+      <div className="header">
+        Game: {gamename}
+      </div>
       <div className="selfPosting">
-        <Button className="btn btn-success" href="/megathread/new">
+        {wantComent && (
+          <Newpost
+            user={user}
+            setNewPost={setNewPost}
+            setWantComment={setWantComment}
+          />
+        )}
+        <button
+          className="btn"
+          onClick={() => {
+            setWantComment(!wantComent)
+          }}
+        >
           New Post
-        </Button>
+        </button>
       </div>
 
       <div className="posts">
@@ -79,8 +115,8 @@ const Megathread = (props) => {
           data.map((item) => (
             <div
               className="post"
-              key={item.post_id}
-              onClick={() => handleButtonClick(item.post_id)}
+              key={item._id}
+              onClick={() => handleButtonClick(item._id)}
             >
               <Post key={item.post_id} user={props.user} post={item}></Post>
             </div>
