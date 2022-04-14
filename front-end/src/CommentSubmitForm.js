@@ -6,20 +6,20 @@ import "./css/CommentSection.css"
 
 const CommentSection = props => {
   const [comment, setComment] = useState("") 
-  const {gameId} = useParams()
   const {postId} = useParams() 
 
   const handleSubmit = (e) => {
     e.preventDefault()  // prevent the default browser form submission stuff
+    var id = ""
+    props.replyTo == "root" ? id = postId : id = props.replyTo
 
     alert(`You commented!`) 
 
     axios
-      .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/${postId}/comments/save`, {
+      .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/${id}/comments/save`, {
         user: props.user,
         comment: comment,
-        replyTo: props.replyTo,
-        post: postId
+        replyTo: props.replyTo
       })
       .then((response) => {
         // success

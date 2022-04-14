@@ -15,10 +15,6 @@ const CommentSection = props => {
     // fetch some mock data about animals for sale
     // the id of the animal that was clicked on is passed as a part of the match field of the props
     console.log(`fetching comments for gameId=${props.gameId} id=${props.postId}...`)
-    /**
-     * ${process.env.REACT_APP_SERVER_HOSTNAME}/post/${props.postId}/comments
-     * ${process.env.REACT_APP_SERVER_HOSTNAME}/comment/${props._id}/comments
-     */
     axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/${props.postId}/comments`)
         .then(response => {
             // extract the data from the server response
@@ -35,7 +31,7 @@ const CommentSection = props => {
   return (
     <div className="CommentSection">
       {data &&
-        data.map((item) => <Comment user={props.user} key={item.comment_id} type={0} details={item} setNewComment={setNewComment} ></Comment>)}
+        data.map((item) => <Comment user={props.user} key={item._id} type={0} details={item} setNewComment={setNewComment} ></Comment>)}
       {!_.isEmpty(props.user) && <CommentForm user={props.user} replyTo={"root"} setNewComment={setNewComment} />}
     </div>
   )

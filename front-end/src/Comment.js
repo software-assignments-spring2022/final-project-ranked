@@ -33,7 +33,7 @@ const Comment = props => {
       <div className="Comment-body" onClick={handleClick}>
         <section className="user">
           <pre>
-            <p>{indent(props.type)}id: {props.details.comment_id}</p>
+            <p>{indent(props.type)}id: {props.details._id}</p>
             <p>{indent(props.type)}user: {props.details.user_id}</p>
             <p>{indent(props.type)}time: {props.details.time}</p>
           </pre>
@@ -48,13 +48,13 @@ const Comment = props => {
       </div>
       <section className="replyform">
           <pre>
-            {wantReply && !_.isEmpty(props.user) && <CommentForm user={props.user} replyTo={props.details.comment_id} setNewComment={props.setNewComment}/>}
+            {wantReply && !_.isEmpty(props.user) && <CommentForm user={props.user} replyTo={props.details._id} setNewComment={props.setNewComment}/>}
           </pre>
         </section>
 
       <section className="replies">
         {props.details.replies && props.details.replies.map(item => (
-          <Comment user={props.user} key={key++} type={props.type + 1} details={item}></Comment>
+          <Comment user={props.user} key={item._id} type={props.type + 1} details={item}></Comment>
         ))}
       </section>
     </div>

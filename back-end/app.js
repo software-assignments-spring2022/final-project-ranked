@@ -145,19 +145,33 @@ app.get("/megathread/:gameId/subthread/:postId/post", async (req, res) => {
 })
 
 
-const populateReplies = async (e) => {
-  if(_.isEmpty(e.comments)) return
-  for (i of e.comments) {
-    i.replies = await Comment.find({ replyTo: i._id })
-    populateReplies(i.replies)
+const populateReplies = async (arr) => {
+  try{
+    if(!_.isEmpty(arr)){
+      for(i of arr){
+        const tempArr = await Comment.find({ replyTo: i._id })
+        i.replies.push(...tempArr)
+        console.log("i.replies: ", i.replies)
+        populateReplies(i.replies)
+      }
+      console.log("Arr: ",arr)
+    }
+  } catch(err) {
+    throw err
   }
 }
 
 app.get("/:postId/comments", async (req, res) => {
   try {
-    var comments = await Comment.find({ postTo: req.params.postId })
-    console.log(comments)
+    const comments = await Comment.find({ postTo: req.params.postId })
     populateReplies(comments)
+    // for(i of comments){
+    //   const tempArr = await Comment.find({ replyTo: i._id })
+    //   i.replies.push(...tempArr)
+    //   console.log(i.replies)
+    //   populateReplies(i.replies)
+    // }
+    console.log("~~~~~~~POPULATED", comments)
     res.json({
       comments: comments,
       status: "all good",
@@ -171,7 +185,7 @@ app.get("/:postId/comments", async (req, res) => {
   }
 })
 
-app.post( "/:postId/comments/save", async (req, res) => {
+app.post( "/:id/comments/save", async (req, res) => {
     try {
       console.log(`trying`)
       // try to save the comment to the database
@@ -179,12 +193,11 @@ app.post( "/:postId/comments/save", async (req, res) => {
       console.assert(!_.isEmpty(req.body.comment))
       var newComment = new Comment({
         user_id: req.body.user.username,
-        text: req.body.comment,
-        tags: req.body.tags
+        text: req.body.comment
       })
       req.body.replyTo == "root"
-        ? (newComment.postTo = req.params.postId)
-        : (newComment.replyTo = req.body.replyTo)
+        ? (newComment.postTo = req.params.id)
+        : (newComment.replyTo = req.params.id)
       console.log(newComment)
       const saveComment = await newComment.save()
       return res.json({
