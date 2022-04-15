@@ -255,7 +255,6 @@ app.post( "/:id/comments/save", async (req, res) => {
 
 app.post(`/megathread/:gameId/save`, async (req, res) => {
   try {
-    console.log(`trying to make a post`)
     // try to save the comment to the database
     // console.assert(!_.isEmpty(req.body.user))
     // console.assert(!_.isEmpty(req.body.comment))
@@ -266,7 +265,6 @@ app.post(`/megathread/:gameId/save`, async (req, res) => {
       tags: req.body.tags,
       toMegathread: req.params.gameId
     })
-    console.log(newPost)
     const savePost = await newPost.save()
     return res.json({
       success: `You commented!`,
@@ -554,7 +552,7 @@ app.get("/admin", (req, res) => {
 })
 
 // approve or reject a user submitted thread request
-app.post("/admin", (req, res) => {
+app.post("/admin", async (req, res) => {
     const adminDecision = req.body.approvalStatus
     const inputRequestID = req.body.requestID
 
@@ -565,30 +563,73 @@ app.post("/admin", (req, res) => {
         })
     }
     else{
-        // find the matching request based on ID
-        ThreadRequest.findOne({_id: inputRequestID}, (err, result) => {
-            // something wrong while quering the DB
-            if(err){
-                console.log(err)
-            }
-            else{
-                const matchedRequest = result
-                // update request's approval status based on admin's decision
-                if(matchedRequest.approvalStatus === "pending"){
-                    matchedRequest.approvalStatus = adminDecision ? "Approved" : "Rejected"
-                    matchedRequest.save()
+        try{
+            const matchedRequest = await ThreadRequest.findOne({_id: inputRequestID})
+            if(matchedRequest.approvalStatus === "pending"){
+                matchedRequest.approvalStatus = adminDecision ? "Approved" : "Rejected"
+                await matchedRequest.save()
+                if(matchedRequest.approvalStatus == "Approved"){
+                    const newMegathread = new Megathread({
+                        gamename: matchedRequest.gameName,
+                        moderators: []
+                    })
+                    await newMegathread.save()
+                    return res.json({
+                        newMegathread: newMegathread,
+                        success: "Approval status updated!"
+                    })
+                }
+                else{
                     return res.json({
                         success: "Approval status updated!"
                     })
                 }
-                // this request has been handled already
-                else{
-                    return res.json({
-                        alreadyProcessed: "This request has already been processed!"
-                    })
-                }
             }
-        })
+            // this request has been handled already
+            else{
+                return res.json({
+                    alreadyProcessed: "This request has already been processed!"
+                })
+            }
+        } catch(err){
+            console.error(err)
+            return res.status(400).json({
+                error: err,
+                status: "failed to save megathread requested",
+            })
+        }
+        // find the matching request based on ID
+        
+// ThreadRequest.findOne({_id: inputRequestID}, (err, result) => {
+//     // something wrong while quering the DB
+//     if(err){
+//         console.log(err)
+//     }
+//     else{
+//         const matchedRequest = result
+//         // update request's approval status based on admin's decision
+//         if(matchedRequest.approvalStatus === "pending"){
+//             matchedRequest.approvalStatus = adminDecision ? "Approved" : "Rejected"
+//             await matchedRequest.save()
+//             if(matchedRequest.approvalStatus == "Approved"){
+//                 const newMegathread = new Megathread({
+//                     gamename: gameName,
+//                     moderators: []
+//                 })
+//                 await newMegathread.save()
+//             }
+//             return res.json({
+//                 success: "Approval status updated!"
+//             })
+//         }
+//         // this request has been handled already
+//         else{
+//             return res.json({
+//                 alreadyProcessed: "This request has already been processed!"
+//             })
+//         }
+//     }
+// })
     }
 })
 

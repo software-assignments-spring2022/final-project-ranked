@@ -18,7 +18,6 @@ let post_id = ""
 // let comment_id = ""
 
 const checkPostSchema = obj =>{
-  console.log(obj);
   obj.should.have.keys(
     "toMegathread",
     "user_id",
@@ -34,7 +33,6 @@ const checkPostSchema = obj =>{
 // helper function to check for each nested comment
 const checkComments = (arr) => {
   for (i of arr) {
-    console.log(i);
     let toComment = ""
     i.hasOwnProperty("postTo")
       ? (toComment = "postTo")
