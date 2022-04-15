@@ -640,5 +640,23 @@ app.post("/admin", (req, res) => {
     }
 })
 
+// show user's submitted thread requests in Account page
+app.post("/account", (req, res) => {
+    const userID = req.body.userID
+
+    ThreadRequest.find({requestedUserId: userID}, (err, result) => {
+        // something wrong while querying the DB
+        if(err){
+            console.log(err)
+        }
+        // return a list of thread requests submitted by this user 
+        else{
+            return res.json({
+                threadRequestList: result
+            })
+        }
+    })
+})
+
 // export the express app created to make it available to other modules
 module.exports = app
