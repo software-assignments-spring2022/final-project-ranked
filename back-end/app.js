@@ -267,7 +267,7 @@ app.post(`/megathread/:gameId/save`, async (req, res) => {
     })
     const savePost = await newPost.save()
     return res.json({
-      success: `You commented!`,
+      success: `You Posted!`,
       post: savePost,
     })
   } catch (err) {
