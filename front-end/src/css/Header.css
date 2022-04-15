@@ -65,14 +65,10 @@
   position: fixed;
   left: 110px;
   top: 20px;
-  /* color: white; */
 }
 #outlined-basic {
-  /* color:white; */
   background-color: rgb(215, 246, 255);
-  /* border-color: green; */
   border-radius: 5px;
-  /* background: #73AD21; */
 }
 
 .menu {
