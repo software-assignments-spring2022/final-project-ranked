@@ -26,12 +26,13 @@ const CommentSection = props => {
             console.error(err) // the server returned an error... probably too many requests... until we pay!
             setData([])
         })
-  }, [newComment])
+  }, [newComment, props.gameId, props.postId])
 
   return (
     <div className="CommentSection">
-      {data &&
+      {!_.isEmpty(data) &&
         data.map((item) => <Comment user={props.user} key={item._id} type={0} details={item} setNewComment={setNewComment} ></Comment>)}
+      {_.isEmpty(props.user) && <div className="noUser">Login first to comment!</div>}
       {!_.isEmpty(props.user) && <CommentForm user={props.user} replyTo={"root"} setNewComment={setNewComment} />}
     </div>
   )

@@ -7,11 +7,18 @@ import axios from 'axios'
 
 const ThreadRequest = () => {
     const jwtToken = localStorage.getItem('token')
-    console.log(`JWT token from ThreadRequest page: ${jwtToken}`)
+    // console.log(`JWT token from ThreadRequest page: ${jwtToken}`)
     const [gameName, setGameName] = useState("")
     const [reason, setReason] = useState("")
     const [question1, setQuestion1] = useState("")
     const [question2, setQuestion2] = useState("")
+
+    const handleClick = e => {
+        console.log(e.target.name);
+        let ele = document.getElementsByName(e.target.name)
+        ele[0].checked ? setQuestion1(1) : setQuestion1(0)
+        console.log(question1)
+    }
 
     const HandleThreadRequest = (e) => {
         e.preventDefault()
@@ -40,7 +47,15 @@ const ThreadRequest = () => {
                                 alert(res.data.missing)
                             }
                             else{
-                                window.location.href = '/'
+                                // window.location.href = '/'
+                                for(let i of document.getElementsByName("question1")){
+                                    i.checked = false
+                                }
+                                for(let i of document.getElementsByName("question2")){
+                                    i.checked = false
+                                }
+                                setGameName("")
+                                setReason("")
                                 alert(res.data.success)
                             }
                         })
@@ -76,15 +91,15 @@ const ThreadRequest = () => {
                         <div className='ThreadRequest-questonBtns'>
                             <Form.Check
                                 label='Yes'
-                                name='question1'
+                                name="question1"
                                 type={'radio'}
-                                onClick={e => setQuestion1(1)}
+                                onClick={e => handleClick(e)}
                             />
                             <Form.Check
                                 label='No'
-                                name='question1'
+                                name="question1"
                                 type={'radio'}
-                                onClick={e => setQuestion1(0)}
+                                onClick={e => handleClick(e)}
                             />
                         </div>
                     </div>

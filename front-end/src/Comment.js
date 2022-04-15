@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from "react"
-import { Navigate } from "react-router-dom"
-import axios from "axios"
+import React from "react"
+// import axios from "axios"
 import "./css/Comment.css"
-import LikeButton from "./Components/likeButton";
-import Button from "react-bootstrap/esm/Button"
+// import LikeButton from "./Components/likeButton";
+// import Button from "react-bootstrap/esm/Button"
 import CommentForm from "./CommentSubmitForm"
 import _ from 'lodash'
 
 
 const Comment = props => {
   const [wantReply, setwantReply] = React.useState(false)
-  let key = 0
-
+  
   const indent = num => {
-    const i = "L       "
+    const i = "L     "
     let ans = ""
     let a = 0
     while (a < num) {
@@ -33,7 +31,7 @@ const Comment = props => {
       <div className="Comment-body" onClick={handleClick}>
         <section className="user">
           <pre>
-            <p>{indent(props.type)}id: {props.details._id}</p>
+            {/* <p>{indent(props.type)}id: {props.details._id}</p> */}
             <p>{indent(props.type)}user: {props.details.user_id}</p>
             <p>{indent(props.type)}time: {props.details.time}</p>
           </pre>
