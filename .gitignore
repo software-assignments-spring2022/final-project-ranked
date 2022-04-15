@@ -124,4 +124,7 @@ typings/
 ## Jekyll artifacts
 **/.jekyll-cache
 **/_site/
-front-end/src/PrimaryNav.css
+
+## Back-end
+*.json
+**/old_models/

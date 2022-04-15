@@ -40,6 +40,6 @@ const TermsCondtions = () => {
         </main>
       </>
     )
-}
+};
 
-export default TermsCondtions 
+export default TermsCondtions; 
