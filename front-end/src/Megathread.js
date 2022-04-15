@@ -4,8 +4,8 @@ import { Link, useParams } from "react-router-dom"
 import axios from "axios"
 import Button from "react-bootstrap/Button"
 import { useNavigate } from "react-router-dom"
+import _ from "lodash"
 import Post from "./Post"
-import backupData from "./mock-backupPosts.json"
 import Newpost from "./Newpost"
 // import usePostSearch from "./usePostSearch"
 
@@ -39,7 +39,7 @@ const Megathread = (props) => {
       .catch((err) => {
         console.log(`Sorry, buster.  No more requests allowed today!`)
         console.error(err)
-        setData(backupData)
+        setData([])
       })
 
     console.log(`fetching account info...`)
@@ -89,10 +89,13 @@ const Megathread = (props) => {
 
   return (
     <div className="Megathread">
-      <div className="header">
+      {_.isEmpty(gamename) && <div className="header">
+        This game doesn't exist!
+      </div>}
+      {!_.isEmpty(gamename) && <div className="header">
         Game: {gamename}
-      </div>
-      <div className="selfPosting">
+      </div>}
+      {!_.isEmpty(gamename) && <div className="selfPosting">
         {wantComent && (
           <Newpost
             user={user}
@@ -108,11 +111,11 @@ const Megathread = (props) => {
         >
           New Post
         </button>
-      </div>
+      </div>}
 
-      <div className="posts">
-        {data &&
-          data.map((item) => (
+      {!_.isEmpty(data) &&
+          <div className="posts">
+        {data.map((item) => (
             <div
               className="post"
               key={item._id}
@@ -121,7 +124,7 @@ const Megathread = (props) => {
               <Post key={item.post_id} user={props.user} post={item}></Post>
             </div>
           ))}
-      </div>
+      </div>}
 
       {/* <div>{loading && 'Loading...'}</div>
       <div>{error && 'Error'}</div> */}

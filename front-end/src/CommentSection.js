@@ -30,9 +30,9 @@ const CommentSection = props => {
 
   return (
     <div className="CommentSection">
-      {data &&
+      {!_.isEmpty(data) &&
         data.map((item) => <Comment user={props.user} key={item._id} type={0} details={item} setNewComment={setNewComment} ></Comment>)}
-      {!_.isEmpty(props.user) && <CommentForm user={props.user} replyTo={"root"} setNewComment={setNewComment} />}
+      {!_.isEmpty(props.user) && !_.isEmpty(data) && <CommentForm user={props.user} replyTo={"root"} setNewComment={setNewComment} />}
     </div>
   )
 }

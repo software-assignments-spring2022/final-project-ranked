@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom"
 import Post from "./Post"
 import "./css/App.css"
 import "./css/Home.css"
-import backupData from "./mock-backupPosts.json"
 import _ from "lodash"
 
 const Home = (props) => {
@@ -27,8 +26,7 @@ const Home = (props) => {
       .catch((err) => {
         console.log(`Sorry, buster.  No more requests allowed today!`)
         console.error(err)
-
-        setPostData(backupData)
+        setPostData([])
       })
   })
 
