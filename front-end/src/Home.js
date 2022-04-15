@@ -24,7 +24,7 @@ const Home = (props) => {
         console.log(postData)
       })
       .catch((err) => {
-        console.log(`Sorry, buster.  No more requests allowed today!`)
+        console.log(`Sorry, couldn't get posts data from backend...`)
         console.error(err)
         setPostData([])
       })

@@ -28,9 +28,8 @@ const Subthread = (props) => {
         setData(response.data.sub_post)
       })
       .catch((err) => {
-        // Mockaroo, which we're using for our Mock API, only allows 200 requests per day on the free plan
-        console.log(`Sorry, buster.  No more requests allowed today!`)
-        console.error(err) // the server returned an error... probably too many requests... until we pay!
+        console.log(`Sorry, couldn't get post data from backend...`)
+        console.error(err) 
         setData({})
       })
     console.log(`fetching account info...`)
@@ -46,7 +45,7 @@ const Subthread = (props) => {
         }
       })
       .catch((err) => {
-        if (err) console.log(`Log-in first if you want to comment!`)
+        if (err) alert(`Log-in first if you want to comment!`)
       })
   }, [postId])
   

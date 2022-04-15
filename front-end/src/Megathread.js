@@ -25,7 +25,7 @@ const Megathread = (props) => {
 
   // the following side-effect will be called once upon initial render
   useEffect(() => {
-    // fetch mock data for posts
+    // fetch post data from backend
     console.log(`fetching posts for megathread id=${gameId}...`)
     axios
       .get(
@@ -37,7 +37,7 @@ const Megathread = (props) => {
         setGamename(response.data.gamename)
       })
       .catch((err) => {
-        console.log(`Sorry, buster.  No more requests allowed today!`)
+        console.log(`Sorry, couldn't get posts data from backend...`)
         console.error(err)
         setData([])
       })
