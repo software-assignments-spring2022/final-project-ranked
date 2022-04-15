@@ -1,8 +1,8 @@
 import "./css/Megathread.css"
-import React, { useState, useEffect, useRef, useCallback } from "react"
-import { Link, useParams } from "react-router-dom"
+import React, { useState, useEffect } from "react"
+import { useParams } from "react-router-dom"
 import axios from "axios"
-import Button from "react-bootstrap/Button"
+// import Button from "react-bootstrap/Button"
 import { useNavigate } from "react-router-dom"
 import _ from "lodash"
 import Post from "./Post"
@@ -13,8 +13,8 @@ const Megathread = (props) => {
   const jwtToken = localStorage.getItem("token")
   const [user, setUser] = useState({})
   const navigate = useNavigate()
-  const [query, setQuery] = useState("")
-  const [pageNumber, setPageNumber] = useState(1)
+  // const [query, setQuery] = useState("")
+  // const [pageNumber, setPageNumber] = useState(1)
   // start a state varaible with a blank array
   const [data, setData] = useState([])
   const [wantComent, setWantComment] = useState(false)
@@ -57,7 +57,7 @@ const Megathread = (props) => {
       .catch((err) => {
         if (err) console.log(`Log-in first if you want to post!`)
       })
-  }, [newPost])
+  }, [newPost, gameId, jwtToken])
 
   // const {
   //   posts,
@@ -95,7 +95,8 @@ const Megathread = (props) => {
       {!_.isEmpty(gamename) && <div className="header">
         Game: {gamename}
       </div>}
-      {!_.isEmpty(gamename) && <div className="selfPosting">
+      {_.isEmpty(user) && <div className="header"> Log in first to post! </div> && !_.isEmpty(gamename)}
+      {!_.isEmpty(gamename) && !_.isEmpty(user) && <div className="selfPosting">
         {wantComent && (
           <Newpost
             user={user}
@@ -112,7 +113,10 @@ const Megathread = (props) => {
           New Post
         </button>
       </div>}
-
+      {!_.isEmpty(gamename) && _.isEmpty(data) &&
+          <div className="header">
+            Wow so empty... Be the first one to post!
+          </div>}
       {!_.isEmpty(data) &&
           <div className="posts">
         {data.map((item) => (

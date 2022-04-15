@@ -45,9 +45,9 @@ const Subthread = (props) => {
         }
       })
       .catch((err) => {
-        if (err) alert(`Log-in first if you want to comment!`)
+        if (err) console.log(`Log-in first if you want to comment!`)
       })
-  }, [postId])
+  }, [postId, jwtToken])
   
   return (
     <div className="Subthread">
