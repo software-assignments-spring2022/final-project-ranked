@@ -1,0 +1,43 @@
+
+
+[{
+    "id": 1,
+    "text": "Tag1",
+    "tag": "valorant"
+}, {
+    "id": 2,
+    "text": "Tag2",
+    "tag": "cod"
+}, {
+    "id": 3,
+    "text": "Tag3",
+    "tag": "fifa"
+}, {
+    "id": 4,
+    "text": "Tag4",
+    "tag": "madden"
+}, {
+    "id": 5,
+    "text": "Tag5",
+    "tag": "wow"
+}, {
+    "id": 6,
+    "text": "Tag6",
+    "tag": "creed"
+}, {
+    "id": 7,
+    "text": "Tag7",
+    "tag": "doom"
+}, {
+    "id": 8,
+    "text": "Tag8",
+    "tag": "valorant again"
+}, {
+    "id": 9,
+    "text": "Tag9",
+    "tag": "animal crossing"
+}, {
+    "id": 10,
+    "text": "Tag10",
+    "tag": "mario kart"
+}] 

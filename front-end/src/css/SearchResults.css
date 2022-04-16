@@ -1,0 +1,22 @@
+ul {
+    position: fixed;
+    left: 80px;
+    top: 80px;
+    /* width: 180px; */
+    /* height: 90px; */
+    /* color: white; */
+    /* background-color: pink; */
+    /* border-top: 30px; */
+}
+
+.search-result {
+    color: white;
+    border: 0.5px solid rgb(184, 238, 255);
+    background-color: #282c34;
+    width: 205px;
+    list-style-type: none;
+
+    /* bring to front */
+    /* z-index: -1;
+    position:relative; */
+}
