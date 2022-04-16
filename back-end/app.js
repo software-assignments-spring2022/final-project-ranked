@@ -17,8 +17,8 @@ const _ = require('lodash')
 app.use(passport.initialize()) // tell express to use passport middleware
 app.use(cors())
 app.use(morgan("dev", { skip: (req, res) => process.env.NODE_ENV === "test" })) // use the morgan middleware to log all incoming http requests
-app.use(express.json()) // decode JSON-formatted incoming POST data
-app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming POST data
+app.use(express.json({limit: '25mb'})) // decode JSON-formatted incoming POST data
+app.use(express.urlencoded({limit: '25mb', extended: true})) // decode url-encoded incoming POST data
 app.use("/static", express.static("public")) // make 'public' directory publicly readable with static content
 
 // connect to database
@@ -263,6 +263,7 @@ app.post(`/megathread/:gameId/save`, async (req, res) => {
       title: req.body.title,
       body: req.body.body,
       tags: req.body.tags,
+      image: req.body.photo,
       toMegathread: req.params.gameId
     })
     const savePost = await newPost.save()
