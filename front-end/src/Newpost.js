@@ -1,17 +1,33 @@
 import "./css/Newpost.css"
-import React, { useState } from "react"
+import React, { useState, useEffect }from "react";
 import { useParams } from "react-router-dom"
 import axios from "axios"
 import Button from "react-bootstrap/Button"
 import Form from "react-bootstrap/Form"
+import FileBase64 from 'react-file-base64'
 
 const Newpost = (props) => {
   // start a state varaible with a blank array
   const [postTitle, setTitle] = useState("")
   const [postContent, setContent] = useState("")
   const [tags, setTags] = useState([])
+  const [photo, setPhoto] = useState([])
 
   const { gameId } = useParams()
+
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
 
   const handleSubmit = (e) => {
     e.preventDefault() // prevent the default browser form submission stuff
@@ -20,6 +36,7 @@ const Newpost = (props) => {
       .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/megathread/${gameId}/save`, {
         title: postTitle,
         body: postContent,
+        photo: photo,
         tags: tags,
         username: props.user.username
         })
@@ -32,6 +49,7 @@ const Newpost = (props) => {
             props.setNewPost(res.data.post)
             setTitle("")
             setContent("")
+            setPhoto("")
             props.setWantComment(false)
         }
     })
@@ -42,6 +60,11 @@ const Newpost = (props) => {
   }
 
   // today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + today.getHours() + ':' + '  ' + today.getMinutes() + ':' + today.getSeconds()  
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    const base64 = await convertToBase64(file);
+    setPhoto(base64);
+  }
 
   const handleForm = e =>{
     const tempTags = tags
@@ -58,7 +81,7 @@ const Newpost = (props) => {
   return (
     <div className="Newpost">
       <div className="Form">
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit} encType='multipart/formdata'>
           <Form.Group className="mb-4" controlId="newPostTitle">
             <Form.Label>Post Title</Form.Label>
             <Form.Control
@@ -77,6 +100,16 @@ const Newpost = (props) => {
               placeholder="Post Text"
               onChange={(e) => setContent(e.target.value)}
               value={postContent}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formFile" className="mb-3">
+            <Form.Label>Post Image</Form.Label>
+            <Form.Control 
+              type="file" 
+              accept=".png, .jpg, .jpeg"
+              name="photo"
+              onChange={e => handleFileUpload(e)}
             />
           </Form.Group>
 

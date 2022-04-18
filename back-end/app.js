@@ -17,8 +17,8 @@ const _ = require('lodash')
 app.use(passport.initialize()) // tell express to use passport middleware
 app.use(cors())
 app.use(morgan("dev", { skip: (req, res) => process.env.NODE_ENV === "test" })) // use the morgan middleware to log all incoming http requests
-app.use(express.json()) // decode JSON-formatted incoming POST data
-app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming POST data
+app.use(express.json({limit: '25mb'})) // decode JSON-formatted incoming POST data
+app.use(express.urlencoded({limit: '25mb', extended: true})) // decode url-encoded incoming POST data
 app.use("/static", express.static("public")) // make 'public' directory publicly readable with static content
 
 // connect to database
@@ -263,11 +263,12 @@ app.post(`/megathread/:gameId/save`, async (req, res) => {
       title: req.body.title,
       body: req.body.body,
       tags: req.body.tags,
+      image: req.body.photo,
       toMegathread: req.params.gameId
     })
     const savePost = await newPost.save()
     return res.json({
-      success: `You commented!`,
+      success: `You Posted!`,
       post: savePost,
     })
   } catch (err) {
@@ -425,6 +426,8 @@ app.post("/register", (req, res) => {
     const username = req.body.username.toLowerCase()
     const password = req.body.password
     const email = req.body.email.toLowerCase()
+    //default profile photo
+    const photo = "123"
 
     // missing essential info from the register form
     if(!username.trim() || !email.trim() || !password){
@@ -464,7 +467,8 @@ app.post("/register", (req, res) => {
                             username: username,
                             password: hashedPassword,
                             email: email,
-                            joinDate: year + "-" + month + "-" + date
+                            joinDate: year + "-" + month + "-" + date,
+                            photo: photo
                         })
 
                         // try to save this new user object into DB
@@ -649,6 +653,27 @@ app.post("/account", (req, res) => {
             })
         }
     })
+})
+
+// edit profile photo
+app.post("/profile", (req, res) => {
+    const username = req.body.username.toLowerCase()
+    User.findOne({username: username}, (err, user) => {
+        // error while retrieving data from the DB
+        if(err){
+            console.log(err)
+        }
+        // user not found
+        else if(!user){
+            return res.json({
+                notFound: "User not found!"
+            }) 
+        }
+        // user found, set profile photo
+        else{
+          user.photo = req.photo
+        }
+    })          
 })
 
 // export the express app created to make it available to other modules

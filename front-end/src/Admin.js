@@ -35,7 +35,7 @@ const Admin = () => {
                     })  
                 }
                 else{
-                    window.location.href = '/'
+                    window.location.href = '/account'
                     alert("Access denied! You don't have permission to view this page.")
                 }
             }

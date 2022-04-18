@@ -18,6 +18,10 @@ const userSchema = new Schema(
     joinDate: {
         type: String,
         required: true,
+    },
+    photo: {
+        type: String,
+        required: true,
     }
     /*
     likedPost:  [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],

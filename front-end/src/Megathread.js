@@ -1,11 +1,11 @@
 import "./css/Megathread.css"
-import React, { useState, useEffect, useRef, useCallback } from "react"
-import { Link, useParams } from "react-router-dom"
+import React, { useState, useEffect } from "react"
+import { useParams } from "react-router-dom"
 import axios from "axios"
-import Button from "react-bootstrap/Button"
+// import Button from "react-bootstrap/Button"
 import { useNavigate } from "react-router-dom"
+import _ from "lodash"
 import Post from "./Post"
-import backupData from "./mock-backupPosts.json"
 import Newpost from "./Newpost"
 // import usePostSearch from "./usePostSearch"
 
@@ -13,8 +13,8 @@ const Megathread = (props) => {
   const jwtToken = localStorage.getItem("token")
   const [user, setUser] = useState({})
   const navigate = useNavigate()
-  const [query, setQuery] = useState("")
-  const [pageNumber, setPageNumber] = useState(1)
+  // const [query, setQuery] = useState("")
+  // const [pageNumber, setPageNumber] = useState(1)
   // start a state varaible with a blank array
   const [data, setData] = useState([])
   const [wantComent, setWantComment] = useState(false)
@@ -25,7 +25,7 @@ const Megathread = (props) => {
 
   // the following side-effect will be called once upon initial render
   useEffect(() => {
-    // fetch mock data for posts
+    // fetch post data from backend
     console.log(`fetching posts for megathread id=${gameId}...`)
     axios
       .get(
@@ -37,9 +37,9 @@ const Megathread = (props) => {
         setGamename(response.data.gamename)
       })
       .catch((err) => {
-        console.log(`Sorry, buster.  No more requests allowed today!`)
+        console.log(`Sorry, couldn't get posts data from backend...`)
         console.error(err)
-        setData(backupData)
+        setData([])
       })
 
     console.log(`fetching account info...`)
@@ -57,7 +57,7 @@ const Megathread = (props) => {
       .catch((err) => {
         if (err) console.log(`Log-in first if you want to post!`)
       })
-  }, [newPost])
+  }, [newPost, gameId, jwtToken])
 
   // const {
   //   posts,
@@ -89,10 +89,14 @@ const Megathread = (props) => {
 
   return (
     <div className="Megathread">
-      <div className="header">
+      {_.isEmpty(gamename) && <div className="header">
+        This game doesn't exist!
+      </div>}
+      {!_.isEmpty(gamename) && <div className="header">
         Game: {gamename}
-      </div>
-      <div className="selfPosting">
+      </div>}
+      {_.isEmpty(user) && <div className="header"> Log in first to post! </div> && !_.isEmpty(gamename)}
+      {!_.isEmpty(gamename) && !_.isEmpty(user) && <div className="selfPosting">
         {wantComent && (
           <Newpost
             user={user}
@@ -108,11 +112,14 @@ const Megathread = (props) => {
         >
           New Post
         </button>
-      </div>
-
-      <div className="posts">
-        {data &&
-          data.map((item) => (
+      </div>}
+      {!_.isEmpty(gamename) && _.isEmpty(data) &&
+          <div className="header">
+            Wow so empty... Be the first one to post!
+          </div>}
+      {!_.isEmpty(data) &&
+          <div className="posts">
+        {data.map((item) => (
             <div
               className="post"
               key={item._id}
@@ -121,7 +128,7 @@ const Megathread = (props) => {
               <Post key={item.post_id} user={props.user} post={item}></Post>
             </div>
           ))}
-      </div>
+      </div>}
 
       {/* <div>{loading && 'Loading...'}</div>
       <div>{error && 'Error'}</div> */}
