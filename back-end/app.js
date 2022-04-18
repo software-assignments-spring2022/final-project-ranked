@@ -12,12 +12,13 @@ const passportJWT = require("passport-jwt") // module to authenticate endpoints 
 const ExtractJwt = passportJWT.ExtractJwt
 const JwtStrategy = passportJWT.Strategy
 const app = express() // instantiate an Express object
+const _ = require('lodash')
 
 app.use(passport.initialize()) // tell express to use passport middleware
 app.use(cors())
 app.use(morgan("dev", { skip: (req, res) => process.env.NODE_ENV === "test" })) // use the morgan middleware to log all incoming http requests
-app.use(express.json()) // decode JSON-formatted incoming POST data
-app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming POST data
+app.use(express.json({limit: '25mb'})) // decode JSON-formatted incoming POST data
+app.use(express.urlencoded({limit: '25mb', extended: true})) // decode url-encoded incoming POST data
 app.use("/static", express.static("public")) // make 'public' directory publicly readable with static content
 
 // connect to database
@@ -28,6 +29,10 @@ mongoose
 
 // grab db models
 const { User } = require('./models/User')
+const { Comment } = require('./models/Comment')
+const { Post } = require('./models/Post')
+const { Megathread } = require('./models/Megathread')
+const { ThreadRequest } = require('./models/ThreadRequest')
 
 // set up some jwt authentication options
 let jwtOptions = {}
@@ -64,20 +69,28 @@ app.get("/isLoggedIn", passport.authenticate("jwt", { session: false }), (req, r
     })
 })
 
-app.get("/posts",  (req, res) => {
+app.get("/games", async (req, res) => {
+  try{
+    const allGames = await Megathread.find({})
+    res.json({
+      games: allGames,
+      status: "all good",
+    })
+  } catch (err){
+    console.error(err)
+    res.status(400).json({
+      error: err,
+      status: "failed to retrieve GAMES from the database",
+    })
+  }
+})
+
+app.get("/posts", async (req, res) => {
   try {
-    fs.readFile('./post.json', (err, data) => {
-        if (err) {
-            throw err
-        }
-        var home_posts = []
-        // parse JSON object
-        const postJSON = JSON.parse(data)
-        postJSON.map((item) => (home_posts = home_posts.concat(item.posts)))
-        res.json({
-            home_posts: home_posts,
-            status: "all good",
-          })
+    const allPosts = await Post.find({})
+    res.json({
+      home_posts: allPosts,
+      status: "all good",
     })
   } catch (err) {
     console.error(err)
@@ -88,21 +101,14 @@ app.get("/posts",  (req, res) => {
   }
 })
 
-app.get("/megathread/:gameId/posts",  (req, res) => {
+app.get("/megathread/:gameId/posts", async (req, res) => {
   try {
-    fs.readFile('./post.json', (err, data) => {
-        if (err) {
-            throw err
-        }
-        // parse JSON object
-        const postJSON = JSON.parse(data)
-        const game_posts = postJSON.find(
-            (element) => element.megathreadId == req.params.gameId
-          ).posts
-          res.json({
-            game_posts: game_posts,
-            status: "all good",
-          })
+    const allPosts = await Post.find({toMegathread: req.params.gameId})
+    const game = await Megathread.findOne({_id: req.params.gameId})
+    res.json({
+      game_posts: allPosts,
+      gamename: game.gamename,
+      status: "all good",
     })
   } catch (err) {
     console.error(err)
@@ -113,21 +119,12 @@ app.get("/megathread/:gameId/posts",  (req, res) => {
   }
 })
 
-app.get("/megathread/:gameId/subthread/:postId/post",  (req, res) => {
+app.get("/:postId/post", async (req, res) => {
   try {
-    fs.readFile('./post.json', (err, data) => {
-        if (err) {
-            throw err
-        }
-        var sub_post = []
-        // parse JSON object
-        const postJSON = JSON.parse(data)
-        sub_post = postJSON.find((element) => 
-            element.megathreadId == req.params.gameId).posts.find((element) => element.post_id == req.params.postId)
-        res.json({
-            sub_post: sub_post,
-            status: "all good",
-          })
+    const thisPost = await Post.findOne({_id: req.params.postId})
+    res.json({
+      sub_post: thisPost,
+      status: "all good",
     })
   } catch (err) {
     console.error(err)
@@ -138,134 +135,62 @@ app.get("/megathread/:gameId/subthread/:postId/post",  (req, res) => {
   }
 })
 
-app.get("/megathread/:gameId/subthread/:postId/comments",  (req, res) => {
-  try {
-    fs.readFile('./comment.json', (err, data) => {
-        if (err) {
-            throw err
-        }
-        var comments = []
-        // parse JSON object
-        const commentJSON = JSON.parse(data)
-        comments = commentJSON.find((element) => (element.game_id == req.params.gameId && element.post_id == req.params.postId)).comments
 
-        res.json({
-            comments: comments,
-            status: "all good",
-        })
+const populateReplies = async (arr) => {
+  try{
+    for(i of arr){
+        const tempArr = await Comment.find({ replyTo: i._id })
+        i.replies.push(...tempArr)
+        await populateReplies(i.replies)
+    }
+  } catch(err) {
+    throw err
+  }
+}
+
+app.get("/:postId/comments", async (req, res) => {
+  try {
+    let comments = await Comment.find({ postTo: req.params.postId })
+    await populateReplies(comments)
+    res.json({
+      comments: comments,
+      status: "all good",
     })
   } catch (err) {
     console.error(err)
     res.status(400).json({
       error: err,
-      status: "failed to retrieve post comments from the database",
+      status: "failed to retrieve comments from the database",
     })
   }
 })
 
-const getNextID = e =>{
-    var level = e.split("_")
-    level.splice(-1,1,parseInt(level.at(-1))+1)
-    level = level.join("_")
-    return level
-}
-
-const getLevelIDs = e =>{
-    var level = e.split("_")
-    var levelID = level[0]
-    level.shift()
-    for(x in level){
-      levelID = `${levelID}_${level[x]}`
-        level[x] = levelID
-    }
-    return level
-}
-
-const addComment = e =>{
-    for( i of e.arr ){
-        if(i.comment_id==e.levels[e.i_levels]) {
-            // if last iteration
-            if(e.levels.slice(-1)==e.levels[e.i_levels]){
-                // if replies isn't empty
-                if(i.replies.length > 0){
-                    // set the id for the new comment
-                    e.newComment.comment_id = getNextID(i.replies.at(-1).comment_id)
-                }
-                else{
-                    // comment id for new reply to a comment
-                    e.newComment.comment_id = `${e.levels.slice(-1)}_1`
-                }
-                // append the new comment to the end
-                i.replies.push(e.newComment)
-                break
-            }
-            e.i_levels++
-            addComment({arr: i.replies, i_levels: e.i_levels, levels: e.levels, newComment: e.newComment})
-        }
-    }
-}
-
-const addCommentRoot = e =>{
-    if(e.arr.length > 0){
-        // set the id for the new comment
-        e.newComment.comment_id = getNextID(e.arr.at(-1).comment_id)
-    }
-    else{
-        // comment id for new reply to a comment
-        e.newComment.comment_id = `${e.root}_1`
-    }
-    e.arr.push(e.newComment)
-}
-
-app.post("/megathread/:gameId/subthread/:postId/comments/save",  (req, res) => {
-    // try to save the comment to the database
+app.post( "/:id/comments/save", async (req, res) => {
     try {
-        fs.readFile('./comment.json', (err, data) => {
-            if (err) {
-                console.log(`an error occured while trying to read comment.json`)
-            }
-            var newComment = {
-                comment_id: "",
-                user_id: "user",
-                text: req.body.comment,
-                time: "2048",
-                likes: 0,
-                replies: []
-            }
-            // parse JSON object
-            const commentJSON = JSON.parse(data)
-            // if this is a reply to the post itself
-            if(req.body.replyTo == "root"){
-                addCommentRoot({arr: commentJSON.find((element) => (element.game_id == req.params.gameId && element.post_id == req.params.postId)).comments,
-                    root: `${req.params.gameId}:${req.params.postId}`, newComment: newComment})
-            }
-            // if it is a reply to a comment
-            else{
-                var i_levels = 0
-                const levels = getLevelIDs(req.body.replyTo)
-                // reccursive function to add nested comment
-                addComment({arr: commentJSON.find((element) => (element.game_id == req.params.gameId && element.post_id == req.params.postId)).comments,
-                i_levels: i_levels, levels: levels, newComment: newComment})
-            }
-            fs.writeFile("./comment.json", JSON.stringify(commentJSON, null, 2), (err) => {
-                if (err){
-                    console.log(`an error occured while trying to write to comment.json`)
-                }
-                console.log('Data written to file')
-            })
-            return res.json({
-                comment: newComment, // return the message we just saved
-                status: 'all good',
-            })
-        })
+      // try to save the comment to the database
+      console.assert(!_.isEmpty(req.body.user))
+      console.assert(!_.isEmpty(req.body.comment))
+      let newComment = new Comment({
+        user_id: req.body.user.username,
+        text: req.body.comment
+      })
+      req.body.replyTo == "root"
+        ? (newComment.postTo = req.params.id)
+        : (newComment.replyTo = req.params.id)
+      const saveComment = await newComment.save()
+      return res.json({
+        success: `You commented!`,
+        comment: saveComment,
+      })
     } catch (err) {
       console.error(err)
       return res.status(400).json({
         error: err,
-        status: 'failed to save the message to the database',
+        status: "failed to save the message to the database",
       })
     }
-  })
+  }
+)
 
   //hard coded for now
   //wait for the actual database to work on
@@ -275,58 +200,84 @@ app.post("/megathread/:gameId/subthread/:postId/comments/save",  (req, res) => {
       if(e == "CSGO"){return 3}
   }
 
-app.post("/megathread/:gameId/subthread/:postId/comments", (req, res) => {
-    /* 
-    Update indivdual comments in our db (primarily dealing with upvoting/downvoting, but can be altered to help with replies).
-    Request BODY should look like:
-        {
-            'comment_id': int,
-            'likes': int,
-            'likedUsers': User[]
-        }
-    Updating is done by setting the array of comments associated with the Post object (gotten by props.postId) to a new array variable.
-    Then it loops through the comments until a Comment object object has the same comment_id as in the request body.
-    Once a match is found, it changes the data in the individual Comment object.
-    Finally, the endpoint updates the ENTIRE comments array (Post.comments) associated with the Post object with the new comments array variable.
-    Returns successful if response.acknowledged is true and the new comments array, otherwise prints an extremely vague error to console.
-    */
-    const comments = await Post.find({'post_id':props.postId}).comments
-    for (const i in comments) {
-        if (i.comment_id === req.data.comment_id) {
-            i.likes = req.data.likes;
-            i.likedUsers = req.data.likedUsers;
-        }
-    }
-    const response = await Post.updateOne({'comments':comments});
-    if (response.acknowledged) {
-        return res.json({
-            success: 'Comment has been updated.',
-            comments: Post.find({'post_id':props.postId}).comments
-        })
-    } else {
-        console.log('Something went wrong in updating the comment.')
-    }
+// app.post("/megathread/:gameId/subthread/:postId/comments", (req, res) => {
+//     /* 
+//     Update indivdual comments in our db (primarily dealing with upvoting/downvoting, but can be altered to help with replies).
+//     Request BODY should look like:
+//         {
+//             'comment_id': int,
+//             'likes': int,
+//             'likedUsers': User[]
+//         }
+//     Updating is done by setting the array of comments associated with the Post object (gotten by props.postId) to a new array variable.
+//     Then it loops through the comments until a Comment object object has the same comment_id as in the request body.
+//     Once a match is found, it changes the data in the individual Comment object.
+//     Finally, the endpoint updates the ENTIRE comments array (Post.comments) associated with the Post object with the new comments array variable.
+//     Returns successful if response.acknowledged is true and the new comments array, otherwise prints an extremely vague error to console.
+//     */
+//     const comments = await Post.find({'post_id':props.postId}).comments
+//     for (const i in comments) {
+//         if (i.comment_id === req.data.comment_id) {
+//             i.likes = req.data.likes;
+//             i.likedUsers = req.data.likedUsers;
+//         }
+//     }
+//     const response = await Post.updateOne({'comments':comments});
+//     if (response.acknowledged) {
+//         return res.json({
+//             success: 'Comment has been updated.',
+//             comments: Post.find({'post_id':props.postId}).comments
+//         })
+//     } else {
+//         console.log('Something went wrong in updating the comment.')
+//     }
+// })
 
-})
+// app.post("/megathread/:gameId/subthread/:postId/comments/search", (req, res) => {
+//     /*
+//     Find individual comments
+//     Body:
+//         {
+//             'comment_id': int
+//         }
+//     */
+//     const comments = await Post.find({'post_id':props.postId}).comments;
+//     for (const i in comments) {
+//         if (i.comment_id === req.data.comment_id) {
+//             return res.json({
+//                 success: "Comment found and returned successfully",
+//                 comment: i
+//             })
+//         }
+//     }
+//     console.log("Failed: Could not find comment.")
+// })
 
-app.post("/megathread/:gameId/subthread/:postId/comments/search", (req, res) => {
-    /*
-    Find individual comments
-    Body:
-        {
-            'comment_id': int
-        }
-    */
-    const comments = await Post.find({'post_id':props.postId}).comments;
-    for (const i in comments) {
-        if (i.comment_id === req.data.comment_id) {
-            return res.json({
-                success: "Comment found and returned successfully",
-                comment: i
-            })
-        }
-    }
-    console.log("Failed: Could not find comment.")
+app.post(`/megathread/:gameId/save`, async (req, res) => {
+  try {
+    // try to save the comment to the database
+    // console.assert(!_.isEmpty(req.body.user))
+    // console.assert(!_.isEmpty(req.body.comment))
+    let newPost = new Post({
+      user_id: req.body.username,
+      title: req.body.title,
+      body: req.body.body,
+      tags: req.body.tags,
+      image: req.body.photo,
+      toMegathread: req.params.gameId
+    })
+    const savePost = await newPost.save()
+    return res.json({
+      success: `You Posted!`,
+      post: savePost,
+    })
+  } catch (err) {
+    console.error(err)
+    return res.status(400).json({
+      error: err,
+      status: "failed to save the message to the database",
+    })
+  }
 })
 
 // handle new post submitted by user
@@ -411,11 +362,21 @@ app.post("/megathread/new", (req, res) => {
 
 // handle thread request submitted by user
 app.post("/threadrequest", (req, res) => {
+    const dateObj = new Date()
+    const year = dateObj.getFullYear()
+    const month = ("0" + (dateObj.getMonth() + 1)).slice(-2)
+    const date = ("0" + dateObj.getDate()).slice(-2)
+    const hours = dateObj.getHours()
+    const minutes = dateObj.getMinutes()
+    const seconds = dateObj.getSeconds()
     const gameName = req.body.gameName
     const willModerate = req.body.willModerate
     const friendsWillModerate = req.body.friendsWillModerate
     const reason = req.body.reason
+    const username = req.body.username
+    const userID = req.body.userID
 
+    // each field of the form should not be empty or missing
     if(!gameName.trim() || (willModerate !== 1 && willModerate !== 0) || 
     (friendsWillModerate !== 1 && friendsWillModerate !== 0) || !reason.trim()){
         return res.json({
@@ -423,42 +384,25 @@ app.post("/threadrequest", (req, res) => {
         })
     }
     else{
-        fs.readFile("./threadRequestList.json", (err, data) => {
-            // if there is no thread request list currently, create one
+        const newThreadRequest = new ThreadRequest({
+            gameName: gameName,
+            willModerate: willModerate,
+            friendsWillModerate: friendsWillModerate,
+            reason: reason,
+            requestedUsername: username,
+            requestedUserId: userID,
+            dateRequested: `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`,
+            approvalStatus: "pending"
+        })
+
+        newThreadRequest.save(err => {
+            // something went wrong during the saving
             if(err){
-                const threadRequestArr = []
-                const newRequest = {"gameName": gameName, "willModerate": willModerate, 
-                "friendsWillModerate": friendsWillModerate, "reason": reason, "approvalStatus": ""}
-                threadRequestArr.push(newRequest)
-                // write new request to file (will write to db later), so that
-                // admin panel can grab data
-                fs.writeFile("./threadRequestList.json", JSON.stringify(threadRequestArr), err => {
-                    if(err){
-                        console.log("An error occured while writing to the file!")
-                    }
-                    else{
-                        return res.json({
-                            success: "Request submitted! We will get back to you ASAP!"
-                        })
-                    }
-                })
+                console.log(err)
             }
-            // if there already exists a list for the thread request, then
-            // simple append the new request to the exisiting list, and write to file (later db)
             else{
-                const threadRequestArr = JSON.parse(data)
-                const newRequest = {"gameName": gameName, "willModerate": willModerate, 
-                "friendsWillModerate": friendsWillModerate, "reason": reason, "approvalStatus": ""}
-                threadRequestArr.push(newRequest) 
-                fs.writeFile("./threadRequestList.json", JSON.stringify(threadRequestArr), err => {
-                    if(err){
-                        console.log("An error occured while writing to the file!")
-                    }
-                    else{
-                        return res.json({
-                            success: "Request submitted! We will get back to you ASAP!"
-                        })
-                    }
+                return res.json({
+                    success: "Request submitted! We will get back to you ASAP!"
                 })
             }
         })
@@ -482,6 +426,8 @@ app.post("/register", (req, res) => {
     const username = req.body.username.toLowerCase()
     const password = req.body.password
     const email = req.body.email.toLowerCase()
+    //default profile photo
+    const photo = "123"
 
     // missing essential info from the register form
     if(!username.trim() || !email.trim() || !password){
@@ -521,7 +467,8 @@ app.post("/register", (req, res) => {
                             username: username,
                             password: hashedPassword,
                             email: email,
-                            joinDate: year + "-" + month + "-" + date
+                            joinDate: year + "-" + month + "-" + date,
+                            photo: photo
                         })
 
                         // try to save this new user object into DB
@@ -548,8 +495,8 @@ app.post("/register", (req, res) => {
 
 // POST route to handle user login authentication
 app.post("/login", (req, res) => {
-    const username = req.body.username.toLowerCase()
-    const password = req.body.password
+  const username = req.body.username.toLowerCase()
+  const password = req.body.password
 
     if(!username.trim() || !password){
         return res.json({
@@ -596,14 +543,13 @@ app.post("/login", (req, res) => {
 })
 
 app.get("/admin", (req, res) => {
-    fs.readFile("./threadRequestList.json", (err, data) => {
+    ThreadRequest.find({}, (err, result) => {
         if(err){
             console.log(err)
         }
         else{
-            const threadRequestList = JSON.parse(data)
             return res.json({
-                threadRequestList: threadRequestList
+                threadRequestList: result
             })
         }
     })
@@ -625,9 +571,9 @@ app.get("/search", async (req, res) => {
 })
 
 // approve or reject a user submitted thread request
-app.post("/admin", (req, res) => {
+app.post("/admin", async (req, res) => {
     const adminDecision = req.body.approvalStatus
-    const inputGameName = req.body.gameName
+    const inputRequestID = req.body.requestID
 
     // process request form cannot be empty
     if(adminDecision !== 1 && adminDecision !== 0){
@@ -636,42 +582,113 @@ app.post("/admin", (req, res) => {
         })
     }
     else{
-        fs.readFile("./threadRequestList.json", (err, data) => {
-            if(err){
-                console.log(err)
+        try{
+            const matchedRequest = await ThreadRequest.findOne({_id: inputRequestID})
+            if(matchedRequest.approvalStatus === "pending"){
+                matchedRequest.approvalStatus = adminDecision ? "Approved" : "Rejected"
+                await matchedRequest.save()
+                if(matchedRequest.approvalStatus == "Approved"){
+                    const newMegathread = new Megathread({
+                        gamename: matchedRequest.gameName,
+                        moderators: []
+                    })
+                    await newMegathread.save()
+                    return res.json({
+                        newMegathread: newMegathread,
+                        success: "Approval status updated!"
+                    })
+                }
+                else{
+                    return res.json({
+                        success: "Approval status updated!"
+                    })
+                }
             }
+            // this request has been handled already
             else{
-                const requestList = JSON.parse(data)
-                requestList.forEach(eachRequest => {
-                    // find the matching request first, and if its approval status has not been
-                    // handled yet, update it based on admin's decision
-                    if(inputGameName == eachRequest.gameName){
-                        if(!eachRequest.approvalStatus.trim()){
-                            eachRequest.approvalStatus = adminDecision ? "Approved" : "Rejected"
-                            // update the .json file that stores the thread request list
-                            fs.writeFile("./threadRequestList.json", JSON.stringify(requestList), err => {
-                                if(err){
-                                    console.log("An error occured while writing to the file!")
-                                }
-                                else{
-                                    return res.json({
-                                        success: "Approval status updated!"
-                                    })
-                                }
-                            })
-                        }
-                        // if this request has already been processed, send a message
-                        // back to the admin to remind them
-                        else{
-                            return res.json({
-                                alreadyProcessed: "This request has already been processed!"
-                            })
-                        }
-                    }
+                return res.json({
+                    alreadyProcessed: "This request has already been processed!"
                 })
             }
-        })
+        } catch(err){
+            console.error(err)
+            return res.status(400).json({
+                error: err,
+                status: "failed to save megathread requested",
+            })
+        }
+        // find the matching request based on ID
+        
+// ThreadRequest.findOne({_id: inputRequestID}, (err, result) => {
+//     // something wrong while quering the DB
+//     if(err){
+//         console.log(err)
+//     }
+//     else{
+//         const matchedRequest = result
+//         // update request's approval status based on admin's decision
+//         if(matchedRequest.approvalStatus === "pending"){
+//             matchedRequest.approvalStatus = adminDecision ? "Approved" : "Rejected"
+//             await matchedRequest.save()
+//             if(matchedRequest.approvalStatus == "Approved"){
+//                 const newMegathread = new Megathread({
+//                     gamename: gameName,
+//                     moderators: []
+//                 })
+//                 await newMegathread.save()
+//             }
+//             return res.json({
+//                 success: "Approval status updated!"
+//             })
+//         }
+//         // this request has been handled already
+//         else{
+//             return res.json({
+//                 alreadyProcessed: "This request has already been processed!"
+//             })
+//         }
+//     }
+// })
     }
+})
+
+// show user's submitted thread requests in Account page
+app.post("/account", (req, res) => {
+    const userID = req.body.userID
+
+    ThreadRequest.find({requestedUserId: userID}, (err, result) => {
+        // something wrong while querying the DB
+        if(err){
+            console.log(err)
+        }
+        // return a list of thread requests submitted by this user 
+        else{
+            return res.json({
+                threadRequestList: result
+            })
+        }
+    })
+})
+
+// edit profile photo
+app.post("/profile", (req, res) => {
+    const username = req.body.username.toLowerCase()
+    User.findOne({username: username}, (err, user) => {
+        // error while retrieving data from the DB
+        if(err){
+            console.log(err)
+        }
+        // user not found
+        else if(!user){
+            return res.json({
+                notFound: "User not found!"
+            }) 
+        }
+        // user found, set profile photo
+        else{
+          user.photo = req.photo
+        }
+    })          
 })
 
 // export the express app created to make it available to other modules

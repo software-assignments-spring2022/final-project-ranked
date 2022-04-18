@@ -1,27 +1,31 @@
 import "./css/Megathread.css"
-import React, { useState, useEffect, useRef, useCallback } from "react"
-import { Link, useParams } from "react-router-dom"
+import React, { useState, useEffect } from "react"
+import { useParams } from "react-router-dom"
 import axios from "axios"
-import Button from "react-bootstrap/Button"
+// import Button from "react-bootstrap/Button"
 import { useNavigate } from "react-router-dom"
+import _ from "lodash"
 import Post from "./Post"
-import backupData from "./mock-backupPosts.json"
+import Newpost from "./Newpost"
 // import usePostSearch from "./usePostSearch"
 
 const Megathread = (props) => {
+  const jwtToken = localStorage.getItem("token")
+  const [user, setUser] = useState({})
   const navigate = useNavigate()
-  const [query, setQuery] = useState("")
-  const [pageNumber, setPageNumber] = useState(1)
+  // const [query, setQuery] = useState("")
+  // const [pageNumber, setPageNumber] = useState(1)
   // start a state varaible with a blank array
-  const [data, setData] = useState([]) 
-
-
+  const [data, setData] = useState([])
+  const [wantComent, setWantComment] = useState(false)
+  const [newPost, setNewPost] = useState({})
+  const [gamename, setGamename] = useState("")
 
   const { gameId } = useParams()
 
   // the following side-effect will be called once upon initial render
   useEffect(() => {
-    // fetch mock data for posts
+    // fetch post data from backend
     console.log(`fetching posts for megathread id=${gameId}...`)
     axios
       .get(
@@ -30,13 +34,30 @@ const Megathread = (props) => {
       .then((response) => {
         // extract the data from the server response
         setData(response.data.game_posts)
+        setGamename(response.data.gamename)
       })
       .catch((err) => {
-        console.log(`Sorry, buster.  No more requests allowed today!`)
+        console.log(`Sorry, couldn't get posts data from backend...`)
         console.error(err)
-        setData(backupData) 
-      }) 
-  }, []) 
+        setData([])
+      })
+
+    console.log(`fetching account info...`)
+    axios
+      .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/isLoggedIn`, {
+        headers: { Authorization: `JWT ${jwtToken}` },
+      })
+      // set user's account info if logged-in
+      .then((res) => {
+        if (res.data.success) {
+          //   console.log(res.data.user)
+          setUser(res.data.user)
+        }
+      })
+      .catch((err) => {
+        if (err) console.log(`Log-in first if you want to post!`)
+      })
+  }, [newPost, gameId, jwtToken])
 
   // const {
   //   posts,
@@ -68,24 +89,46 @@ const Megathread = (props) => {
 
   return (
     <div className="Megathread">
-      <div className="selfPosting">
-        <Button className="btn btn-success" href="/megathread/new">
+      {_.isEmpty(gamename) && <div className="header">
+        This game doesn't exist!
+      </div>}
+      {!_.isEmpty(gamename) && <div className="header">
+        Game: {gamename}
+      </div>}
+      {_.isEmpty(user) && <div className="header"> Log in first to post! </div> && !_.isEmpty(gamename)}
+      {!_.isEmpty(gamename) && !_.isEmpty(user) && <div className="selfPosting">
+        {wantComent && (
+          <Newpost
+            user={user}
+            setNewPost={setNewPost}
+            setWantComment={setWantComment}
+          />
+        )}
+        <button
+          className="btn"
+          onClick={() => {
+            setWantComment(!wantComent)
+          }}
+        >
           New Post
-        </Button>
-      </div>
-
-      <div className="posts">
-        {data &&
-          data.map((item) => (
+        </button>
+      </div>}
+      {!_.isEmpty(gamename) && _.isEmpty(data) &&
+          <div className="header">
+            Wow so empty... Be the first one to post!
+          </div>}
+      {!_.isEmpty(data) &&
+          <div className="posts">
+        {data.map((item) => (
             <div
               className="post"
-              key={item.post_id}
-              onClick={() => handleButtonClick(item.post_id)}
+              key={item._id}
+              onClick={() => handleButtonClick(item._id)}
             >
               <Post key={item.post_id} user={props.user} post={item}></Post>
             </div>
           ))}
-      </div>
+      </div>}
 
       {/* <div>{loading && 'Loading...'}</div>
       <div>{error && 'Error'}</div> */}

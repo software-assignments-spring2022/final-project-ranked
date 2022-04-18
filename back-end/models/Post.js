@@ -1,20 +1,17 @@
 const mongoose = require('mongoose')
-URLSlugs = require('mongoose-url-slugs');
 const Schema = mongoose.Schema
 
 const postSchema = new Schema(
     {
-        game_id: {type: Number, required: true},
+        toMegathread: {type: mongoose.Schema.Types.ObjectId, ref: 'Megathread', required: true},
         user_id: {type: String, required: true},
-        post_id: {type: Number, requireed: true},
-        title: {type: String},
-        body: {type: String},
-        tags: [{type: String}],
-        time: {type: String},
-        likes: {type: Number},
-        likedUsers: [],
-        image: {type: String},
-        comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }]
+        title: {type: String, required: true},
+        body: {type: String, required: true},
+        tags: [{type: String, required: true}],
+        time: {type: Date, default: Date.now(), required: true},
+        likes: {type: Number, default: 0, required: true},
+        // likedUsers: [],
+        image: {type: String}
     }
 )
 
