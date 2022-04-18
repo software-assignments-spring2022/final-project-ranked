@@ -18,7 +18,7 @@ function List(props) {
             // i may !== the conditional
         if (props.input === '') {
             // return 'hello';
-            console.log('empty');
+            // console.log('empty');
             // return el
         }
         //return the item which contains the user input
@@ -26,8 +26,8 @@ function List(props) {
         // use the "id" param to index thru game-name items
         else {
             // return el.text
-            console.log('not empty');
-            console.log(el.tag)
+            // console.log('not empty');
+            // console.log(el.tag)
             return el.tag.toLowerCase().includes(props.input)
             // return el.text.toLowerCase().includes(props.input)
         }
