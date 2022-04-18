@@ -32,11 +32,11 @@ const LikeButton = (props) => {
  
     const payload = {
       // QUESTION 1: how do I access the comment_id from within a component?
-      'comment_id':props.comment_id
+      'comment_id':props.props.comment_id
     }
     axios
     // QUESTION 2: how do I access the gameId and postId from within a component?
-      .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/megathread/${props.gameId}/subthread/${props.postId}/comments/search`, payload)
+      .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/megathread/${props.props.gameId}/subthread/${props.props.postId}/comments/search`, payload)
       .then(response => {
         const comment = response.data.comment
         setComment(comment)
@@ -53,11 +53,11 @@ const LikeButton = (props) => {
   // the function that changes the value of the current comment's likes and likedUsers
   const voteComment = () => {
 
-    const likes = props.details.likes
-    const likedUsers = [props.details.likedUsers]
+    const likes = props.props.details.likes
+    const likedUsers = [props.props.details.likedUsers]
 
     // first convert all the User objects in the likedUser array into an array of their usernames
-    const mappedUsers = props.details.likedUsers.map(user => user.username);
+    const mappedUsers = props.props.details.likedUsers.map(user => user.username);
 
     // if a match is found, then it removes that user from the likedUser list and decreases the likes count by 1 (it's removing their like)
     for (const username in mappedUsers) {
@@ -71,23 +71,23 @@ const LikeButton = (props) => {
 
     // checks if the likes count is the same (if it is not then it was decremented above and this conditional should be ignored)
     // then adds the user to the likedUser list and increments the likes count.
-    if (likes === props.details.likes) {
+    if (likes === props.props.details.likes) {
       likedUsers.push(accountInfo); likes++;
     }
 
     // body of the post request to the endpoint to update a comment
     const payload = {
-      'comment_id': props.details.comment_id,
-      'likes': likes + props.details.likes,
+      'comment_id': props.props.details.comment_id,
+      'likes': likes + props.props.details.likes,
       'likedUsers': likedUsers
     }
     axios
-      .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/megathread/${props.gameId}/subthread/${props.postId}/comments`, payload)
+      .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/megathread/${props.props.gameId}/subthread/${props.props.postId}/comments`, payload)
       .then(response => {
         // endpoint returns an updated array of all comments associated with the post, so I have to loop through again
         const newComments = response.data.comments
         for (const i in newComments) {
-          if (i.comment_id === props.comment_id) {
+          if (i.comment_id === props.props.comment_id) {
             // updates the state of the comment in the front end
             setComment(i)
           }
@@ -99,7 +99,7 @@ const LikeButton = (props) => {
   }
 
   // quick check if this is dealing with a Post or Comment object, but I have no idea if this part is correct
-  const isPost = () => props.details.type === 'post';
+  const isPost = () => props.props.details.type === 'post';
 
   // aggregation function to keep useEffect() clean
   const vote = () => {
