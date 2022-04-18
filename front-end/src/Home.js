@@ -4,68 +4,53 @@ import { useNavigate } from "react-router-dom"
 import Post from "./Post"
 import "./css/App.css"
 import "./css/Home.css"
-import backupData from "./mock-backupPosts.json"
+import _ from "lodash"
 
 const Home = (props) => {
   const navigate = useNavigate()
   const [postData, setPostData] = useState([])
   const [gameData, setGameData] = useState()
+  const [loaded, setLoaded] = useState(false)
 
   /**
    * A nested function that fetches posts from the back-end server.
    */
-  const fetchPosts = useCallback(() => {
+  const fetchPosts = () => {
     // fetch data for posts
     console.log(`fetching posts from backend...`)
-    axios(`http://localhost:4000/posts`)
+    axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/posts`)
       .then((response) => {
         // extract the data from the server response
         setPostData(response.data.home_posts)
-        console.log(postData)
       })
       .catch((err) => {
-        console.log(`Sorry, buster.  No more requests allowed today!`)
+        console.log(`Sorry, couldn't get posts data from backend...`)
         console.error(err)
-
-        setPostData(backupData)
+        setPostData([])
       })
-  })
+  }
 
   /**
    * A nested function that fetches game names from the back-end server. (To be completed)
    */
   const fetchGameNames = () => {
     // fetch data for game names
-    axios("https://my.api.mockaroo.com/mock-games.json?key=23d25ba0")
+    axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/games`)
       .then((response) => {
         // extract the data from the server response
-        setGameData(response.data)
+        setGameData(response.data.games)
       })
       .catch((err) => {
         console.log(`Sorry, buster.  No more requests allowed today!`)
         console.error(err)
-
-        // make some backup fake data
-        const backupGameData = [
-          { game_id: 1, game_name: "Lisinopril" },
-          { game_id: 2, game_name: "Fluoxetine Hydrochloride" },
-          { game_id: 3, game_name: "HYDROXYZINE HYDROCHLORIDE" },
-          { game_id: 4, game_name: "Sleep Nighttime Sleep Aid" },
-          { game_id: 5, game_name: "Ondansetron" },
-          { game_id: 6, game_name: "pravastatin sodium" },
-          { game_id: 7, game_name: "Quality Choice" },
-          { game_id: 8, game_name: "Fenofibric Acid" },
-          { game_id: 9, game_name: "RITE AID RENEWAL" },
-          { game_id: 10, game_name: "Diltiazem Hydrochloride" },
-        ]
-
-        setGameData(backupGameData)
       })
   }
 
   useEffect(() => {
+    setLoaded(false)
     fetchPosts()
     fetchGameNames()
+    setLoaded(true)
   }, [])
 
   const handleGameClick = (e) => {
@@ -79,35 +64,43 @@ const Home = (props) => {
   return (
     <main className="Home">
       <div className="game-list">
-        {gameData &&
+        {!_.isEmpty(gameData) &&
           gameData.map((item) => (
             <div
               className="game"
-              key={item.game_id}
+              key={item._id}
               onClick={() =>
                 handleGameClick({
-                  gameId: item.game_id,
+                  gameId: item._id,
                 })
               }
             >
-              <pre>{item.game_name}</pre>
+              <pre>{item.gamename}</pre>
             </div>
           ))}
+        {_.isEmpty(gameData) &&
+        <div className="no games">
+          Wow so empty... Head over to `link to /threadrequest` to request for a game you want on this website!
+        </div> && loaded}
       </div>
       <div className="posts">
-        {postData &&
+        {_.isEmpty(postData) &&
+          <div className="no games">
+            Wow so empty... Be the first to post something on RANKED
+          </div> && loaded}
+        {!_.isEmpty(postData) &&
           postData.map((item) => (
             <div
               className="post"
-              key={`${item.game_id}`.concat(item.post_id)}
+              key={item._id}
               onClick={() =>
                 handleButtonClick({
-                  postId: item.post_id,
-                  gameId: item.game_id,
+                  postId: item._id,
+                  gameId: item.toMegathread,
                 })
               }
             >
-              <Post key={item.post_id} user={props.user} post={item}></Post>
+              <Post key={item._id} user={props.user} post={item}></Post>
             </div>
           ))}
       </div>

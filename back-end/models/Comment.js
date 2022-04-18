@@ -1,22 +1,45 @@
-const mongoose = require('mongoose')
-URLSlugs = require('mongoose-url-slugs');
+const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 
 const commentSchema = new Schema(
-    {
-        comment_id: {type: String, required: true},
-        user_id: {type: String, required: true},
-        text: {type: String, requireed: true},
-        time: {type: String},
-        likes: {type: Number},
-        likedUsers: [{type: String}],
-        image: {type: String},
-        replies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }]
+  {
+    user_id: {
+      type: String,
+      required: true
+    },
+    text: {
+      type: String,
+      required: true
+    },
+    likes: {
+      type: Number,
+      required: true,
+      default: 0
+    },
+    replyTo: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Comment'
+    },
+    postTo: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Post'
+    },
+    time: {
+      type: Date,
+      required: true,
+      default: Date.now()
+    },
+    replies: {
+      type: [ this ],
+      default: []
     }
+  }
 )
 
-const Comment = mongoose.model('Comment', commentSchema)
+// create mongoose Model
+const Comment = mongoose.model("Comment", commentSchema)
 
+// export the model so other modules can import it
 module.exports = {
-    Comment
+  Comment,
 }

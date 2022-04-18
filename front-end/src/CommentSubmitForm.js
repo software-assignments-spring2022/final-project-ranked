@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import axios from "axios"
 import "./css/Subthread.css"
@@ -6,20 +6,18 @@ import "./css/CommentSection.css"
 
 const CommentSection = props => {
   const [comment, setComment] = useState("") 
-  const {gameId} = useParams()
   const {postId} = useParams() 
 
   const handleSubmit = (e) => {
     e.preventDefault()  // prevent the default browser form submission stuff
+    let id = ""
+    props.replyTo == "root" ? id = postId : id = props.replyTo
 
     alert(`You commented!`) 
 
-    // send the data of the new puppy to a server
-    // this server doesn't exist, so we will see an error in the console
-    // axios' get() and post() methods return a promise, so we can use our javascript Promise or async/await expertise here to deal with the resolution or rejection of the request
     axios
-      .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/megathread/${gameId}/subthread/${postId}/comments/save`, {
-        // user: props.user
+      .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/${id}/comments/save`, {
+        user: props.user,
         comment: comment,
         replyTo: props.replyTo
       })
