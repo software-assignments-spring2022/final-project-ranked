@@ -426,6 +426,8 @@ app.post("/register", (req, res) => {
     const username = req.body.username.toLowerCase()
     const password = req.body.password
     const email = req.body.email.toLowerCase()
+    //default profile photo
+    const photo = "123"
 
     // missing essential info from the register form
     if(!username.trim() || !email.trim() || !password){
@@ -465,7 +467,8 @@ app.post("/register", (req, res) => {
                             username: username,
                             password: hashedPassword,
                             email: email,
-                            joinDate: year + "-" + month + "-" + date
+                            joinDate: year + "-" + month + "-" + date,
+                            photo: photo
                         })
 
                         // try to save this new user object into DB
@@ -650,6 +653,27 @@ app.post("/account", (req, res) => {
             })
         }
     })
+})
+
+// edit profile photo
+app.post("/profile", (req, res) => {
+    const username = req.body.username.toLowerCase()
+    User.findOne({username: username}, (err, user) => {
+        // error while retrieving data from the DB
+        if(err){
+            console.log(err)
+        }
+        // user not found
+        else if(!user){
+            return res.json({
+                notFound: "User not found!"
+            }) 
+        }
+        // user found, set profile photo
+        else{
+          user.photo = req.photo
+        }
+    })          
 })
 
 // export the express app created to make it available to other modules

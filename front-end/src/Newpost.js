@@ -49,6 +49,7 @@ const Newpost = (props) => {
             props.setNewPost(res.data.post)
             setTitle("")
             setContent("")
+            setPhoto("")
             props.setWantComment(false)
         }
     })
@@ -103,7 +104,7 @@ const Newpost = (props) => {
           </Form.Group>
 
           <Form.Group controlId="formFile" className="mb-3">
-            <Form.Label>Default file input example</Form.Label>
+            <Form.Label>Post Image</Form.Label>
             <Form.Control 
               type="file" 
               accept=".png, .jpg, .jpeg"
