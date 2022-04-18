@@ -671,24 +671,21 @@ app.post("/account", (req, res) => {
 })
 
 // edit profile photo
-app.post("/profile", (req, res) => {
-    const username = req.body.username.toLowerCase()
-    User.findOne({username: username}, (err, user) => {
-        // error while retrieving data from the DB
-        if(err){
-            console.log(err)
-        }
-        // user not found
-        else if(!user){
-            return res.json({
-                notFound: "User not found!"
-            }) 
-        }
-        // user found, set profile photo
-        else{
-          user.photo = req.photo
-        }
-    })          
+app.post("/profile", async (req, res) => {
+    try {
+        await User.updateOne({ username: req.body.username }, {
+            photo: req.body.photo
+          })
+        return res.json({
+          success: `Profile picture edited`
+        })
+      } catch (err) {
+        console.error(err)
+        return res.status(400).json({
+          error: err,
+          status: "failed to save the photo to the database",
+        })
+      }        
 })
 
 // export the express app created to make it available to other modules
