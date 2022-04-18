@@ -555,6 +555,21 @@ app.get("/admin", (req, res) => {
     })
 })
 
+app.get("/search", async (req, res) => {
+    try{
+        const postsArray = await Post.find({})
+        return res.json({
+            postsArray: postsArray,
+            success: 'all good'
+        })
+    } catch(err){
+        return res.status(400).json({
+            error: err,
+            status: "failed to fetch all the posts (SEARCH BAR)"
+        })
+    }
+})
+
 // approve or reject a user submitted thread request
 app.post("/admin", async (req, res) => {
     const adminDecision = req.body.approvalStatus

@@ -8,7 +8,7 @@ import { React, useState, Fragment, PureComponent } from "react"; // latter two 
 
 // search bar imports
 import TextField from "@mui/material/TextField";    // library where i ported the search from
-import List from "./Components/List"      /* this is a stand-in for page data, relevant "id"s should be fed in here for the search bar */
+import List from "./Components/SearchResults"      /* this is a stand-in for page data, relevant "id"s should be fed in here for the search bar */
 
 // hamburger menu imports
 import Sidebar from './Sidebar';
@@ -56,9 +56,10 @@ const Header = props => {
                 fullWidth
                 label="Search"
               />
+              <List input={inputText}/>  
             </div>
-            {/* this will be the backend tag file */}
-            <List input={inputText}/>  
+            {/* this is dropdown where search results display */}
+            {/* <List input={inputText}/>   */}
           </li>
           <li className="nav-item">
             {/* burger menu */}
