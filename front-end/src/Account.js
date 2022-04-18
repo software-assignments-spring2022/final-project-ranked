@@ -116,7 +116,7 @@ const Account = () => {
 
     return (
         <main className='Account'>
-            <img className='Account-image' src={'https://picsum.photos/200/300'} alt='user profile image'></img>
+            <img className='Account-image' src={accountInfo.photo} alt='user profile image'></img>
             <div className='Account-tabDiv'>
                 <div className='Account-infoTab'>Overview</div>
                 <div>
