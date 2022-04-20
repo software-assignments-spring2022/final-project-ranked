@@ -79,10 +79,11 @@ const ThreadRequest = () => {
             <div className='ThreadRequest-div'>
                 <p><b>Requesting a New Game Thread</b></p>
                 <Form onSubmit={HandleThreadRequest}>
-                    <div className='ThreadRequest-gameNameTextArea'>
+                    <div className='ThreadRequest-gameNameTextAreaDiv'>
                         <Form.Group>
                             <Form.Label>Game Name: </Form.Label>
-                            <Form.Control as='textarea' rows={1} value={gameName} 
+                            <Form.Control className='ThreadRequest-gameNameTextArea' 
+                                as='textarea' rows={1} value={gameName} 
                                 onChange={e => setGameName(e.target.value)} />
                         </Form.Group>
                     </div>
@@ -122,10 +123,11 @@ const ThreadRequest = () => {
                             />
                         </div>
                     </div>
-                    <div className='ThreadRequest-textArea'>
+                    <div className='ThreadRequest-textAreaDiv'>
                         <Form.Group>
                             <Form.Label>Reason for the request:</Form.Label>
-                            <Form.Control as='textarea' rows={9} value={reason} 
+                            <Form.Control className='ThreadRequest-textArea'
+                                as='textarea' rows={9} value={reason} 
                                 onChange={e => setReason(e.target.value)} />
                         </Form.Group>
                         <Button type='submit'>Submit</Button>

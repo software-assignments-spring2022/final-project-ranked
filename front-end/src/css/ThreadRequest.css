@@ -10,8 +10,14 @@ body{
     text-align: center;
 }
 
-.ThreadRequest-gameNameTextArea{
+.ThreadRequest-gameNameTextAreaDiv{
     margin-bottom: 10px;
+}
+
+.ThreadRequest-gameNameTextArea{
+    position: relative;
+    right: 25px;
+    width: 250px;
 }
 
 .ThreadRequest-questionDiv{
@@ -20,6 +26,8 @@ body{
     margin-top: 5px;
     width: 340px;
     height: 110px;
+    position: relative;
+    left: -70px;
 }
 
 .ThreadRequest-questonP{
@@ -36,12 +44,19 @@ body{
     left: 40px;
 }
 
-.ThreadRequest-textArea{
+.ThreadRequest-textAreaDiv{
     height: 300px;
 }
 
-.ThreadRequest-textArea > button{
+.ThreadRequest-textAreaDiv > button{
     margin-top: 10px;
     width: 120px;
     line-height: 0px;
+}
+
+.ThreadRequest-textArea{
+    position: relative;
+    right: 50px;
+    width: 300px;
+    height: 180px;
 }
