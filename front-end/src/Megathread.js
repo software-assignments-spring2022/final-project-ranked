@@ -113,7 +113,7 @@ const Megathread = (props) => {
           New Post
         </button>
       </div>}
-      {!_.isEmpty(gamename) && _.isEmpty(data) &&
+      {!_.isEmpty(gamename) && _.isEmpty(data) && !wantComent &&
           <div className="header">
             Wow so empty... Be the first one to post!
           </div>}
