@@ -11,7 +11,7 @@ const Newpost = (props) => {
   const [postTitle, setTitle] = useState("")
   const [postContent, setContent] = useState("")
   const [tags, setTags] = useState([])
-  const [photo, setPhoto] = useState([])
+  const [photo, setPhoto] = useState("")
 
   const { gameId } = useParams()
 

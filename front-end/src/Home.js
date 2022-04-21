@@ -7,10 +7,12 @@ import "./css/Home.css"
 import _ from "lodash"
 
 const Home = (props) => {
+  const jwtToken = localStorage.getItem("token")
   const navigate = useNavigate()
   const [postData, setPostData] = useState([])
   const [gameData, setGameData] = useState()
   const [loaded, setLoaded] = useState(false)
+  const [user, setUser] = useState({})
 
   /**
    * A nested function that fetches posts from the back-end server.
@@ -46,8 +48,26 @@ const Home = (props) => {
       })
   }
 
+  const fetchUser = () => {
+    axios
+      .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/isLoggedIn`, {
+        headers: { Authorization: `JWT ${jwtToken}` },
+      })
+      // set user's account info if logged-in
+      .then((res) => {
+        if (res.data.success) {
+          //   console.log(res.data.user)
+          setUser(res.data.user)
+        }
+      })
+      .catch((err) => {
+        if (err) console.log(`Log-in first if you want to post!`)
+      })
+  }
+
   useEffect(() => {
     setLoaded(false)
+    fetchUser()
     fetchPosts()
     fetchGameNames()
     setLoaded(true)
@@ -100,7 +120,7 @@ const Home = (props) => {
                 })
               }
             >
-              <Post key={item._id} user={props.user} post={item}></Post>
+              <Post key={item._id} user={user} post={item}></Post>
             </div>
           ))}
       </div>

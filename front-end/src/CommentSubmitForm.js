@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import axios from "axios"
-import "./css/Subthread.css"
-import "./css/CommentSection.css"
 
 const CommentSection = props => {
   const [comment, setComment] = useState("") 
@@ -11,7 +9,7 @@ const CommentSection = props => {
   const handleSubmit = (e) => {
     e.preventDefault()  // prevent the default browser form submission stuff
     let id = ""
-    props.replyTo == "root" ? id = postId : id = props.replyTo
+    props.replyTo === "root" ? id = postId : id = props.replyTo
 
     alert(`You commented!`) 
 

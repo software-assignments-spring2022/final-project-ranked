@@ -1,6 +1,7 @@
 import React from "react"
 import axios from "axios"
 import "./css/Comment.css"
+import "./css/CommentSection.css"
 // import LikeButton from "./Components/likeButton";
 // import Button from "react-bootstrap/esm/Button"
 import CommentForm from "./CommentSubmitForm"
@@ -9,6 +10,24 @@ import _ from 'lodash'
 
 const Comment = props => {
   const [wantReply, setwantReply] = React.useState(false)
+
+  const PreviousComment = props => {
+    let prev = props.previous.user_id
+    let prevText = props.previous.text
+    let id = props.previous._id
+
+    return (
+      <section className="previous">
+      <pre>
+          <p><small>{id}({prev}) ---&gt; {id}({props.user})</small> </p>
+          <h4>{prev} Wrote: </h4>
+          <p>{prevText}</p>
+          <h4>===========================================================================================================================</h4>
+      </pre>      
+
+      </section>
+    )
+  }
   /*
   const indent = num => {
     const i = "|     "
@@ -22,8 +41,25 @@ const Comment = props => {
   }
   */
   const indent = "      "
+
   const handleClick = () => {
     setwantReply(!wantReply)
+  }
+
+  const handleDelete = () => {
+    axios
+      .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/${props.details._id}/comment/delete`, {
+        user: props.user
+      })
+      .then((response) => {
+        // success
+        console.log(`Deleted comment ${response.data.comment}`)
+        props.setNewComment(response.data.comment)
+      })
+      .catch((err) => {
+        // failure
+        console.log(`Received server error: ${err}`)
+      })
   }
 
   return (
@@ -34,9 +70,9 @@ const Comment = props => {
       {props.previous ? <PreviousComment id={props.details.id} user={props.details.user_id} previous={props.previous} /> : <br></br>}
 
         <section className="user">
-          
+          {props.user.username === props.details.user_id && <button onClick={handleDelete}> delete </button>}
           <pre>
-            { <p>{indent}<a id={props.details._id}>id: {props.details._id}</a></p> }
+            <p>{indent}<a id={props.details._id}>id: {props.details._id}</a></p>
             <p>{indent}user: {props.details.user_id}</p>
             <p>{indent}time: {props.details.time}</p>
           </pre>
@@ -50,9 +86,7 @@ const Comment = props => {
         </section>
       </div>
       <section className="replyform">
-          <pre>
             {wantReply && !_.isEmpty(props.user) && <CommentForm user={props.user} replyTo={props.details._id} setNewComment={props.setNewComment}/>}
-          </pre>
         </section>
 
       <section className="replies">
@@ -62,25 +96,6 @@ const Comment = props => {
       </section>
     </div>
   )
-}
-
-const PreviousComment = props => {
-console.log(props.previous)
-let prev = props.previous.user_id
-let prevText = props.previous.text
-let id = props.previous._id
-
-return (
-  <section className="previous">
-  <pre>
-      <p><small>{id}({prev}) ---&gt; {id}({props.user})</small> </p>
-      <h4>{prev} Wrote: </h4>
-      <p>{prevText}</p>
-      <h4>===========================================================================================================================</h4>
-  </pre>      
-
-  </section>
-)
 }
 
 
