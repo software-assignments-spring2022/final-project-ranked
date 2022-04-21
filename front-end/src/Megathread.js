@@ -89,21 +89,16 @@ const Megathread = (props) => {
 
   return (
     <div className="Megathread">
-      {_.isEmpty(gamename) && <div className="header">
+      <div className="gameName">
+      {_.isEmpty(gamename) && <div>
         This game doesn't exist!
       </div>}
-      {!_.isEmpty(gamename) && <div className="header">
+      {!_.isEmpty(gamename) && <div>
         Game: {gamename}
       </div>}
-      {_.isEmpty(user) && <div className="header"> Log in first to post! </div> && !_.isEmpty(gamename)}
+      </div>
+      {_.isEmpty(user) && <div className="gameName"> Log in first to post! </div> && !_.isEmpty(gamename)}
       {!_.isEmpty(gamename) && !_.isEmpty(user) && <div className="selfPosting">
-        {wantComent && (
-          <Newpost
-            user={user}
-            setNewPost={setNewPost}
-            setWantComment={setWantComment}
-          />
-        )}
         <button
           className="btn"
           onClick={() => {
@@ -112,6 +107,13 @@ const Megathread = (props) => {
         >
           New Post
         </button>
+        {wantComent && (
+          <Newpost
+            user={user}
+            setNewPost={setNewPost}
+            setWantComment={setWantComment}
+          />
+        )}
       </div>}
       {!_.isEmpty(gamename) && _.isEmpty(data) &&
           <div className="header">
@@ -125,7 +127,7 @@ const Megathread = (props) => {
               key={item._id}
               onClick={() => handleButtonClick(item._id)}
             >
-              <Post key={item.post_id} user={props.user} post={item}></Post>
+              <Post key={item.post_id} user={user} post={item}></Post>
             </div>
           ))}
       </div>}

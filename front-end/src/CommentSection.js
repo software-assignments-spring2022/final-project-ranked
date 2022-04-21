@@ -33,7 +33,7 @@ const CommentSection = props => {
       {!_.isEmpty(data) &&
         data.map((item) => <Comment user={props.user} key={item._id} type={0} details={item} setNewComment={setNewComment} ></Comment>)}
       {_.isEmpty(props.user) && <div className="noUser">Login first to comment!</div>}
-      {!_.isEmpty(props.user) && <CommentForm user={props.user} replyTo={"root"} setNewComment={setNewComment} />}
+      {!_.isEmpty(props.user) && <div className="replyForm"><CommentForm user={props.user} replyTo={"root"} setNewComment={setNewComment}/></div>}
     </div>
   )
 }
