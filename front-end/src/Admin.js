@@ -100,8 +100,8 @@ const Admin = () => {
                     By: {eachRequest.requestedUsername}
                     <br></br>
                     Approval Status: <i><b>{eachRequest.approvalStatus}</b></i>
-                    {(eachRequest.approvalStatus == "pending") && <div className='Admin-eachRequestFormDiv'>
-                        <Form onSubmit={HandleRequest}>
+                    {(eachRequest.approvalStatus == "pending") && <div>
+                        <Form onSubmit={HandleRequest} className='Admin-eachRequestFormDiv'>
                             <Form.Check
                                 label='Approve'
                                 name='processRequestForm'
