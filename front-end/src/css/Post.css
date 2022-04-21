@@ -5,6 +5,9 @@
 .post-body {
   /* display: flex; */
 }
+.image{
+  width :auto 100%;
+}
 
 .post-body .details {
   margin: 20px;
