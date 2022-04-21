@@ -16,7 +16,7 @@ const Post = (props) => {
       .then((response) => {
         // success
         console.log(`Deleted post ${response.data.post_id}`)
-        navigate(`/megathread/${response.data.post_id}/`)
+        navigate(`/`)
       })
       .catch((err) => {
         // failure
