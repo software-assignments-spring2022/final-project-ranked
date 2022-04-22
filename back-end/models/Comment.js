@@ -20,6 +20,12 @@ const commentSchema = new Schema(
       required: true,
       default: 0
     },
+    likedUsers: {
+      type: [ mongoose.Schema.Types.ObjectId ],
+      ref: 'User',
+      required: true,
+      default: []
+    },
     replyTo: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Comment'

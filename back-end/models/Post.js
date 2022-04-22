@@ -11,7 +11,7 @@ const postSchema = new Schema(
         tags: [{type: String, required: true}],
         time: {type: Date, default: Date.now(), required: true},
         likes: {type: Number, default: 0, required: true},
-        // likedUsers: [],
+        likedUsers: {type: [mongoose.Schema.Types.ObjectId], ref: 'User', default: [], required: true},
         image: {type: String}
     }
 )

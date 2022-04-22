@@ -94,7 +94,7 @@ app.get("/games", async (req, res) => {
 // get all posts (for home page)
 app.get("/posts", async (req, res) => {
   try {
-    const allPosts = await Post.find({})
+    const allPosts = await Post.find({}).sort({likes: -1})
     res.json({
       home_posts: allPosts,
       status: "all good",
@@ -111,7 +111,7 @@ app.get("/posts", async (req, res) => {
 // get all posts for a specific game/ megathread
 app.get("/megathread/:gameId/posts", async (req, res) => {
   try {
-    const allPosts = await Post.find({ toMegathread: req.params.gameId })
+    const allPosts = await Post.find({ toMegathread: req.params.gameId }).sort({likes: -1})
     const game = await Megathread.findOne({ _id: req.params.gameId })
     res.json({
       game_posts: allPosts,
@@ -160,7 +160,7 @@ const populateReplies = async (arr) => {
 // get comments for a specific post (called on a subthread page)
 app.get("/:postId/comments", async (req, res) => {
   try {
-    let comments = await Comment.find({ postTo: req.params.postId })
+    let comments = await Comment.find({ postTo: req.params.postId }).sort({likes: -1})
     await populateReplies(comments)
     res.json({
       comments: comments,
@@ -203,13 +203,13 @@ app.post("/:id/comments/save", async (req, res) => {
   }
 })
 
-// helper function to get first level array of all replies to a comment and then delete them
+// helper function to push nested replies to a comment onto input array
 const arrayOfAllReplies = async (e) => {
   try {
     e.arr.push(e.comment_id)
     const tempArr = await Comment.find({ replyTo: e.comment_id })
     for (i of tempArr) {
-      await arrayOfAllReplies({arr: e.arr, comment_id: i._id})
+      await arrayOfAllReplies({ arr: e.arr, comment_id: i._id })
     }
   } catch (err) {
     throw err
@@ -222,10 +222,35 @@ app.post("/:id/comment/delete", async (req, res) => {
     const comment = await Comment.findOne({ _id: req.params.id })
     assert(comment.user_id == req.body.user.username)
     const arrComments = []
-    await arrayOfAllReplies({arr: arrComments, comment_id: comment._id})
-    await Comment.deleteMany({ _id:{$in:arrComments}})
+    await arrayOfAllReplies({ arr: arrComments, comment_id: comment._id })
+    await Comment.deleteMany({ _id: { $in: arrComments } })
     return res.json({
       success: `You deleted your comment`,
+      comment: comment,
+    })
+  } catch (err) {
+    return res.status(400).json({
+      error: err,
+      status: "failed to delete comment from database",
+    })
+  }
+})
+
+// like a comment
+app.post("/:id/comment/like", async (req, res) => {
+  try {
+    const comment = await Comment.findOne({ _id: req.params.id })
+    if(comment.likedUsers.indexOf(req.body.user._id) === -1){
+      comment.likedUsers.push(req.body.user._id)
+      comment.likes++
+    }
+    else{
+      comment.likedUsers.splice(comment.likedUsers.indexOf(req.body.user._id), 1)
+      comment.likes--
+    }
+    await Comment.updateOne({ _id: req.params.id }, { likedUsers: comment.likedUsers, likes: comment.likes })
+    return res.json({
+      success: `You liked or unliked a comment`,
       comment: comment,
     })
   } catch (err) {
@@ -290,16 +315,16 @@ app.post("/:id/post/delete", async (req, res) => {
   try {
     const post = await Post.findOne({ _id: req.params.id })
     assert(post.user_id == req.body.user.username)
-    const arrComments = await Comment.find({postTo: req.params.id})
+    const arrComments = await Comment.find({ postTo: req.params.id })
     const arrDeleteComments = []
-    for(i of arrComments){
-      await arrayOfAllReplies({arr: arrDeleteComments, comment_id: i._id})
+    for (i of arrComments) {
+      await arrayOfAllReplies({ arr: arrDeleteComments, comment_id: i._id })
     }
-    await Comment.deleteMany({ _id:{$in:arrDeleteComments}})
+    await Comment.deleteMany({ _id: { $in: arrDeleteComments } })
     await Post.deleteOne({ _id: req.params.id })
     return res.json({
       success: `You deleted your post`,
-      arrComments: arrDeleteComments
+      arrComments: arrDeleteComments,
     })
   } catch (err) {
     return res.status(400).json({
@@ -309,6 +334,30 @@ app.post("/:id/post/delete", async (req, res) => {
   }
 })
 
+// like a post
+app.post("/:id/post/like", async (req, res) => {
+  try {
+    const post = await Post.findOne({ _id: req.params.id })
+    if(post.likedUsers.indexOf(req.body.user._id) === -1){
+      post.likedUsers.push(req.body.user._id)
+      post.likes++
+    }
+    else{
+      post.likedUsers.splice(post.likedUsers.indexOf(req.body.user._id), 1)
+      post.likes--
+    }
+    await Post.updateOne({ _id: req.params.id }, { likedUsers: post.likedUsers, likes: post.likes })
+    return res.json({
+      success: `You liked or unliked a comment`,
+      post: post
+    })
+  } catch (err) {
+    return res.status(400).json({
+      error: err,
+      status: "failed to delete comment from database",
+    })
+  }
+})
 
 // handle thread request submitted by user
 app.post("/threadrequest", (req, res) => {
@@ -354,7 +403,8 @@ app.post("/threadrequest", (req, res) => {
         console.log(err)
       } else {
         return res.json({
-          success: "Request submitted! You can check the status of your request in your Account page.",
+          success:
+            "Request submitted! You can check the status of your request in your Account page.",
         })
       }
     })
@@ -568,38 +618,6 @@ app.post("/admin", async (req, res) => {
         status: "failed to save megathread requested",
       })
     }
-    // find the matching request based on ID
-
-    // ThreadRequest.findOne({_id: inputRequestID}, (err, result) => {
-    //     // something wrong while quering the DB
-    //     if(err){
-    //         console.log(err)
-    //     }
-    //     else{
-    //         const matchedRequest = result
-    //         // update request's approval status based on admin's decision
-    //         if(matchedRequest.approvalStatus === "pending"){
-    //             matchedRequest.approvalStatus = adminDecision ? "Approved" : "Rejected"
-    //             await matchedRequest.save()
-    //             if(matchedRequest.approvalStatus == "Approved"){
-    //                 const newMegathread = new Megathread({
-    //                     gamename: gameName,
-    //                     moderators: []
-    //                 })
-    //                 await newMegathread.save()
-    //             }
-    //             return res.json({
-    //                 success: "Approval status updated!"
-    //             })
-    //         }
-    //         // this request has been handled already
-    //         else{
-    //             return res.json({
-    //                 alreadyProcessed: "This request has already been processed!"
-    //             })
-    //         }
-    //     }
-    // })
   }
 })
 
@@ -623,30 +641,32 @@ app.post("/account", (req, res) => {
 
 // edit profile photo
 app.post("/profile", async (req, res) => {
-    const username = req.body.username
-    const incomingImg = req.body.photo
+  const username = req.body.username
+  const incomingImg = req.body.photo
 
-    if(incomingImg.length === 0){
-        return res.json({
-            missing: "Please select an image first!"
-        })
+  if (incomingImg.length === 0) {
+    return res.json({
+      missing: "Please select an image first!",
+    })
+  } else {
+    try {
+      await User.updateOne({ username: username }, { photo: incomingImg })
+      await Post.updateMany({ user_id: username }, { user_image: incomingImg })
+      await Comment.updateMany(
+        { user_id: username },
+        { user_image: incomingImg }
+      )
+      return res.json({
+        success: "Profile image updated successfully!",
+      })
+    } catch (err) {
+      console.error(err)
+      return res.status(400).json({
+        error: err,
+        status: "failed to save the photo to the database",
+      })
     }
-    else{
-        try {
-            await User.updateOne({ username: username }, { photo: incomingImg })
-            await Post.updateMany({user_id: username}, {user_image: incomingImg})
-            await Comment.updateMany({user_id: username}, {user_image: incomingImg})
-            return res.json({
-                success: "Profile image updated successfully!",
-            })
-        } catch (err) {
-            console.error(err)
-            return res.status(400).json({
-                error: err,
-                status: "failed to save the photo to the database",
-            })
-        }
-    }
+  }
 })
 
 // export the express app created to make it available to other modules
