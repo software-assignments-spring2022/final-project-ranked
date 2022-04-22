@@ -7,25 +7,27 @@ const FAQ = () => {
             <main className='FAQ'>
                 <h3>Frequently Asked Questions</h3>
                 <div className='FAQ-question1Div'>
-                    <em>Q: How do I create a new game thread?</em>
-                    <p>A: You can submit your request to the Ranked administrators by filling out the request 
-                    form on the <Link to='/threadrequest'>Request a Thread</Link> page in order to create a 
+                    <b><em>Q: How do I create a new game thread?</em></b>
+                    <p>A: You can submit your request to the Ranked administrators by filling out the 
+                    form on the <Link to='/threadrequest'>Request Thread</Link> page in order to create a 
                     new game thread for the game that you and your friends are interested in.</p>
                 </div>
                 <div className='FAQ-questionXDiv'>
-                    <em>Q: How do I create an account?</em>
-                    <p>A: To register an Ranked account, you can click the hamburger menu in the top right 
-                    corner and click <b>Register</b>.</p>
+                    <b><em>Q: How do I check the status of my submitted thread requests?</em></b>
+                    <p>A: Once your request has been submitted, you can check the approval status 
+                    of your request by clicking the <button className='FAQ-button1'>Check Requests Status</button> button
+                    in your <Link to='/account'>Account</Link> page.
+                    </p>
                 </div>
                 <div className='FAQ-questionXDiv'>
-                    <em>Q: How do I change my account password?</em>
-                    <p>A: To change your Ranked account password, you can simply click the <b>Reset Password</b> button 
-                    in your <Link to='/account'>Account</Link> page.</p>
+                    <b><em>Q: How do I create a new Ranked account?</em></b>
+                    <p>A: To register a Ranked account, you can click the hamburger menu in the top right 
+                    corner and click <Link to='/register'>Login/Register</Link>.</p>
                 </div>
                 <div className='FAQ-questionXDiv'>
-                    <em>Q: How do I delete my account?</em>
-                    <p>A: To deactivate your Ranked account, you can click the <b>Deactivate Account</b> button 
-                    in your <Link to='/account'>Account</Link> page.</p>
+                    <b><em>Q: How do I change my profile picture?</em></b>
+                    <p>A: To change your default Ranked profile picture, you can click the <button className='FAQ-button2'>Change Profile Picture</button> button 
+                    in your <Link to='/account'>Account</Link> page and upload an image.</p>
                 </div>
             </main>
         </>

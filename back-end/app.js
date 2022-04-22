@@ -322,7 +322,7 @@ app.post("/threadrequest", (req, res) => {
         console.log(err)
       } else {
         return res.json({
-          success: "Request submitted! We will get back to you ASAP!",
+          success: "Request submitted! You can check the status of your request in your Account page.",
         })
       }
     })
@@ -350,7 +350,7 @@ app.post("/register", (req, res) => {
   const password = req.body.password
   const email = req.body.email.toLowerCase()
   //default profile photo
-  const photo = "123"
+  const photo = process.env.DEFAULT_PROFILE_IMG
 
   // missing essential info from the register form
   if (!username.trim() || !email.trim() || !password) {
@@ -443,7 +443,7 @@ app.post("/login", (req, res) => {
             console.log(err)
           }
           // input password does not match with what we have on file
-          else if (result == false) {
+          else if (result === false) {
             return res.json({
               incorrect: "Password incorrect!",
             })
@@ -591,23 +591,28 @@ app.post("/account", (req, res) => {
 
 // edit profile photo
 app.post("/profile", async (req, res) => {
-  try {
-    await User.updateOne(
-      { username: req.body.username },
-      {
-        photo: req.body.photo,
-      }
-    )
-    return res.json({
-      success: `Profile picture edited`,
-    })
-  } catch (err) {
-    console.error(err)
-    return res.status(400).json({
-      error: err,
-      status: "failed to save the photo to the database",
-    })
-  }
+    const username = req.body.username
+    const incomingImg = req.body.photo
+
+    if(incomingImg.length === 0){
+        return res.json({
+            missing: "Please select an image first!"
+        })
+    }
+    else{
+        try {
+            await User.updateOne({ username: username }, { photo: incomingImg })
+            return res.json({
+                success: "Profile image updated successfully!",
+            })
+        } catch (err) {
+            console.error(err)
+            return res.status(400).json({
+                error: err,
+                status: "failed to save the photo to the database",
+            })
+        }
+    }
 })
 
 // export the express app created to make it available to other modules

@@ -7,7 +7,6 @@ import axios from 'axios'
 
 const ThreadRequest = () => {
     const jwtToken = localStorage.getItem('token')
-    // console.log(`JWT token from ThreadRequest page: ${jwtToken}`)
     const [gameName, setGameName] = useState("")
     const [reason, setReason] = useState("")
     const [question1, setQuestion1] = useState("")
