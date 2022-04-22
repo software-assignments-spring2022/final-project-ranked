@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom"
 import axios from "axios"
 import Button from "react-bootstrap/Button"
 import Form from "react-bootstrap/Form"
-import FileBase64 from 'react-file-base64'
 
 const Newpost = (props) => {
   // start a state varaible with a blank array

@@ -1,14 +1,14 @@
 body{
-    margin: auto;
+  margin: auto;
 }
 
 .Account-image{
-    display: block;
-    border-radius: 50%;
-    width: 150px;
-    height: 150px;
-    margin: auto;
-    margin-top: 20px;
+  display: block;
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  margin: auto;
+  margin-top: 20px;
 }
 
 .Account-tabDiv {
@@ -16,6 +16,7 @@ body{
   position: relative;
   left: 20px;
   top: 20px;
+  width: 225px;
 }
 
 .Account-tabDiv > div {
@@ -28,15 +29,15 @@ body{
 }
 
 .Account-adminTab {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .Account-adminTab > p{
-    color: black;
+  color: black;
 }
 
 .Account-infoTab{
-    background-color: grey;
+  background-color: grey;
 }
 
 .Account-infoDiv {
@@ -58,22 +59,22 @@ body{
   text-align: center;
 }
 
-button{
-    display: block;
-    width: 200px;
-    height: 30px;
-    margin: auto;
-    margin-top: 10px;
-    border-radius: 10px;
-    transition: 600ms;
-}
-
-form{
-  display: block;
+.Account-checkRequestBtn, .Account-changePicBtn{
   width: 200px;
-  height: 30px;
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
   margin-top: 10px;
   border-radius: 10px;
-  transition: 600ms;
+}
+
+.Account-profileImgForm{
+  width: 200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.Account-profileImgFormBtn{
+  position: relative;
+  left: 70px;
+  margin-top: -5px;
 }

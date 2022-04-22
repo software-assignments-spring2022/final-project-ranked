@@ -5,7 +5,7 @@ body{
 .Login-tabDiv{
     display: flex;
     position: relative;
-    left: 20px;
+    left: 21px;
     top: 20px;
     width: 225px;
 }
@@ -61,5 +61,6 @@ body{
     top: 80px;
     left: 120px;
     width: 80px;
+    height: 30px;
     line-height: 0px;
 }
