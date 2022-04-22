@@ -41,6 +41,14 @@
     margin-left: 10%;
 }
 
+.deleteButton {
+  margin-left: 70%;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  font-family: monospace;
+  background-color: #418ca3a4;
+}
+
 .replyForm {
   margin-left: auto;
   margin-right: auto;

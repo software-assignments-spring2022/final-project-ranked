@@ -290,11 +290,16 @@ app.post("/:id/post/delete", async (req, res) => {
   try {
     const post = await Post.findOne({ _id: req.params.id })
     assert(post.user_id == req.body.user.username)
-    const post_id = post.toMegathread._id
+    const arrComments = await Comment.find({postTo: req.params.id})
+    const arrDeleteComments = []
+    for(i of arrComments){
+      await arrayOfAllReplies({arr: arrDeleteComments, comment_id: i._id})
+    }
+    await Comment.deleteMany({ _id:{$in:arrDeleteComments}})
     await Post.deleteOne({ _id: req.params.id })
     return res.json({
       success: `You deleted your post`,
-      post_id: post_id,
+      arrComments: arrDeleteComments
     })
   } catch (err) {
     return res.status(400).json({
