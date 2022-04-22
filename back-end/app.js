@@ -634,6 +634,8 @@ app.post("/profile", async (req, res) => {
     else{
         try {
             await User.updateOne({ username: username }, { photo: incomingImg })
+            await Post.updateMany({user_id: username}, {user_image: incomingImg})
+            await Comment.updateMany({user_id: username}, {user_image: incomingImg})
             return res.json({
                 success: "Profile image updated successfully!",
             })
