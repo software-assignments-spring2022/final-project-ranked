@@ -182,6 +182,10 @@ describe("Posts", () => {
         })
     })
   })
+
+  /**
+   * test the DELETE /:id/post/delete route
+   */
 })
 
 // a group of tests related to all the routes that give back comments or post comments

@@ -40,7 +40,6 @@ const Comment = props => {
     return ans
   }
   */
-  const indent = "      "
 
   const handleClick = () => {
     setwantReply(!wantReply)
@@ -69,20 +68,21 @@ const Comment = props => {
 
       {props.previous ? <PreviousComment id={props.details.id} user={props.details.user_id} previous={props.previous} /> : <br></br>}
 
+        <section className="id-time">
+          <p><a id={props.details._id}>id: {props.details._id}</a></p>
+          <p>time: {props.details.time}</p>
+        </section>
         <section className="user">
           {props.user.username === props.details.user_id && <button onClick={handleDelete}> delete </button>}
-          <pre>
-            <p>{indent}<a id={props.details._id}>id: {props.details._id}</a></p>
-            <p>{indent}user: {props.details.user_id}</p>
-            <p>{indent}time: {props.details.time}</p>
-          </pre>
+          <div className="user-info">
+            <img className='user-image' src={props.details.user_image} alt='user profile image'></img>
+            <p className='userId'>user: {props.details.user_id}</p>
+          </div>
         </section>
         
         <section className="body">
-          <pre>
-            <p>{indent}{props.details.text}</p>
-            {/* <p>{indent}<LikeButton props={props}></LikeButton>likes: {props.details.likes}</p> */}
-          </pre>
+            <pre>{props.details.text}</pre>
+            {/* <p><LikeButton props={props}></LikeButton>likes: {props.details.likes}</p> */}
         </section>
       </div>
       <section className="replyform">

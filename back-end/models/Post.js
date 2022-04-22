@@ -5,6 +5,7 @@ const postSchema = new Schema(
     {
         toMegathread: {type: mongoose.Schema.Types.ObjectId, ref: 'Megathread', required: true},
         user_id: {type: String, required: true},
+        user_image: {type: String, required: true},
         title: {type: String, required: true},
         body: {type: String, required: true},
         tags: [{type: String, required: true}],
