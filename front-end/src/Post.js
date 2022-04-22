@@ -15,7 +15,7 @@ const Post = (props) => {
       })
       .then((response) => {
         // success
-        console.log(`Deleted post ${response.data.post_id}`)
+        console.log(response.data.arrComments);
         navigate(`/`)
       })
       .catch((err) => {
@@ -26,12 +26,15 @@ const Post = (props) => {
 
   return (
     <div className="Post">
-      {props.user.username === props.post.user_id && <button onClick={handleDelete}> delete </button>}
-      <div className="header"> {props.post.title} </div>
+      {props.user.username === props.post.user_id && <button className="Post-deleteButton" onClick={handleDelete}> delete </button>}
+      <div className="Post-header"> {props.post.title} </div>
       <section className="post-body">
         {!_.isEmpty(props.post.image) && <img alt="an attached file" src={props.post.image} />}
         <div className="details">
-          <p>user: {props.post.user_id}</p>
+          <div className="user-info">
+            <img className='Post-user-image' src={props.post.user_image} alt='user profile image'></img>
+            <p>user: {props.post.user_id}</p>
+          </div>
           <p>{props.post.body}</p>
           <section className="tags">
             {props.post.tags &&

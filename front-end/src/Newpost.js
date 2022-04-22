@@ -37,7 +37,7 @@ const Newpost = (props) => {
         body: postContent,
         photo: photo,
         tags: tags,
-        username: props.user.username
+        user: props.user
         })
     .then(res => {
         if(res.data.missing){

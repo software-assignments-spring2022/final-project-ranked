@@ -2,15 +2,20 @@
   text-align: left;
 }
 
-.post-body {
-  /* display: flex; */
+.Post-header {
+  font-family: monospace;
+  font-size: 40px;
+  text-align: center;
+  font-weight: bold;
 }
+
 .image{
   width :auto 100%;
 }
 
 .post-body .details {
   margin: 20px;
+  font-family: monospace;
 }
 
 .post-body .details p {
@@ -21,4 +26,23 @@
 .tags {
   display: flex;
   flex-direction: row;
+}
+
+.Post-deleteButton {
+  margin-left: 70%;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  border-radius: 10px;
+  font-family: monospace;
+  background-color: #ff6000;
+}
+
+.Post-user-image {
+  display: block;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  margin: 0px;
+  margin-top: 0px;
+  margin-right: 10px;
 }

@@ -74,6 +74,7 @@ app.get(
   }
 )
 
+// get all games (called on home page)
 app.get("/games", async (req, res) => {
   try {
     const allGames = await Megathread.find({})
@@ -90,6 +91,7 @@ app.get("/games", async (req, res) => {
   }
 })
 
+// get all posts (for home page)
 app.get("/posts", async (req, res) => {
   try {
     const allPosts = await Post.find({})
@@ -106,6 +108,7 @@ app.get("/posts", async (req, res) => {
   }
 })
 
+// get all posts for a specific game/ megathread
 app.get("/megathread/:gameId/posts", async (req, res) => {
   try {
     const allPosts = await Post.find({ toMegathread: req.params.gameId })
@@ -124,6 +127,7 @@ app.get("/megathread/:gameId/posts", async (req, res) => {
   }
 })
 
+// get the post content of a specific post
 app.get("/:postId/post", async (req, res) => {
   try {
     const thisPost = await Post.findOne({ _id: req.params.postId })
@@ -140,6 +144,7 @@ app.get("/:postId/post", async (req, res) => {
   }
 })
 
+// helper function to fill in replies array of a comment
 const populateReplies = async (arr) => {
   try {
     for (i of arr) {
@@ -152,6 +157,7 @@ const populateReplies = async (arr) => {
   }
 }
 
+// get comments for a specific post (called on a subthread page)
 app.get("/:postId/comments", async (req, res) => {
   try {
     let comments = await Comment.find({ postTo: req.params.postId })
@@ -169,6 +175,7 @@ app.get("/:postId/comments", async (req, res) => {
   }
 })
 
+// post a comment
 app.post("/:id/comments/save", async (req, res) => {
   try {
     // try to save the comment to the database
@@ -176,6 +183,7 @@ app.post("/:id/comments/save", async (req, res) => {
     console.assert(!_.isEmpty(req.body.comment))
     let newComment = new Comment({
       user_id: req.body.user.username,
+      user_image: req.body.user.photo,
       text: req.body.comment,
     })
     req.body.replyTo == "root"
@@ -195,11 +203,27 @@ app.post("/:id/comments/save", async (req, res) => {
   }
 })
 
+// helper function to get first level array of all replies to a comment and then delete them
+const arrayOfAllReplies = async (e) => {
+  try {
+    e.arr.push(e.comment_id)
+    const tempArr = await Comment.find({ replyTo: e.comment_id })
+    for (i of tempArr) {
+      await arrayOfAllReplies({arr: e.arr, comment_id: i._id})
+    }
+  } catch (err) {
+    throw err
+  }
+}
+
+// delete a comment
 app.post("/:id/comment/delete", async (req, res) => {
   try {
     const comment = await Comment.findOne({ _id: req.params.id })
     assert(comment.user_id == req.body.user.username)
-    await Comment.deleteOne({ _id: req.params.id })
+    const arrComments = []
+    await arrayOfAllReplies({arr: arrComments, comment_id: comment._id})
+    await Comment.deleteMany({ _id:{$in:arrComments}})
     return res.json({
       success: `You deleted your comment`,
       comment: comment,
@@ -232,13 +256,15 @@ app.post("/:id/comment/delete", async (req, res) => {
 //     console.log("Failed: Could not find comment.")
 // })
 
+// make a new post
 app.post(`/megathread/:gameId/save`, async (req, res) => {
   try {
     // try to save the comment to the database
     // console.assert(!_.isEmpty(req.body.user))
     // console.assert(!_.isEmpty(req.body.comment))
     let newPost = new Post({
-      user_id: req.body.username,
+      user_id: req.body.user.username,
+      user_image: req.body.user.photo,
       title: req.body.title,
       body: req.body.body,
       tags: req.body.tags,
@@ -259,15 +285,21 @@ app.post(`/megathread/:gameId/save`, async (req, res) => {
   }
 })
 
+// delete a post you made
 app.post("/:id/post/delete", async (req, res) => {
   try {
     const post = await Post.findOne({ _id: req.params.id })
     assert(post.user_id == req.body.user.username)
-    const post_id = post.toMegathread._id
+    const arrComments = await Comment.find({postTo: req.params.id})
+    const arrDeleteComments = []
+    for(i of arrComments){
+      await arrayOfAllReplies({arr: arrDeleteComments, comment_id: i._id})
+    }
+    await Comment.deleteMany({ _id:{$in:arrDeleteComments}})
     await Post.deleteOne({ _id: req.params.id })
     return res.json({
       success: `You deleted your post`,
-      post_id: post_id,
+      arrComments: arrDeleteComments
     })
   } catch (err) {
     return res.status(400).json({

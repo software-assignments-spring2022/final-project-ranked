@@ -7,6 +7,10 @@ const commentSchema = new Schema(
       type: String,
       required: true
     },
+    user_image: {
+      type: String,
+      required: true
+    },
     text: {
       type: String,
       required: true
