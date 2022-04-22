@@ -1,5 +1,5 @@
 import "./css/Newpost.css"
-import React, { useState, useEffect }from "react";
+import React, { useState, useEffect }from "react"
 import { useParams } from "react-router-dom"
 import axios from "axios"
 import Button from "react-bootstrap/Button"
@@ -16,16 +16,16 @@ const Newpost = (props) => {
 
   const convertToBase64 = (file) => {
     return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
+      const fileReader = new FileReader()
+      fileReader.readAsDataURL(file)
       fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
+        resolve(fileReader.result)
+      }
       fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
+        reject(error)
+      }
+    })
+  }
 
 
   const handleSubmit = (e) => {
@@ -60,9 +60,9 @@ const Newpost = (props) => {
 
   // today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + today.getHours() + ':' + '  ' + today.getMinutes() + ':' + today.getSeconds()  
   const handleFileUpload = async (e) => {
-    const file = e.target.files[0];
-    const base64 = await convertToBase64(file);
-    setPhoto(base64);
+    const file = e.target.files[0]
+    const base64 = await convertToBase64(file)
+    setPhoto(base64)
   }
 
   const handleForm = e =>{

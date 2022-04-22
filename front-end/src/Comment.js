@@ -10,6 +10,7 @@ import _ from 'lodash'
 
 const Comment = props => {
   const [wantReply, setwantReply] = React.useState(false)
+  const [likes, setLikes] = React.useState(props.details.likes)
 
   const PreviousComment = props => {
     let prev = props.previous.user_id
@@ -61,6 +62,22 @@ const Comment = props => {
       })
   }
 
+  const handleLike = () => {
+    axios
+      .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/${props.details._id}/comment/like`, {
+        user: props.user
+      })
+      .then((response) => {
+        // success
+        console.log(`Liked or Unliked comment ${response.data.comment}`)
+        setLikes(response.data.comment.likes)
+      })
+      .catch((err) => {
+        // failure
+        console.log(`Received server error: ${err}`)
+      })
+  }
+
   return (
     <div className="Comment">
 
@@ -82,7 +99,11 @@ const Comment = props => {
         
         <section className="body">
             <pre>{props.details.text}</pre>
-            {/* <p><LikeButton props={props}></LikeButton>likes: {props.details.likes}</p> */}
+        </section>
+
+        <section className="like">
+          <button className="likeButton" onClick={handleLike}> LIKE </button>
+          <div className="likes"> {likes} </div>
         </section>
       </div>
       <section className="replyform">

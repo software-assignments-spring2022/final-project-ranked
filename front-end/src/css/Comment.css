@@ -59,3 +59,17 @@
   margin: auto;
   padding: 5px;
 }
+
+.like {
+  display: flex;
+  flex-direction: row;
+}
+
+.likeButton {
+  margin-left: 5%;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  border-radius: 10px;
+  font-family: monospace;
+  background-color: #a34841;
+}
