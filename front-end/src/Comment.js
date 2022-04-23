@@ -20,7 +20,7 @@ const Comment = props => {
     return (
       <section className="previous">
       <pre>
-          <p><small>{id}({prev}) ---&gt; {id}({props.user})</small> </p>
+          <p><small>({prev}) ---&gt; ({props.user})</small> </p>
           <h4>{prev} Wrote: </h4>
           <p>{prevText}</p>
           <h4>===========================================================================================================================</h4>
