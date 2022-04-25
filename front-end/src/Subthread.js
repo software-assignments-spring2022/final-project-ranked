@@ -10,6 +10,7 @@ const Subthread = (props) => {
   const jwtToken = localStorage.getItem("token")
   const [user, setUser] = useState({})
   const [data, setData] = useState([])
+  const [loaded, setLoaded] = useState(false)
 
   // from the website link
   const { gameId } = useParams()
@@ -17,6 +18,7 @@ const Subthread = (props) => {
 
   //   the following side-effect will be called once upon initial render
   useEffect(() => {
+    setLoaded(false)
     window.scrollTo(0, 0)
     // fetching post data from backend
     console.log(`fetching post id=${postId}...`)
@@ -47,12 +49,13 @@ const Subthread = (props) => {
       .catch((err) => {
         if (err) console.log(`Log-in first if you want to comment!`)
       })
+    setLoaded(true)
   }, [postId, jwtToken])
   
   return (
     <div className="Subthread">
       {/* <button className="back-button" onClick={goBack}> Back </button> */}
-      {_.isEmpty(data) && <div className="header"> This post doesn't exist! </div>}
+      {_.isEmpty(data) && <div className="header"> This post doesn't exist! </div> && loaded}
       {!_.isEmpty(data) && <Post user={user} post={data}></Post>}
       {!_.isEmpty(data) && <div className="CommentSection">
         <CommentSection user={user} gameId={gameId} postId={postId} />

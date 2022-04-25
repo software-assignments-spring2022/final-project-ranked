@@ -20,12 +20,14 @@ const Megathread = (props) => {
   const [wantComent, setWantComment] = useState(false)
   const [newPost, setNewPost] = useState({})
   const [gamename, setGamename] = useState("")
+  const [loaded, setLoaded] = useState(false)
 
   const { gameId } = useParams()
 
   // the following side-effect will be called once upon initial render
   useEffect(() => {
     // fetch post data from backend
+    setLoaded(false)
     console.log(`fetching posts for megathread id=${gameId}...`)
     axios
       .get(
@@ -57,6 +59,7 @@ const Megathread = (props) => {
       .catch((err) => {
         if (err) console.log(`Log-in first if you want to post!`)
       })
+      setLoaded(true)
   }, [newPost, gameId, jwtToken])
 
   // const {
@@ -90,9 +93,7 @@ const Megathread = (props) => {
   return (
     <div className="Megathread">
       <div className="gameName">
-      {_.isEmpty(gamename) && <div>
-        This game doesn't exist!
-      </div>}
+      {_.isEmpty(gamename) && <div> This game doesn't exist! </div> && loaded}
       {!_.isEmpty(gamename) && <div>
         Game: {gamename}
       </div>}

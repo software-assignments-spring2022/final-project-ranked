@@ -27,19 +27,24 @@ const Post = (props) => {
   }
 
   const handleLike = () => {
-    axios
-      .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/${props.post._id}/post/like`, {
-        user: props.user
-      })
-      .then((response) => {
-        // success
-        console.log(`Liked or Unliked post ${response.data.post}`)
-        setLikes(response.data.post.likes)
-      })
-      .catch((err) => {
-        // failure
-        console.log(`Received server error: ${err}`)
-      })
+    if(!_.isEmpty(props.user)){
+      axios
+        .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/${props.post._id}/post/like`, {
+          user: props.user
+        })
+        .then((response) => {
+          // success
+          console.log(`Liked or Unliked comment ${response.data.post}`)
+          setLikes(response.data.post.likes)
+        })
+        .catch((err) => {
+          // failure
+          console.log(`Received server error: ${err}`)
+        })
+    }
+    else{
+      alert(`log in before liking!`)
+    }
   }
 
   return (
