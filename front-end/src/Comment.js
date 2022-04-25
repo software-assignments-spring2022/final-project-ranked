@@ -20,7 +20,7 @@ const Comment = props => {
     return (
       <section className="previous">
       <pre>
-          <p><small>({prev}) ---&gt; ({props.user})</small> </p>
+          <p><small>{id}({prev}) ---&gt; {props.id}({props.user})</small> </p>
           <h4>{prev} Wrote: </h4>
           <p>{prevText}</p>
           <h4>===========================================================================================================================</h4>
@@ -83,7 +83,7 @@ const Comment = props => {
 
       <div className="Comment-body" onClick={handleClick}>
 
-      {props.previous ? <PreviousComment id={props.details.id} user={props.details.user_id} previous={props.previous} /> : <br></br>}
+      {props.previous ? <PreviousComment id={props.details._id} user={props.details.user_id} previous={props.previous} /> : <br></br>}
 
       {props.user.username === props.details.user_id && <button className="deleteButton" onClick={handleDelete}> delete </button>}
         <section className="id-time">

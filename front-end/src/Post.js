@@ -50,7 +50,7 @@ const Post = (props) => {
         {!_.isEmpty(props.post.image) && <img alt="an attached file" src={props.post.image} />}
         <div className="details">
           <div className="user-info">
-            <img className='Post-user-image' src={props.post.user_image} alt='user profile image'></img>
+            <img className='Post-user-image' src={props.post.user_image} alt=''></img><br></br>
             <p>user: {props.post.user_id}</p>
           </div>
           <p>{props.post.body}</p>
