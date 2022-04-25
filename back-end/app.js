@@ -242,11 +242,11 @@ app.post("/:id/comment/like", async (req, res) => {
     const comment = await Comment.findOne({ _id: req.params.id })
     if(comment.likedUsers.indexOf(req.body.user._id) === -1){
       comment.likedUsers.push(req.body.user._id)
-      comment.likes++
+      comment.likes = comment.likedUsers.length
     }
     else{
       comment.likedUsers.splice(comment.likedUsers.indexOf(req.body.user._id), 1)
-      comment.likes--
+      comment.likes = comment.likedUsers.length
     }
     await Comment.updateOne({ _id: req.params.id }, { likedUsers: comment.likedUsers, likes: comment.likes })
     return res.json({
@@ -340,11 +340,11 @@ app.post("/:id/post/like", async (req, res) => {
     const post = await Post.findOne({ _id: req.params.id })
     if(post.likedUsers.indexOf(req.body.user._id) === -1){
       post.likedUsers.push(req.body.user._id)
-      post.likes++
+      post.likes = post.likedUsers.length
     }
     else{
       post.likedUsers.splice(post.likedUsers.indexOf(req.body.user._id), 1)
-      post.likes--
+      post.likes = post.likedUsers.length
     }
     await Post.updateOne({ _id: req.params.id }, { likedUsers: post.likedUsers, likes: post.likes })
     return res.json({

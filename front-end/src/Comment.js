@@ -63,19 +63,24 @@ const Comment = props => {
   }
 
   const handleLike = () => {
-    axios
-      .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/${props.details._id}/comment/like`, {
-        user: props.user
-      })
-      .then((response) => {
-        // success
-        console.log(`Liked or Unliked comment ${response.data.comment}`)
-        setLikes(response.data.comment.likes)
-      })
-      .catch((err) => {
-        // failure
-        console.log(`Received server error: ${err}`)
-      })
+    if(!_.isEmpty(props.user)){
+      axios
+        .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/${props.details._id}/comment/like`, {
+          user: props.user
+        })
+        .then((response) => {
+          // success
+          console.log(`Liked or Unliked comment ${response.data.comment}`)
+          setLikes(response.data.comment.likes)
+        })
+        .catch((err) => {
+          // failure
+          console.log(`Received server error: ${err}`)
+        })
+    }
+    else{
+      alert(`log in before liking!`)
+    }
   }
 
   return (
