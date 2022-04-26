@@ -6,6 +6,7 @@ import "./css/CommentSection.css"
 // import Button from "react-bootstrap/esm/Button"
 import CommentForm from "./CommentSubmitForm"
 import _ from 'lodash'
+import Moment from 'react-moment'
 
 
 const Comment = props => {
@@ -62,6 +63,7 @@ const Comment = props => {
       })
   }
 
+
   const handleLike = () => {
     if(!_.isEmpty(props.user)){
       axios
@@ -74,7 +76,7 @@ const Comment = props => {
           setLikes(response.data.comment.likes)
         })
         .catch((err) => {
-          // failure
+          // failure <p>time: {props.details.time}</p>
           console.log(`Received server error: ${err}`)
         })
     }
@@ -93,7 +95,7 @@ const Comment = props => {
       {props.user.username === props.details.user_id && <button className="deleteButton" onClick={handleDelete}> delete </button>}
         <section className="id-time">
           <p><a id={props.details._id}>id: {props.details._id}</a></p>
-          <p>time: {props.details.time}</p>
+          <Moment interval={30000}>{props.details.time}</Moment>
         </section>
         <section className="user">
           <div className="user-info">
