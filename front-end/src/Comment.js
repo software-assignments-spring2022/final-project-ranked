@@ -93,15 +93,12 @@ const Comment = props => {
       {props.previous ? <PreviousComment id={props.details._id} user={props.details.user_id} previous={props.previous} /> : <br></br>}
 
       {props.user.username === props.details.user_id && <button className="deleteButton" onClick={handleDelete}> delete </button>}
-        <section className="id-time">
-          <p><a id={props.details._id}>id: {props.details._id}</a></p>
-          <p>   Commented:   </p>
-          <Moment fromNow>{props.details.time}</Moment>
-        </section>
         <section className="user">
           <div className="user-info">
             <img className='user-image' src={props.details.user_image} alt='user profile image'></img>
             <p className='userId'>user: {props.details.user_id}</p>
+            <p>&nbsp;Commented:&nbsp;</p>
+          <Moment fromNow>{props.details.time}</Moment>
           </div>
         </section>
         
