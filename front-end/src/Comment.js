@@ -95,7 +95,8 @@ const Comment = props => {
       {props.user.username === props.details.user_id && <button className="deleteButton" onClick={handleDelete}> delete </button>}
         <section className="id-time">
           <p><a id={props.details._id}>id: {props.details._id}</a></p>
-          <Moment interval={30000}>{props.details.time}</Moment>
+          <p>   Commented:   </p>
+          <Moment fromNow>{props.details.time}</Moment>
         </section>
         <section className="user">
           <div className="user-info">
