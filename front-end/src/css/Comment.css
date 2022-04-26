@@ -41,6 +41,11 @@
     margin-left: 10%;
 }
 
+.id-time{
+  display: flex;
+  flex-direction: row;
+}
+
 .deleteButton {
   margin-left: 70%;
   margin-bottom: 10px;
