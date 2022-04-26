@@ -431,8 +431,6 @@ app.post("/register", (req, res) => {
   const username = req.body.username.toLowerCase()
   const password = req.body.password
   const email = req.body.email.toLowerCase()
-  //default profile photo
-  const photo = process.env.DEFAULT_PROFILE_IMG
 
   // missing essential info from the register form
   if (!username.trim() || !email.trim() || !password) {
@@ -470,8 +468,7 @@ app.post("/register", (req, res) => {
               username: username,
               password: hashedPassword,
               email: email,
-              joinDate: year + "-" + month + "-" + date,
-              photo: photo,
+              joinDate: year + "-" + month + "-" + date
             })
 
             // try to save this new user object into DB
