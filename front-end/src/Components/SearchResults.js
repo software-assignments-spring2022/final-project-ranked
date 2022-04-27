@@ -41,19 +41,23 @@ function List(props) {
         }
     })
     // tags are pulled from all created posts
-    // const filteredPosts = props.allPosts.filter((post) => {
-    //     if (props.input === '') {
-    //         // return nothing when nothing has been typed into search bar
-    //         console.log("empty")
-    //     }
-    //     else {
-    //         // this should index through available tags given a post and return to main
-    //         // return post.tags.toLowerCase().includes(props.input)
-    //     }
-    // })
+    const filteredPosts = props.allPosts.filter((post) => {
+        if (props.input === '') {
+            // return nothing when nothing has been typed into search bar
+            console.log("empty")
+        }
+        else {
+            // this should index through available tags given a post and return to main
+            return post.title.toLowerCase().includes(props.input)
+        }
+    })
 
     const handleClick = (e) => {
         navigate(`/megathread/${e._id}`)
+    }
+
+    const handleClick2 = (e) => {
+        navigate(`/megathread/${e.megathread}/subthread/${e._id}`)
     }
 
     return (
@@ -70,14 +74,14 @@ function List(props) {
                 // return <a> link to the megathread housing this game 
                 <li key={item._id} onClick={() => handleClick({_id: item._id})} className="search-result">{item.gamename}</li>
             ))}
-            {/* {filteredPosts.map((item) => (
+            {filteredPosts.map((item) => (
                 // with tags.json, feed back relevant posts
                 // may need to index thru the array of posts
 
                 // original code
                 // this returns the game-name,posts
-                <li key={item._id} onClick={() => handleClick({_id: item._id})} className="search-result">{item.title}</li>
-            ))} */}
+                <li key={item._id} onClick={() => handleClick2({_id: item._id, megathread: item.toMegathread})} className="search-result">{item.title}</li>
+            ))}
         </ul>
     )
 }
