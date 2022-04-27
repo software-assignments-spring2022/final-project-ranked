@@ -559,7 +559,9 @@ app.get("/admin", (req, res) => {
 app.get("/search", async (req, res) => {
   try {
     const postsArray = await Post.find({})
+    const gamesArray = await Megathread.find({})
     return res.json({
+      gamesArray: gamesArray,
       postsArray: postsArray,
       success: "all good",
     })

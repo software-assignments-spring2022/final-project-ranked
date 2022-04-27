@@ -3,8 +3,8 @@ import './css/Header.css'
 // home menu button imports
 // import { Link } from "react-router-dom"   // may change this to 'NavLink' later on
 import logo from './Components/ranked_arrow.png';
-import { React, useState, Fragment, PureComponent } from "react"; // latter two are specific to home button
-// import axios from 'axios';
+import { React, useState, Fragment, PureComponent, useEffect} from "react"; // latter two are specific to home button
+import axios from 'axios'
 
 // search bar imports
 import TextField from "@mui/material/TextField";    // library where i ported the search from
@@ -28,11 +28,29 @@ const Header = props => {
   // take input for the search bar using w useState() and inputHandler
 
   const [inputText, setInputText] = useState("");
+  const [allGames, setAllGames] = useState([])
+  const [allPosts, setAllPosts] = useState([])
+
   let inputHandler = (e) => {
     //convert input text to lower case
     var lowerCase = e.target.value.toLowerCase();
     setInputText(lowerCase);
   };
+
+
+  // makes GET request for all games and all posts
+  useEffect(() => {
+    console.log(`fetching all post and all games from backend...`)
+    axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/search`)        // empty file for .get() requests
+      .then(response => {
+          // extract the data from the server response
+          setAllGames(response.data.gamesArray)
+          setAllPosts(response.data.postsArray)
+      })
+      .catch(err => {
+          console.error(err)
+      })
+  }, [])
 
   return (
     <header className="Header-header">
@@ -56,7 +74,7 @@ const Header = props => {
                 fullWidth
                 label="Search"
               />
-              <List input={inputText}/>  
+              <List allGames={allGames} allPosts={allPosts} input={inputText}/>  
             </div>
             {/* this is dropdown where search results display */}
             {/* <List input={inputText}/>   */}
