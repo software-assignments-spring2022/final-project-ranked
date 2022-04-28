@@ -1,10 +1,8 @@
 require("dotenv").config({ silent: true }) // load environmental variables from a hidden file named .env
 const express = require("express") // import and instantiate express
 const morgan = require("morgan") // middleware for nice logging of incoming HTTP requests
-const multer = require("multer") // middleware to handle HTTP POST requests with file uploads
 const mongoose = require("mongoose") // library for MongoDB
 const cors = require("cors") // middleware for enabling CORS (Cross-Origin Resource Sharing) requests
-const fs = require("fs") // module to handle readfile or writefile
 const bcrypt = require("bcrypt") // module to hash incoming plain text password
 const jwt = require("jsonwebtoken") // module for jwt authentication
 const passport = require("passport") // middleware for handling authentication requests
@@ -19,7 +17,6 @@ app.use(cors())
 app.use(morgan("dev", { skip: (req, res) => process.env.NODE_ENV === "test" })) // use the morgan middleware to log all incoming http requests
 app.use(express.json({ limit: "25mb" })) // decode JSON-formatted incoming POST data
 app.use(express.urlencoded({ limit: "25mb", extended: true })) // decode url-encoded incoming POST data
-app.use("/static", express.static("public")) // make 'public' directory publicly readable with static content
 
 // connect to database
 mongoose
@@ -33,6 +30,7 @@ const { Comment } = require("./models/Comment")
 const { Post } = require("./models/Post")
 const { Megathread } = require("./models/Megathread")
 const { ThreadRequest } = require("./models/ThreadRequest")
+const { StaticImg } = require("./models/StaticImg")
 const { assert } = require("console")
 
 // set up some jwt authentication options
@@ -663,6 +661,21 @@ app.post("/profile", async (req, res) => {
         status: "failed to save the photo to the database",
       })
     }
+  }
+})
+
+app.get("/staticImg", async (req, res) => {
+  try {
+    const allStaticImgs = await StaticImg.find({})
+    return res.json({
+      allStaticImgs: allStaticImgs[0]
+    })
+  } catch (err) {
+    console.error(err)
+    return res.status(400).json({
+      error: err,
+      status: "failed to retrieve data from the DB"
+    })
   }
 })
 

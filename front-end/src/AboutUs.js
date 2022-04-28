@@ -1,20 +1,42 @@
-import { Link } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './css/AboutUs.css';
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import './css/AboutUs.css'
+import axios from 'axios'
 
 const AboutUs = () => {
-    const mockImg = 'https://picsum.photos/200/300'
+    const [topImg, setTopImg] = useState([])
+    const [firstImg, setFirstImg] = useState([])
+    const [secondImg, setSecondImg] = useState([])
+    const [thirdImg, setThirdImg] = useState([])
+
+    useEffect(() => {
+        axios
+            .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/staticImg`)
+            .then(res => {
+                if(res.data.allStaticImgs){
+                    setTopImg(res.data.allStaticImgs.topImg)
+                    setFirstImg(res.data.allStaticImgs.firstImg)
+                    setSecondImg(res.data.allStaticImgs.secondImg)
+                    setThirdImg(res.data.allStaticImgs.thirdImg)
+                }
+            })
+            .catch(err => {
+                console.log(err)
+                alert('There seems to be a problem with the server, please try again later!')
+            })
+    })
     
     return (
         <main className='aboutUs'>
             <div className='aboutUsTitle'>
-                <img src={mockImg} alt="first image" />
+                <img src={topImg} alt="first image" />
                 <div className='centered'><b>About Us</b></div>
             </div>
             <div className='aboutContent'>
                 <div className='aboutPair'>
                     <div className='aboutImages'>
-                        <img src={mockImg}></img>
+                        <img src={firstImg}></img>
                     </div>
                     <div className='aboutText'>
                         <p><b>Our Mission</b></p>
@@ -27,7 +49,7 @@ const AboutUs = () => {
                 </div>
                 <div className='aboutPair'>
                     <div className='aboutImages'>
-                        <img src={mockImg}></img>
+                        <img src={secondImg}></img>
                     </div>
                     <div className='aboutText'>
                         <p><b>Our Values</b></p>
@@ -40,7 +62,7 @@ const AboutUs = () => {
                 </div>
                 <div className='aboutPair'>
                     <div className='aboutImages'>
-                        <img src={mockImg}></img>
+                        <img src={thirdImg}></img>
                     </div>
                     <div className='aboutText'>
                         <p><b>Our Goal</b></p>
@@ -58,6 +80,6 @@ const AboutUs = () => {
             </div>
         </main>
     )
-};
+}
 
-export default AboutUs;
+export default AboutUs

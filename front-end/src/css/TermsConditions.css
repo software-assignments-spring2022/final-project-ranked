@@ -4,12 +4,12 @@ body{
 
 .termsTitle > img{
     width: 400px;
-    height: 100px;
+    height: 250px;
 }
 
 .termsTitle{
     width: 400px;
-    height: 100px;
+    height: 250px;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -25,7 +25,7 @@ body{
 .termsText{
     text-align: center;
     width: 400px;
-    height: 450px;
+    height: 310px;
     border: 1px solid purple;
     text-align: center;
     overflow-wrap: break-word;
@@ -36,8 +36,7 @@ body{
     position: relative;
     bottom: 0;
     width: 400px;
-    /* border: 1px solid black; */
-    height: 50px;  
+    height: 30px;  
     text-align: center;         
 }
 
