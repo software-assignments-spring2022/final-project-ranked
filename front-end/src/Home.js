@@ -95,7 +95,7 @@ const Home = (props) => {
                 })
               }
             >
-              <pre>{item.gamename}</pre>
+              {item.gamename}
             </div>
           ))}
         {_.isEmpty(gameData) &&

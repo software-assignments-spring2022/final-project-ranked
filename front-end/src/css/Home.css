@@ -5,7 +5,7 @@
 .game-list{
     display: flex;
     overflow-y: hidden;
-    overflow-x: auto;
+    overflow-x: scroll;
 }
 
 .game {
@@ -14,10 +14,15 @@
     text-align: center;
     width: 100px;
     height: 100px;
-    padding: 15px;
+    padding: 10px;
     border: 2px solid rgb(0, 0, 0);
     border-radius: 10px;
     transition: all .2s ease-in-out;
+    font-family: monospace;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
   
 .game:hover{
