@@ -13,22 +13,22 @@ const should = chai.should() // the same assertion library in the style using th
 const server = require("../app")
 
 describe("Get static images data", () => {
-    describe("GET /staticImg to grab all static images data for our static pages", () => {
-        it("it should respond with an HTTP 200 status code and a allStaticImgs JSON data in the response body", done => {
-            chai 
-            .request(server)
-            .get("/staticImg")
-            .end((err, res) => {
-                res.should.have.status(200) // BDD-style assertions
-                res.should.be.a("object") // our route sends back a JSON data
-                res.body.should.have.property("allStaticImgs")
-                expect(res.body.allStaticImgs).to.have.deep.property("topImg") // the JSON object contains multiple base64 encoded strings
-                expect(res.body.allStaticImgs).to.have.deep.property("firstImg")
-                expect(res.body.allStaticImgs).to.have.deep.property("secondImg")
-                expect(res.body.allStaticImgs).to.have.deep.property("thirdImg")
-                expect(res.body.allStaticImgs).to.have.deep.property("lawyerImg")
-                done()
-            }) 
+  describe("GET /staticImg to grab all static images data for our static pages", () => {
+    it("it should respond with an HTTP 200 status code and a allStaticImgs JSON data in the response body", (done) => {
+      chai
+        .request(server)
+        .get("/staticImg")
+        .end((err, res) => {
+          res.should.have.status(200) // BDD-style assertions
+          res.should.be.a("object") // our route sends back a JSON data
+          res.body.should.have.property("allStaticImgs")
+          expect(res.body.allStaticImgs).to.have.deep.property("topImg") // the JSON object contains multiple base64 encoded strings
+          expect(res.body.allStaticImgs).to.have.deep.property("firstImg")
+          expect(res.body.allStaticImgs).to.have.deep.property("secondImg")
+          expect(res.body.allStaticImgs).to.have.deep.property("thirdImg")
+          expect(res.body.allStaticImgs).to.have.deep.property("lawyerImg")
+          done()
         })
     })
+  })
 })

@@ -2,22 +2,22 @@ import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import axios from "axios"
 
-const CommentSection = props => {
-  const [comment, setComment] = useState("") 
-  const {postId} = useParams() 
+const CommentSection = (props) => {
+  const [comment, setComment] = useState("")
+  const { postId } = useParams()
 
   const handleSubmit = (e) => {
-    e.preventDefault()  // prevent the default browser form submission stuff
+    e.preventDefault() // prevent the default browser form submission stuff
     let id = ""
-    props.replyTo === "root" ? id = postId : id = props.replyTo
+    props.replyTo === "root" ? (id = postId) : (id = props.replyTo)
 
-    alert(`You commented!`) 
+    alert(`You commented!`)
 
     axios
       .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/${id}/comments/save`, {
         user: props.user,
         comment: comment,
-        replyTo: props.replyTo
+        replyTo: props.replyTo,
       })
       .then((response) => {
         // success
@@ -28,7 +28,7 @@ const CommentSection = props => {
         // failure
         console.log(`Received server error: ${err}`)
       })
-      setComment("")
+    setComment("")
   }
 
   return (

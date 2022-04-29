@@ -1,45 +1,45 @@
-body{
-    margin: auto;
+body {
+  margin: auto;
 }
 
-.termsTitle > img{
-    width: 400px;
-    height: 250px;
+.termsTitle > img {
+  width: 400px;
+  height: 250px;
 }
 
-.termsTitle{
-    width: 400px;
-    height: 250px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+.termsTitle {
+  width: 400px;
+  height: 250px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
 .centered {
-    position: absolute;
-    top: 10%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.termsText{
-    text-align: center;
-    width: 400px;
-    height: 310px;
-    border: 1px solid purple;
-    text-align: center;
-    overflow-wrap: break-word;
-    overflow: auto;
+.termsText {
+  text-align: center;
+  width: 400px;
+  height: 310px;
+  border: 1px solid purple;
+  text-align: center;
+  overflow-wrap: break-word;
+  overflow: auto;
 }
 
 .termsFooter {
-    position: relative;
-    bottom: 0;
-    width: 400px;
-    height: 30px;  
-    text-align: center;         
+  position: relative;
+  bottom: 0;
+  width: 400px;
+  height: 30px;
+  text-align: center;
 }
 
 .termsFooter > a {
-    color: black;
+  color: black;
 }

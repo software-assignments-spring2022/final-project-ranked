@@ -59,7 +59,7 @@ const Megathread = (props) => {
       .catch((err) => {
         if (err) console.log(`Log-in first if you want to post!`)
       })
-      setLoaded(true)
+    setLoaded(true)
   }, [newPost, gameId, jwtToken])
 
   // const {
@@ -93,36 +93,38 @@ const Megathread = (props) => {
   return (
     <div className="Megathread">
       <div className="gameName">
-      {_.isEmpty(gamename) && <div> This game doesn't exist! </div> && loaded}
-      {!_.isEmpty(gamename) && <div>
-        Game: {gamename}
-      </div>}
+        {_.isEmpty(gamename) && <div> This game doesn't exist! </div> && loaded}
+        {!_.isEmpty(gamename) && <div>Game: {gamename}</div>}
       </div>
-      {_.isEmpty(user) && <div className="gameName"> Log in first to post! </div> && !_.isEmpty(gamename)}
-      {!_.isEmpty(gamename) && !_.isEmpty(user) && <div className="selfPosting">
-        <button
-          className="btn"
-          onClick={() => {
-            setWantComment(!wantComent)
-          }}
-        >
-          New Post
-        </button>
-        {wantComent && (
-          <Newpost
-            user={user}
-            setNewPost={setNewPost}
-            setWantComment={setWantComment}
-          />
-        )}
-      </div>}
-      {!_.isEmpty(gamename) && _.isEmpty(data) && !wantComent &&
-          <div className="header">
-            Wow so empty... Be the first one to post!
-          </div>}
-      {!_.isEmpty(data) &&
-          <div className="posts">
-        {data.map((item) => (
+      {_.isEmpty(user) && (
+          <div className="gameName"> Log in first to post! </div>
+        ) &&
+        !_.isEmpty(gamename)}
+      {!_.isEmpty(gamename) && !_.isEmpty(user) && (
+        <div className="selfPosting">
+          <button
+            className="btn"
+            onClick={() => {
+              setWantComment(!wantComent)
+            }}
+          >
+            New Post
+          </button>
+          {wantComent && (
+            <Newpost
+              user={user}
+              setNewPost={setNewPost}
+              setWantComment={setWantComment}
+            />
+          )}
+        </div>
+      )}
+      {!_.isEmpty(gamename) && _.isEmpty(data) && !wantComent && (
+        <div className="header">Wow so empty... Be the first one to post!</div>
+      )}
+      {!_.isEmpty(data) && (
+        <div className="posts">
+          {data.map((item) => (
             <div
               className="post"
               key={item._id}
@@ -131,7 +133,8 @@ const Megathread = (props) => {
               <Post key={item.post_id} user={user} post={item}></Post>
             </div>
           ))}
-      </div>}
+        </div>
+      )}
 
       {/* <div>{loading && 'Loading...'}</div>
       <div>{error && 'Error'}</div> */}

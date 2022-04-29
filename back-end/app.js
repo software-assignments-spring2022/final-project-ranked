@@ -92,7 +92,7 @@ app.get("/games", async (req, res) => {
 // get all posts (for home page)
 app.get("/posts", async (req, res) => {
   try {
-    const allPosts = await Post.find({}).sort({likes: -1})
+    const allPosts = await Post.find({}).sort({ likes: -1 })
     res.json({
       home_posts: allPosts,
       status: "all good",
@@ -109,7 +109,9 @@ app.get("/posts", async (req, res) => {
 // get all posts for a specific game/ megathread
 app.get("/megathread/:gameId/posts", async (req, res) => {
   try {
-    const allPosts = await Post.find({ toMegathread: req.params.gameId }).sort({likes: -1})
+    const allPosts = await Post.find({ toMegathread: req.params.gameId }).sort({
+      likes: -1,
+    })
     const game = await Megathread.findOne({ _id: req.params.gameId })
     res.json({
       game_posts: allPosts,
@@ -158,7 +160,9 @@ const populateReplies = async (arr) => {
 // get comments for a specific post (called on a subthread page)
 app.get("/:postId/comments", async (req, res) => {
   try {
-    let comments = await Comment.find({ postTo: req.params.postId }).sort({likes: -1})
+    let comments = await Comment.find({ postTo: req.params.postId }).sort({
+      likes: -1,
+    })
     await populateReplies(comments)
     res.json({
       comments: comments,
@@ -238,15 +242,20 @@ app.post("/:id/comment/delete", async (req, res) => {
 app.post("/:id/comment/like", async (req, res) => {
   try {
     const comment = await Comment.findOne({ _id: req.params.id })
-    if(comment.likedUsers.indexOf(req.body.user._id) === -1){
+    if (comment.likedUsers.indexOf(req.body.user._id) === -1) {
       comment.likedUsers.push(req.body.user._id)
       comment.likes = comment.likedUsers.length
-    }
-    else{
-      comment.likedUsers.splice(comment.likedUsers.indexOf(req.body.user._id), 1)
+    } else {
+      comment.likedUsers.splice(
+        comment.likedUsers.indexOf(req.body.user._id),
+        1
+      )
       comment.likes = comment.likedUsers.length
     }
-    await Comment.updateOne({ _id: req.params.id }, { likedUsers: comment.likedUsers, likes: comment.likes })
+    await Comment.updateOne(
+      { _id: req.params.id },
+      { likedUsers: comment.likedUsers, likes: comment.likes }
+    )
     return res.json({
       success: `You liked or unliked a comment`,
       comment: comment,
@@ -258,26 +267,6 @@ app.post("/:id/comment/like", async (req, res) => {
     })
   }
 })
-
-// app.post("/megathread/:gameId/subthread/:postId/comments/search", (req, res) => {
-//     /*
-//     Find individual comments
-//     Body:
-//         {
-//             'comment_id': int
-//         }
-//     */
-//     const comments = await Post.find({'post_id':props.postId}).comments
-//     for (const i in comments) {
-//         if (i.comment_id === req.data.comment_id) {
-//             return res.json({
-//                 success: "Comment found and returned successfully",
-//                 comment: i
-//             })
-//         }
-//     }
-//     console.log("Failed: Could not find comment.")
-// })
 
 // make a new post
 app.post(`/megathread/:gameId/save`, async (req, res) => {
@@ -310,7 +299,7 @@ app.post(`/megathread/:gameId/save`, async (req, res) => {
 
 // delete a post you made
 app.post("/:id/post/delete", async (req, res) => {
-  try { 
+  try {
     const post = await Post.findOne({ _id: req.params.id })
     assert(post.user_id == req.body.user.username)
     const arrComments = await Comment.find({ postTo: req.params.id })
@@ -336,18 +325,20 @@ app.post("/:id/post/delete", async (req, res) => {
 app.post("/:id/post/like", async (req, res) => {
   try {
     const post = await Post.findOne({ _id: req.params.id })
-    if(post.likedUsers.indexOf(req.body.user._id) === -1){
+    if (post.likedUsers.indexOf(req.body.user._id) === -1) {
       post.likedUsers.push(req.body.user._id)
       post.likes = post.likedUsers.length
-    }
-    else{
+    } else {
       post.likedUsers.splice(post.likedUsers.indexOf(req.body.user._id), 1)
       post.likes = post.likedUsers.length
     }
-    await Post.updateOne({ _id: req.params.id }, { likedUsers: post.likedUsers, likes: post.likes })
+    await Post.updateOne(
+      { _id: req.params.id },
+      { likedUsers: post.likedUsers, likes: post.likes }
+    )
     return res.json({
       success: `You liked or unliked a comment`,
-      post: post
+      post: post,
     })
   } catch (err) {
     return res.status(400).json({
@@ -466,7 +457,7 @@ app.post("/register", (req, res) => {
               username: username,
               password: hashedPassword,
               email: email,
-              joinDate: year + "-" + month + "-" + date
+              joinDate: year + "-" + month + "-" + date,
             })
 
             // try to save this new user object into DB
@@ -670,13 +661,13 @@ app.get("/staticImg", async (req, res) => {
   try {
     const allStaticImgs = await StaticImg.find({})
     return res.json({
-      allStaticImgs: allStaticImgs[0]
+      allStaticImgs: allStaticImgs[0],
     })
   } catch (err) {
     console.error(err)
     return res.status(400).json({
       error: err,
-      status: "failed to retrieve data from the DB"
+      status: "failed to retrieve data from the DB",
     })
   }
 })
@@ -687,13 +678,13 @@ app.post("/deleteAcc", async (req, res) => {
   try {
     await User.deleteOne({ username: username })
     return res.json({
-      success: "account deleted!"
+      success: "account deleted!",
     })
   } catch (err) {
     console.error(err)
     return res.status(400).json({
       error: err,
-      status: "failed to delete this account from the DB"
+      status: "failed to delete this account from the DB",
     })
   }
 })
@@ -704,13 +695,13 @@ app.post("/deleteThreadRequest", async (req, res) => {
   try {
     await ThreadRequest.deleteOne({ gameName: gameName })
     return res.json({
-      success: "thread request deleted!"
+      success: "thread request deleted!",
     })
   } catch (err) {
     console.error(err)
     return res.status(400).json({
       error: err,
-      status: "failed to delete this thread request from the DB"
+      status: "failed to delete this thread request from the DB",
     })
   }
 })
