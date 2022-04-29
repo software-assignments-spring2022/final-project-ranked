@@ -78,3 +78,8 @@
   font-family: monospace;
   background-color: #a34841;
 }
+
+.comment-time {
+  margin-left: 5%;
+  font-family: monospace;
+}
