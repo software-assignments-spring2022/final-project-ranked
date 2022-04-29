@@ -679,5 +679,39 @@ app.get("/staticImg", async (req, res) => {
   }
 })
 
+// POST route to delete account created during unit testing
+app.post("/deleteAcc", async (req, res) => {
+  const username = req.body.username.toLowerCase()
+  try {
+    await User.deleteOne({ username: username })
+    return res.json({
+      success: "account deleted!"
+    })
+  } catch (err) {
+    console.error(err)
+    return res.status(400).json({
+      error: err,
+      status: "failed to delete this account from the DB"
+    })
+  }
+})
+
+// POST route to delete thread request created during unit testing
+app.post("/deleteThreadRequest", async (req, res) => {
+  const gameName = req.body.gameName
+  try {
+    await ThreadRequest.deleteOne({ gameName: gameName })
+    return res.json({
+      success: "thread request deleted!"
+    })
+  } catch (err) {
+    console.error(err)
+    return res.status(400).json({
+      error: err,
+      status: "failed to delete this thread request from the DB"
+    })
+  }
+})
+
 // export the express app created to make it available to other modules
 module.exports = app
