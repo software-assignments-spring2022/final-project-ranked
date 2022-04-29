@@ -1,18 +1,33 @@
-import React from "react"
-import { Link } from "react-router-dom"
+import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import DropdownButton from 'react-bootstrap/DropdownButton'
 import Dropdown from 'react-bootstrap/Dropdown'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './css/TermsConditions.css'
+import axios from 'axios'
 
 const TermsCondtions = () => {
-  const mockImg = 'https://picsum.photos/200/300'
+  const [lawyerImg, setLawyerImg] = useState([])
+
+  useEffect(() => {
+    axios
+        .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/staticImg`)
+        .then(res => {
+            if(res.data.allStaticImgs){
+              setLawyerImg(res.data.allStaticImgs.lawyerImg)
+            }
+        })
+        .catch(err => {
+            console.log(err)
+            alert('There seems to be a problem with the server, please try again later!')
+        })
+})
 
     return (
       <>
         <main className='TermsConditions'>
           <div className='termsTitle'>
-            <img src={mockImg} alt='terms image' /> 
+            <img src={lawyerImg} alt='terms image' /> 
             <div className='centered'><b>Terms & Conditions</b></div>
           </div>
 
@@ -40,6 +55,6 @@ const TermsCondtions = () => {
         </main>
       </>
     )
-};
+}
 
-export default TermsCondtions; 
+export default TermsCondtions
