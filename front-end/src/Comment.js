@@ -20,7 +20,7 @@ const Comment = (props) => {
         <pre>
           <p>
             <small>
-              {id}({prev}) ---&gt {props.id}({props.user})
+              {id}({prev}) ---&gt; {props.id}({props.user})
             </small>{" "}
           </p>
           <h4>{prev} Wrote: </h4>
@@ -104,9 +104,8 @@ const Comment = (props) => {
               alt="user profile image"
             ></img>
             <p className="userId">user: {props.details.user_id}</p>
-            <p>&nbspCommented:&nbsp</p>
-            <Moment fromNow>{props.details.time}</Moment>
           </div>
+          <p className="comment-time">&nbsp;Commented:<Moment fromNow>{props.details.time}</Moment>&nbsp; </p>
         </section>
 
         <section className="body">
