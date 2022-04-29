@@ -310,7 +310,7 @@ app.post(`/megathread/:gameId/save`, async (req, res) => {
 
 // delete a post you made
 app.post("/:id/post/delete", async (req, res) => {
-  try {
+  try { 
     const post = await Post.findOne({ _id: req.params.id })
     assert(post.user_id == req.body.user.username)
     const arrComments = await Comment.find({ postTo: req.params.id })

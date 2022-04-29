@@ -9,9 +9,21 @@ ul {
     /* border-top: 30px; */
 }
 
-.search-result {
+.search-result-game {
     color: white;
     border: 0.5px solid rgb(184, 238, 255);
+    background-color: #282c34;
+    width: 205px;
+    list-style-type: none;
+
+    /* bring to front */
+    /* z-index: -1;
+    position:relative; */
+}
+
+.search-result-post {
+    color: white;
+    border: 0.5px solid rgb(255, 183, 101);
     background-color: #282c34;
     width: 205px;
     list-style-type: none;
