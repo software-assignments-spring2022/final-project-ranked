@@ -14,18 +14,18 @@ const server = require("../app")
 
 // test related to the /admin route
 describe("Admin Panel", () => {
-    describe("GET /admin when admin is going to view all users' submitted thread requests", () => {
-        it("it should respond with an HTTP 200 status code and a JSON data (threadRequestList) in the response body", done => {
-            chai 
-            .request(server)
-            .get("/admin") 
-            .end((err, res) => {
-                res.should.have.status(200) // BDD-style assertions
-                res.should.be.a("object") // our route sends back a JSON data
-                res.body.should.have.property("threadRequestList")
-                res.body.threadRequestList.should.be.a("array") // sends back a list of all users' submitted thread requests to admin
-                done()
-            }) 
+  describe("GET /admin when admin is going to view all users' submitted thread requests", () => {
+    it("it should respond with an HTTP 200 status code and a JSON data (threadRequestList) in the response body", (done) => {
+      chai
+        .request(server)
+        .get("/admin")
+        .end((err, res) => {
+          res.should.have.status(200) // BDD-style assertions
+          res.should.be.a("object") // our route sends back a JSON data
+          res.body.should.have.property("threadRequestList")
+          res.body.threadRequestList.should.be.a("array") // sends back a list of all users' submitted thread requests to admin
+          done()
         })
     })
+  })
 })

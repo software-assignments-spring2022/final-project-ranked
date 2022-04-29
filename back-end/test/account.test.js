@@ -14,22 +14,22 @@ const server = require("../app")
 
 // test related to the /account route
 describe("Account Page", () => {
-    describe("POST /account when user is trying to check the status of his previously submitted thread requests", () => {
-        it("it should respond with an HTTP 200 status code and a JSON data (threadRequestList) in the response body", done => {
-            const accountInfo = {
-                userID: process.env.ADMIN_USERID
-            }
-            chai 
-            .request(server)
-            .post("/account") 
-            .send(accountInfo)
-            .end((err, res) => {
-                res.should.have.status(200) // BDD-style assertions
-                res.should.be.a("object") // our route sends back a JSON data
-                res.body.should.have.property("threadRequestList")
-                res.body.threadRequestList.should.be.a("array") // sends back a list of thread requests submitted by this user
-                done()
-            }) 
+  describe("POST /account when user is trying to check the status of his previously submitted thread requests", () => {
+    it("it should respond with an HTTP 200 status code and a JSON data (threadRequestList) in the response body", (done) => {
+      const accountInfo = {
+        userID: process.env.ADMIN_USERID,
+      }
+      chai
+        .request(server)
+        .post("/account")
+        .send(accountInfo)
+        .end((err, res) => {
+          res.should.have.status(200) // BDD-style assertions
+          res.should.be.a("object") // our route sends back a JSON data
+          res.body.should.have.property("threadRequestList")
+          res.body.threadRequestList.should.be.a("array") // sends back a list of thread requests submitted by this user
+          done()
         })
     })
+  })
 })
