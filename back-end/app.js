@@ -17,6 +17,7 @@ app.use(cors())
 app.use(morgan("dev", { skip: (req, res) => process.env.NODE_ENV === "test" })) // use the morgan middleware to log all incoming http requests
 app.use(express.json({ limit: "25mb" })) // decode JSON-formatted incoming POST data
 app.use(express.urlencoded({ limit: "25mb", extended: true })) // decode url-encoded incoming POST data
+app.use("/client", express.static("client")) // create a static route that serves the front-end built code
 
 // connect to database
 mongoose
