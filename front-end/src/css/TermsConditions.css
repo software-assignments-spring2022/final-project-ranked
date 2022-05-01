@@ -2,19 +2,6 @@ body {
   margin: auto;
 }
 
-.termsTitle > img {
-  width: 400px;
-  height: 250px;
-}
-
-.termsTitle {
-  width: 400px;
-  height: 250px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
 .centered {
   position: absolute;
   top: 10%;
@@ -23,10 +10,9 @@ body {
 }
 
 .termsText {
+  /* border: 1px solid black; */
   text-align: center;
   width: 400px;
-  height: 310px;
-  border: 1px solid purple;
   text-align: center;
   overflow-wrap: break-word;
   overflow: auto;
@@ -41,5 +27,5 @@ body {
 }
 
 .termsFooter > a {
-  color: black;
+  color: blue;
 }

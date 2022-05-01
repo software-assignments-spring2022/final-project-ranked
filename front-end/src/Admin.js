@@ -7,7 +7,6 @@ import "./css/Admin.css"
 
 const Admin = () => {
   const jwtToken = localStorage.getItem("token")
-  console.log(`JWT token from Admin page: ${jwtToken}`)
   const [threadRequestList, setThreadRequestList] = useState([])
   const [approvalStatus, setApprovalStatus] = useState("")
   const [requestID, setRequestID] = useState("")

@@ -34,7 +34,7 @@ const AboutUs = () => {
       <div className="aboutUsTitle">
         <img src={topImg} alt="first image" />
         <div className="centered">
-          <b>About Us</b>
+          <h1 className="centered-title">About Us</h1>
         </div>
       </div>
       <div className="aboutContent">

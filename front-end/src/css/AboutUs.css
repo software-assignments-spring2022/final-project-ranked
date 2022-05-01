@@ -33,7 +33,7 @@ body {
 .aboutImages > img {
   float: left;
   width: 150px;
-  height: 250px;
+  height: 150px;
   display: table-cell;
   overflow: hidden;
   table-layout: fixed;
@@ -56,11 +56,17 @@ body {
   transform: translate(-50%, -50%);
 }
 
+.centered-title {
+  position: relative;
+  top: 10px;
+  color: rgb(215, 246, 255);
+}
+
 .aboutFooter {
   width: 400px;
   height: 20px;
 }
 
 .aboutFooter > a {
-  color: black;
+  color: blue;
 }
