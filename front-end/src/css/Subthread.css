@@ -1,18 +1,17 @@
-.Subthread{
-    background-color: #db834c;
-    text-align: left;
+.Subthread {
+  background-color: #db834c;
+  text-align: left;
 }
 
-.CommentSection{
-  /* border-radius: 25px; */
+.CommentSection {
   border: 2px solid #000000;
-  background-color: #5C667A;
+  background-color: #5c667a;
   padding: 10px;
 }
 
 .back-button {
-    float: left;
-    border-radius: 25px;
-    border: 2px solid #000000;
-    padding: 10px;
-  }
+  float: left;
+  border-radius: 25px;
+  border: 2px solid #000000;
+  padding: 10px;
+}

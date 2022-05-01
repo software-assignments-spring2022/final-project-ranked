@@ -22,16 +22,14 @@ const Subthread = (props) => {
     window.scrollTo(0, 0)
     // fetching post data from backend
     console.log(`fetching post id=${postId}...`)
-    axios(
-      `${process.env.REACT_APP_SERVER_HOSTNAME}/${postId}/post`
-    )
+    axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/${postId}/post`)
       .then((response) => {
         // extract the data from the server response
         setData(response.data.sub_post)
       })
       .catch((err) => {
         console.log(`Sorry, couldn't get post data from backend...`)
-        console.error(err) 
+        console.error(err)
         setData({})
       })
     console.log(`fetching account info...`)
@@ -42,7 +40,6 @@ const Subthread = (props) => {
       // set user's account info if logged-in
       .then((res) => {
         if (res.data.success) {
-        //   console.log(res.data.user)
           setUser(res.data.user)
         }
       })
@@ -51,15 +48,20 @@ const Subthread = (props) => {
       })
     setLoaded(true)
   }, [postId, jwtToken])
-  
+
   return (
     <div className="Subthread">
       {/* <button className="back-button" onClick={goBack}> Back </button> */}
-      {_.isEmpty(data) && <div className="header"> This post doesn't exist! </div> && loaded}
+      {_.isEmpty(data) && (
+          <div className="header"> This post doesn't exist! </div>
+        ) &&
+        loaded}
       {!_.isEmpty(data) && <Post user={user} post={data}></Post>}
-      {!_.isEmpty(data) && <div className="CommentSection">
-        <CommentSection user={user} gameId={gameId} postId={postId} />
-      </div>}
+      {!_.isEmpty(data) && (
+        <div className="CommentSection">
+          <CommentSection user={user} gameId={gameId} postId={postId} />
+        </div>
+      )}
     </div>
   )
 }

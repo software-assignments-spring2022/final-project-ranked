@@ -1,4 +1,0 @@
-[   { "gameName":"lorem ipsum", "willModerate":1, "friendsWillModerate":1, "reason":"more lorem ipsum" }, 
-    { "gameName":"fakeGame100", "willModerate":1, "friendsWillModerate":0, "reason":"umm"},
-    { "gameName":"fakeGame3000", "willModerate":0, "friendsWillModerate":1, "reason":"fun"}
-]

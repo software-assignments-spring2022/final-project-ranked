@@ -1,66 +1,66 @@
-body{
-    margin: auto;
+body {
+  margin: auto;
 }
 
-.Login-tabDiv{
-    display: flex;
-    position: relative;
-    left: 21px;
-    top: 20px;
-    width: 225px;
+.Login-tabDiv {
+  display: flex;
+  position: relative;
+  left: 21px;
+  top: 20px;
+  width: 225px;
 }
 
-.Login-tabDiv > div{
-    width: 110px;
-    height: 60px;
-    border: 1px solid black;
-    text-align: center;
-    vertical-align: middle;
-    line-height: 60px;
+.Login-tabDiv > div {
+  width: 110px;
+  height: 60px;
+  border: 1px solid black;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 60px;
 }
 
-.Login-loginTab{
-    background-color: grey;
+.Login-loginTab {
+  background-color: grey;
 }
 
-.Login-registerTab{
-    text-decoration: none;
+.Login-registerTab {
+  text-decoration: none;
 }
 
-.Login-registerTab > p{
-    color: black;
+.Login-registerTab > p {
+  color: black;
 }
 
-.Login-loginDiv{
-    border: 1px solid black;
-    margin: auto;
-    width: 360px;
-    height: 350px;
-    position: relative;
-    top: 20px;
-    left: 1px;
+.Login-loginDiv {
+  border: 1px solid black;
+  margin: auto;
+  width: 360px;
+  height: 350px;
+  position: relative;
+  top: 20px;
+  left: 1px;
 }
 
-.Login-form{
-    width: 330px;
-    margin: auto;
+.Login-form {
+  width: 330px;
+  margin: auto;
 }
 
-.Login-usernameEmailForm{
-    position: relative;
-    top: 20px;
+.Login-usernameEmailForm {
+  position: relative;
+  top: 20px;
 }
 
-.Login-passwordForm{
-    position: relative;
-    top: 40px;
+.Login-passwordForm {
+  position: relative;
+  top: 40px;
 }
 
-.Login-submitBtn{
-    position: relative;
-    top: 80px;
-    left: 120px;
-    width: 80px;
-    height: 30px;
-    line-height: 0px;
+.Login-submitBtn {
+  position: relative;
+  top: 80px;
+  left: 120px;
+  width: 80px;
+  height: 30px;
+  line-height: 0px;
 }

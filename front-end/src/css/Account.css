@@ -1,8 +1,8 @@
-body{
+body {
   margin: auto;
 }
 
-.Account-image{
+.Account-image {
   display: block;
   border-radius: 50%;
   width: 150px;
@@ -32,11 +32,11 @@ body{
   text-decoration: none;
 }
 
-.Account-adminTab > p{
+.Account-adminTab > p {
   color: black;
 }
 
-.Account-infoTab{
+.Account-infoTab {
   background-color: grey;
 }
 
@@ -59,7 +59,8 @@ body{
   text-align: center;
 }
 
-.Account-checkRequestBtn, .Account-changePicBtn{
+.Account-checkRequestBtn,
+.Account-changePicBtn {
   width: 200px;
   margin-left: auto;
   margin-right: auto;
@@ -67,13 +68,13 @@ body{
   border-radius: 10px;
 }
 
-.Account-profileImgForm{
+.Account-profileImgForm {
   width: 200px;
   margin-left: auto;
   margin-right: auto;
 }
 
-.Account-profileImgFormBtn{
+.Account-profileImgFormBtn {
   position: relative;
   left: 70px;
   margin-top: -5px;

@@ -13,21 +13,45 @@ const should = chai.should() // the same assertion library in the style using th
 const server = require("../app")
 
 // the post and comment id we will make and delete within this test
-let game_id = "625733e37c2a618ee4cf43a9"
+let game_id = "626b29bd4802e2d988c81621"
 let post_id = ""
-// let comment_id = ""
+let comment_id = ""
 
-const checkPostSchema = obj =>{
-  obj.should.have.keys(
-    "toMegathread",
-    "user_id",
-    "title",
-    "body",
-    "tags",
-    "time",
-    "likes",
-    "_id",
-    "__v")
+const userInfo = {
+  _id: process.env.ADMIN_USERID,
+  username: "rankedadmin",
+  photo: process.env.ADMIN_PHOTO,
+}
+
+const checkPostSchema = (obj) => {
+  obj.hasOwnProperty("image")
+    ? obj.should.have.keys(
+        "toMegathread",
+        "user_id",
+        "user_image",
+        "title",
+        "body",
+        "tags",
+        "time",
+        "likes",
+        "likedUsers",
+        "_id",
+        "__v",
+        "image"
+      )
+    : obj.should.have.keys(
+        "toMegathread",
+        "user_id",
+        "user_image",
+        "title",
+        "body",
+        "tags",
+        "time",
+        "likes",
+        "likedUsers",
+        "_id",
+        "__v"
+      )
 }
 
 // helper function to check for each nested comment
@@ -40,8 +64,10 @@ const checkComments = (arr) => {
     i.should.have.keys(
       "_id",
       "user_id",
+      "user_image",
       "text",
       "likes",
+      "likedUsers",
       "time",
       "replies",
       toComment,
@@ -55,16 +81,16 @@ const checkComments = (arr) => {
 
 // a group of tests related to all the routes that give back posts or send posts
 describe("Posts", () => {
-
   /**
    * test the POST request to make a post (that we will be using throughout this test)
    */
-   describe("POST request to /megathread/:gameId/save route", () => {
+  describe(`POST request to /megathread/:gameId/save route`, () => {
     let newPost = {
       title: "This is a title",
       body: "This is created temporarily for unit testing purposes",
-      tags: ["tag1","tag2"],
-      username: "username"
+      image: "",
+      tags: ["I am", "Testing"],
+      user: userInfo,
     }
     it("it should return a 200 HTTP response code and return a new post object with specific properties", (done) => {
       chai
@@ -74,14 +100,14 @@ describe("Posts", () => {
         .end((err, res) => {
           res.should.have.status(200) // BDD-style assertions
           res.body.should.be.a("object")
-          expect(res.body).to.have.deep.property("post") // should return 
+          expect(res.body).to.have.deep.property("post") // should return
           res.body.post.should.be.a("object") // our route sends back an object
           // checks if the object follows the post schema and has the parameters we fed in
           checkPostSchema(res.body.post)
           res.body.post.title.should.equal(newPost.title)
           res.body.post.body.should.equal(newPost.body)
           res.body.post.tags.should.eql(newPost.tags)
-          res.body.post.user_id.should.equal(newPost.username)
+          res.body.post.user_id.should.equal(newPost.user.username)
           // update the global variable
           post_id = res.body.post._id
           done()
@@ -182,10 +208,6 @@ describe("Posts", () => {
         })
     })
   })
-
-  /**
-   * test the DELETE /:id/post/delete route
-   */
 })
 
 // a group of tests related to all the routes that give back comments or post comments
@@ -193,9 +215,9 @@ describe("Comments", () => {
   /**
    * test the POST /megathread/:gameId/subthread/:postId/comments/save route
    */
-   describe("POST request to /:id/comments/save route", () => {
+  describe("POST request to /:id/comments/save route", () => {
     let newComment = {
-      user: { username: "username" },
+      user: userInfo,
       comment: "a sample comment",
       replyTo: "root",
     }
@@ -212,6 +234,7 @@ describe("Comments", () => {
           // checks if the object follows the post schema
           checkComments([res.body.comment])
           res.body.comment.text.should.equal(newComment.comment)
+          comment_id = res.body.comment._id
           // we change the newComment for the following test
           newComment.replyTo = res.body.comment._id
           newComment.comment = "a sample nested comment"
@@ -222,7 +245,7 @@ describe("Comments", () => {
     it("(nested comment) it should return a 200 HTTP response code and return the new post object with specific properties", (done) => {
       chai
         .request(server)
-        .post(`/${post_id}/comments/save`)
+        .post(`/${comment_id}/comments/save`)
         .send(newComment)
         .end((err, res) => {
           res.should.have.status(200) // BDD-style assertions
@@ -261,6 +284,29 @@ describe("Comments", () => {
           res.body.comments.should.be.a("array") // our route sends back an object
           // checks if each object in the array follows the post schema
           checkComments(res.body.comments)
+          done() // resolve the Promise that these tests create so mocha can move on
+        })
+    })
+  })
+})
+
+describe("Delete", () => {
+  /**
+   * test the DELETE /:id/post/delete route
+   */
+  describe("DELETE request to /:id/post/delete route", () => {
+    // it should delete and return success
+    it("it should delete a post and return an array of comments it deleted with it", (done) => {
+      chai
+        .request(server)
+        .post(`/${post_id}/post/delete`)
+        .send({ user: userInfo })
+        .end((err, res) => {
+          res.should.have.status(200)
+          res.body.should.be.a("object")
+          expect(res.body).to.have.deep.property("arrComments") //should contain array of deleted comments
+          expect(res.body).to.have.deep.property("success")
+          res.body.arrComments.should.be.a("array")
           done() // resolve the Promise that these tests create so mocha can move on
         })
     })
