@@ -52,18 +52,25 @@ By creating a platform for players to directly communicate on games they love, w
 The idea for Ranked started with Chris, but none of the progress made would’ve been possible without India, Phillip, Sid, Jason, and Yoshiaki, so all credit goes to them. Originally, the idea was for a video game social media site where you could post clips of your gameplay. However it became obvious the utility of that is more limited than an open forum and thus Ranked was born. If you’d like to contribute to our project, please reference the [Contributions Document](https://github.com/software-assignments-spring2022/final-project-ranked/blob/master/CONTRIBUTING.md), then message any of us on Github. We’ll be happy to get in touch with you!
 
 ## Instructions for Building and Testing
-1. Make sure to have node and mongodb install on your machine.
-2. Install the front-end dependencies by changing directories into "front-end/", then running "npm install"
-3. Install the back-end dependencies by changing directories into "back-end/", then running "npm install"
-4. Ensure .env file in your parent directory (the directory containing the "front-end" and "back-end" folders) is configured with:
-  REACT_APP_SERVER_HOSTNAME listening on port 4000, and REACT_APP_ADMIN set to rankedadmin.
-5. Ensure the .env file in the "back-end/" is configured with the *correct* mongodb connection string. Additionally, you can alter the JWT_SECRET according to what you want the signature to be, and we *do not* suggest changing the DEFAULT_PROFILE_IMG path, however if your needs require you to, ensure that the new path leads to a base64 encoded png file.
-6. Start your back-end! First change directories into "back-end/" then run "npx nodemon server". The initial few lines of output should contain: "Server running on port: {port}"
-"Connected to MongoDB"
-7. Open a new instance of your Terminal/Command Prompt, and change directories into "front-end/" then run "npm start". You just started your front-end!
+### In the Back-end Directory
+#### Set Up and Run the Back-end
+1. Run `npm install` to install all dependencies listed in `package.json` onto your local machine. This is necessary before running our app, as the 3rd-party dependency code is excluded from version control by the `.gitignore` git settings file.
+2. Run `npm install -g nodemon` to install nodemon globally on your machine. Notice that the server will restart when you make changes, since nodemon handles stopping and restarting the server with each code change.
+3. Create a `.env` file and save it in the current directory. To ensure this file is configured with the correct environmental variables, please contact our Ranked developers for more information, as those data are sensitive and not allowed to be publicly shared on GitHub.
+4. Run `nodemon server` to start the back-end. In your terminal, the initial few lines of output should contain: 
+      > Server running on port: {port} <br>
+      > Connected to MongoDB
 
-## Additional Web Pages
-Coming soon!
+### In the Front-end Directory
+#### Set Up and Run the Front-end
+1. Run `npm install` to install all dependencies listed in `package.json` onto your local machine. This is necessary before running our app, as the 3rd-party dependency code is excluded from version control by the `.gitignore` git settings file.
+2. Create a `.env` file and save it in the current directory. To ensure this file is configured with the correct environmental variables, please contact our Ranked developers for more information, as those data are sensitive and not allowed to be publicly shared on GitHub.
+3. Run `npm start` to start the front-end.
+4. Open [http://localhost:3000](http://localhost:3000) to view our app in your browser. The page will reload when you make changes, and you may also see any lint errors in the console.
+
+### Unit Testing
+* Our back-end directory includes unit tests built with [mocha](https://mochajs.org/) and [chai](https://www.chaijs.com/) assertion library, while combining with [chai-http](https://www.chaijs.com/plugins/chai-http/) plugin to simplify testing for back-end routes. Code coverage analysis is provided by the `nyc` module.
+* To run unit tests, `cd` to the `back-end` directory and `npm test`. Once the script is finished running, you will be able to see all the test results and the overall code coverage analysis in the console.
 
 ## Other Important Documents / Links
 1. [UX Design Document](https://github.com/software-assignments-spring2022/final-project-ranked/blob/master/UX-DESIGN.md)
