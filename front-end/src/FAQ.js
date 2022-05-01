@@ -52,6 +52,11 @@ const FAQ = () => {
             image.
           </p>
         </div>
+        <div className="FAQ-footer">
+          <Link to="/about">About Us</Link>
+          <br></br>
+          <Link to="/terms">Terms & Conditions</Link>
+        </div>
       </main>
     </>
   )

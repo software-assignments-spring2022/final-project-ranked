@@ -16,7 +16,7 @@ body {
 }
 
 .FAQ-question1Div > p > a {
-  color: black;
+  color: blue;
 }
 
 .FAQ-questionXDiv {
@@ -31,7 +31,7 @@ body {
 }
 
 .FAQ-questionXDiv > p > a {
-  color: black;
+  color: blue;
 }
 
 .FAQ > p {
@@ -47,4 +47,8 @@ body {
 .FAQ-button2 {
   width: 180px;
   border-radius: 10px;
+}
+
+.FAQ-footer > a {
+  color: blue;
 }
