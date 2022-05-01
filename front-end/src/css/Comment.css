@@ -65,7 +65,7 @@
   padding: 5px;
 }
 
-.like {
+/* .like {
   display: flex;
   flex-direction: row;
 }
@@ -77,6 +77,39 @@
   border-radius: 10px;
   font-family: monospace;
   background-color: #a34841;
+} */
+
+.like{
+  display: flex;
+  flex-direction: row;
+}
+
+.likeButton {
+  background-color: #a34841;
+  font-weight: bold;
+  color: #ffffff;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border-radius: 3px;
+  text-decoration: none;
+  line-height:15px;
+  margin-left: 5%;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  border-radius: 10px;
+}
+.like span.thumb{
+display:none;
+}
+.like:hover span.normal{
+display:none;
+}
+.like:hover span.thumb{
+display:block;
+text-align:center;
+}
+.likebutton:active {
+  box-shadow: 0 2px #666;
 }
 
 .comment-time {

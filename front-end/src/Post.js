@@ -78,8 +78,8 @@ const Post = (props) => {
           <p>{props.post.body}</p>
           <section className="like">
             <button className="likeButton" onClick={handleLike}>
-              {" "}
-              LIKE{" "}
+              <span className="normal">{" "}
+              LIKE{" "}</span><span className="thumb" role="img" aria-label="Like">👍</span>
             </button>
             <div className="likes"> {likes} </div>
           </section>
