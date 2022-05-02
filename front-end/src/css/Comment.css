@@ -101,10 +101,17 @@
 .like span.thumb{
 display:none;
 }
-.like:hover span.normal{
+.like:active span.normal{
 display:none;
 }
-.like:hover span.thumb{
+.like:active span.thumb{
+display:block;
+text-align:center;
+}
+.like:focus span.normal{
+display:none;
+}
+.like:focus span.thumb{
 display:block;
 text-align:center;
 }
