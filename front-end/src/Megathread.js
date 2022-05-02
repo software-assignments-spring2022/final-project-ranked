@@ -135,12 +135,9 @@ const Megathread = (props) => {
           ))}
         </div>
       )}
-
-      {/* <div>{loading && 'Loading...'}</div>
-      <div>{error && 'Error'}</div> */}
-
+      
       <div className="footer">
-        <h2>This is the footer.</h2>
+        <h2>© 2022 Ranked</h2>
       </div>
     </div>
   )

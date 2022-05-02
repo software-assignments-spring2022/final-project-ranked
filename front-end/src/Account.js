@@ -87,7 +87,7 @@ const Account = () => {
     setPhoto(base64)
   }
 
-  const handleFormSubmit = (e) => {
+  const handleImgFormSubmit = (e) => {
     e.preventDefault() // prevent the default browser form submission stuff
 
     // send the data of user's new profile image to backend
@@ -121,7 +121,7 @@ const Account = () => {
       </Popover.Header>
       <Popover.Body>
         <Form
-          onSubmit={handleFormSubmit}
+          onSubmit={handleImgFormSubmit}
           encType="multipart/formdata"
           className="Account-profileImgForm"
         >
