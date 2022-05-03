@@ -14,36 +14,40 @@ import Megathread from "./Megathread"
 import Subthread from "./Subthread"
 import Logout from "./Logout"
 import Admin from "./Admin"
-import Subthread_edit from "./Subthread_edit"
-import './css/App.css' 
+import "./css/App.css"
 const App = () => {
   const [user, setUser] = useState({})
-  
+
   return (
     <>
       <div className="App">
         <Router>
           <Header />
           <Routes>
-            <Route path="/" element={<Home />} ></Route>
-            <Route path="/login" element={<Login />} ></Route>
+            <Route path="/" element={<Home />}></Route>
+            <Route path="/login" element={<Login />}></Route>
             <Route path="/register" element={<Register />}></Route>
             <Route path="/about" element={<About />}></Route>
-            <Route path="/terms" element={<Terms />} ></Route>
-            <Route path="/faq" element={<FAQ />} ></Route>
-            <Route path="/admin" element={<Admin />} ></Route>
-            <Route path="/threadrequest" element={<ThreadRequest />} ></Route>
+            <Route path="/terms" element={<Terms />}></Route>
+            <Route path="/faq" element={<FAQ />}></Route>
+            <Route path="/admin" element={<Admin />}></Route>
+            <Route path="/threadrequest" element={<ThreadRequest />}></Route>
             <Route path="/account" element={<Account />}></Route>
             <Route path="/logout" element={<Logout />} />
             <Route path="/megathread/new" element={<NewPost user={user} />} />
-            <Route path="/megathread/:gameId" element={<Megathread user={user} />} />
-            <Route path="/megathread/:gameId/subthread/:postId" element={<Subthread user={user} />} />
-            <Route path="/megathread/:gameId/subthread/:postId/edit" element={<Subthread_edit user={user} />} />
+            <Route
+              path="/megathread/:gameId"
+              element={<Megathread user={user} />}
+            />
+            <Route
+              path="/megathread/:gameId/subthread/:postId"
+              element={<Subthread user={user} />}
+            />
           </Routes>
         </Router>
       </div>
     </>
-  ) 
+  )
 }
 
 export default App

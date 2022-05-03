@@ -1,67 +1,85 @@
-import { React, useState } from 'react'
-// pick up tags.json data
-import data from "./SearchResultData.json"
-// import data from "../../../back-end/tags.json"
-
-import './../css/SearchResults.css'
-
+import { React, useState, useEffect } from "react"
+// import axios from 'axios'
+// import data from "./SearchResultData.json"
+import "./../css/SearchResults.css"
+import { useNavigate } from "react-router-dom"
 
 function List(props) {
-    // create a new array by filtering the original array
-    // filteredData --> element.id
-    // this will return the "game-name" of each tag
+  // create a new array by filtering the original array
+  // filteredData --> element.id
+  // this will return the "game-name" of each tag
 
-    // replace 'data' with the 
-    const filteredData = data.filter((el) => {
-        //if no input the return the original
-        // in order to hide the suggested tags before any text appears, 
-            // i may !== the conditional
-        if (props.input === '') {
-            // return el
-        }
-        //return the item which contains the user input
-        // with new tags.json data
-        // use the "id" param to index thru game-name items
-        else {
-            // return el.text
-            return el.tag.toLowerCase().includes(props.input)
-            // return el.text.toLowerCase().includes(props.input)
-        }
-    })
+  const navigate = useNavigate()
 
-    // // call this within the return()
-    // // app.get("/subthread/get-posts")
-    // useEffect(() => {
-    //     // fetch some mock data about animals for sasle
-    //     // the id of the animal that was clicked on is passed as a part of the match field of the props
-    //     console.log(`fetching post id=${id}...`)
-    //     axios("/subthread/get-tags")        // empty file for .get() requests
-    //         .then(response => {
-    //             // extract the data from the server response
-    //             setData(response.data[id])      // i changed the param to 'id'
-    //         })
-    //         .catch(err => {
-    //             // Mockaroo, which we're using for our Mock API, only allows 200 requests per day on the free plan
-    //             console.log(`Sorry, buster.  No more requests allowed today!`)
-    //             console.error(err) // the server returned an error... probably too many requests... until we pay!
+  // games are pulled from the title of each megathread
+  const filteredGames = props.allGames.filter((game) => {
+    if (props.input === "") {
+      // return nothing when nothing has been typed into search bar
+      // console.log("empty")
+    } else {
+      // console.log(game.gamename)
+      return game.gamename.toLowerCase().includes(props.input)
+    }
+  })
+  // tags are pulled from all created posts
+  const filteredPosts = props.allPosts.filter((post) => {
+    if (props.input === "") {
+      // return nothing when nothing has been typed into search bar
+      // console.log("empty")
+    } else {
+      // this should index through available tags given a post and return to main
+      return post.title.toLowerCase().includes(props.input)
+    }
+  })
 
-    //             setData(backupData[id])
-    //         })
-    // }, [id])
+  const handleClick = (e) => {
+    navigate(`/megathread/${e._id}`)
+    props.setInputText("")
+  }
 
-    return (
-        <ul>
-            {filteredData.map((item) => (
-                // with tags.json, feed back relevant posts
-                // may need to index thru the array of posts
+  const handleClick2 = (e) => {
+    navigate(`/megathread/${e.megathread}/subthread/${e._id}`)
+    props.setInputText("")
+  }
 
-                // original code
-                // this returns the game-name,posts
-                <li className="search-result" key={item.id}>{item.tag}</li>
-            ))}
-        </ul>
-    )
+  return (
+    <ul>
+      {filteredGames.map((item) => (
+        // with tags.json, feed back relevant posts
+        // may need to index thru the array of posts
+
+        // original code
+        // this returns the game-name,posts
+        // key={item.id} after "search-result" and before >
+        // maybe remove .gamename from item call below
+
+        // return <a> link to the megathread housing this game
+        <li
+          key={item._id}
+          onClick={() => handleClick({ _id: item._id })}
+          className="search-result-game"
+        >
+          {item.gamename}
+        </li>
+      ))}
+      {filteredPosts.map((item) => (
+        // with tags.json, feed back relevant posts
+        // may need to index thru the array of posts
+
+        // original code
+        // this returns the game-name,posts
+        <li
+          key={item._id}
+          onClick={() =>
+            handleClick2({ _id: item._id, megathread: item.toMegathread })
+          }
+          className="search-result-post"
+        >
+          {item.title}
+        </li>
+      ))}
+    </ul>
+  )
 }
-
 
 export default List

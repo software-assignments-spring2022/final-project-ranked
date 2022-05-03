@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react"
+import React, { useState, useEffect } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import Post from "./Post"
@@ -14,9 +14,6 @@ const Home = (props) => {
   const [loaded, setLoaded] = useState(false)
   const [user, setUser] = useState({})
 
-  /**
-   * A nested function that fetches posts from the back-end server.
-   */
   const fetchPosts = () => {
     // fetch data for posts
     console.log(`fetching posts from backend...`)
@@ -32,9 +29,6 @@ const Home = (props) => {
       })
   }
 
-  /**
-   * A nested function that fetches game names from the back-end server. (To be completed)
-   */
   const fetchGameNames = () => {
     // fetch data for game names
     axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/games`)
@@ -95,19 +89,24 @@ const Home = (props) => {
                 })
               }
             >
-              <pre>{item.gamename}</pre>
+              {item.gamename}
             </div>
           ))}
-        {_.isEmpty(gameData) &&
-        <div className="no games">
-          Wow so empty... Head over to `link to /threadrequest` to request for a game you want on this website!
-        </div> && loaded}
+        {_.isEmpty(gameData) && (
+            <div className="no games">
+              Wow so empty... Head over to `link to /threadrequest` to request
+              for a game you want on this website!
+            </div>
+          ) &&
+          loaded}
       </div>
       <div className="posts">
-        {_.isEmpty(postData) &&
-          <div className="no games">
-            Wow so empty... Be the first to post something on RANKED
-          </div> && loaded}
+        {_.isEmpty(postData) && (
+            <div className="no games">
+              Wow so empty... Be the first to post something on RANKED
+            </div>
+          ) &&
+          loaded}
         {!_.isEmpty(postData) &&
           postData.map((item) => (
             <div

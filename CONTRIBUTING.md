@@ -38,9 +38,25 @@ A Markdown document exclusively dedicated to how others might contribute to the 
 2. If 2 meetings have elapsed since a developer was assigned a story, they must reach out and explain the obstacles they are running into in the help Discord channel. Failure to do so will result in being reported to management. 
 
 ## Instructions for Setting up Local Development Environment
-1. All developers will create and test code using VS Code.
+### In the Back-end Directory
+1. Run `npm install` to install all dependencies listed in `package.json` onto your local machine. This is necessary before running our app, as the 3rd-party dependency code is excluded from version control by the `.gitignore` git settings file.
+2. Run `npm install -g nodemon` to install nodemon globally on your machine. Notice that the server will restart when you make changes, since nodemon handles stopping and restarting the server with each code change.
+3. Create a `.env` file and save it in the current directory. To ensure this file is configured with the correct environmental variables, please contact our Ranked developers for more information, as those data are sensitive and not allowed to be publicly shared on GitHub.
+
+### In the Front-end Directory
+1. Run `npm install` to install all dependencies listed in `package.json` onto your local machine. This is necessary before running our app, as the 3rd-party dependency code is excluded from version control by the `.gitignore` git settings file.
+2. Create a `.env` file and save it in the current directory. To ensure this file is configured with the correct environmental variables, please contact our Ranked developers for more information, as those data are sensitive and not allowed to be publicly shared on GitHub.
 
 ## Instructions for Building and Testing the Project
-1. All developers will create and test code using VS Code.
-2. Linter has yet to be designated.
-3. More information will be provided once the coding process has begun.
+### In the Back-end Directory
+1. Run `nodemon server` to start the back-end. In your terminal, the initial few lines of output should contain: 
+      > Server running on port: {port} <br>
+      > Connected to MongoDB
+
+### In the Front-end Directory
+1. Run `npm start` to start the front-end.
+2. Open [http://localhost:3000](http://localhost:3000) to view our app in your browser. The page will reload when you make changes, and you may also see any lint errors in the console.
+
+### Unit Testing
+* Our back-end directory includes unit tests built with [mocha](https://mochajs.org/) and [chai](https://www.chaijs.com/) assertion library, while combining with [chai-http](https://www.chaijs.com/plugins/chai-http/) plugin to simplify testing for back-end routes. Code coverage analysis is provided by the `nyc` module.
+* To run unit tests, `cd` to the `back-end` directory and `npm test`. Once the script is finished running, you will be able to see all the test results and the overall code coverage analysis in the console.

@@ -1,50 +1,54 @@
-body{
-    margin: auto;
+body {
+  margin: auto;
 }
 
-.FAQ > h3{
-    text-align: center;
+.FAQ > h3 {
+  text-align: center;
 }
 
-.FAQ-question1Div{
-    border: 1px solid black;
-    border-radius: 6px;
-    width: 370px;
-    height: auto;
-    margin: auto;
-    padding: 2px;
+.FAQ-question1Div {
+  border: 1px solid black;
+  border-radius: 6px;
+  width: 370px;
+  height: auto;
+  margin: auto;
+  padding: 2px;
 }
 
 .FAQ-question1Div > p > a {
-    color: black;
+  color: blue;
 }
 
-.FAQ-questionXDiv{
-    border: 1px solid black;
-    border-radius: 6px;
-    width: 370px;
-    height: auto;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 10px;
-    padding: 2px;
+.FAQ-questionXDiv {
+  border: 1px solid black;
+  border-radius: 6px;
+  width: 370px;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  padding: 2px;
 }
 
 .FAQ-questionXDiv > p > a {
-    color: black;
+  color: blue;
 }
 
-.FAQ > p{
-    margin-top: 3px;
-    margin-left: 5px;
+.FAQ > p {
+  margin-top: 3px;
+  margin-left: 5px;
 }
 
-.FAQ-button1{
-    width: 190px;
-    border-radius: 10px;
+.FAQ-button1 {
+  width: 190px;
+  border-radius: 10px;
 }
 
-.FAQ-button2{
-    width: 180px;
-    border-radius: 10px;
+.FAQ-button2 {
+  width: 180px;
+  border-radius: 10px;
+}
+
+.FAQ-footer > a {
+  color: blue;
 }
