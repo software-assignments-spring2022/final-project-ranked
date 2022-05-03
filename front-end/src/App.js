@@ -14,6 +14,7 @@ import Megathread from "./Megathread"
 import Subthread from "./Subthread"
 import Logout from "./Logout"
 import Admin from "./Admin"
+import Subthread_edit from "./Subthread_edit"
 import './css/App.css' 
 const App = () => {
   const [user, setUser] = useState({})
@@ -37,6 +38,7 @@ const App = () => {
             <Route path="/megathread/new" element={<NewPost user={user} />} />
             <Route path="/megathread/:gameId" element={<Megathread user={user} />} />
             <Route path="/megathread/:gameId/subthread/:postId" element={<Subthread user={user} />} />
+            <Route path="/megathread/:gameId/subthread/:postId/edit" element={<Subthread_edit user={user} />} />
           </Routes>
         </Router>
       </div>
