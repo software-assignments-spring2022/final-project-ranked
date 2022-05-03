@@ -1,13 +1,17 @@
-import React from "react"
-import "./css/Post.css"
+import React, { useState, useEffect } from "react"
+import "./css/Post.css" 
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
-import _ from "lodash"
+import _ from 'lodash'
 import Tag from "./Components/Tag"
+import Editpost from "./Editpost"
+
 
 const Post = (props) => {
   const [likes, setLikes] = React.useState(props.post.likes)
   const navigate = useNavigate()
+  const [wantEdit, setWantEdit] = useState(false)
+  const [editPost, setEditPost] = useState({})
   let tag_key = 0
 
   const handleDelete = () => {
@@ -54,6 +58,19 @@ const Post = (props) => {
 
   return (
     <div className="Post">
+      {props.user.username === props.post.user_id && <button className="Post-editButton" onClick={() => {
+            setWantEdit(!wantEdit)
+          }}> edit </button>}
+      {wantEdit && (
+          <Editpost
+            user={props.user}
+            setEditPost={setEditPost}
+            setWantEdit={setWantEdit}
+            title = {props.post.title}
+            body = {props.post.body}
+            id = {props.post._id}
+          />
+        )}
       {props.user.username === props.post.user_id && (
         <button className="Post-deleteButton" onClick={handleDelete}>
           {" "}
