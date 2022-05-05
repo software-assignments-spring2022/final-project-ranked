@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import "./css/Post.css" 
+import "./css/Post.css"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import _ from 'lodash'
@@ -9,10 +9,16 @@ import Editpost from "./Editpost"
 
 const Post = (props) => {
   const [likes, setLikes] = React.useState(props.post.likes)
+  const [liked, setLiked] = React.useState("LIKE")
   const navigate = useNavigate()
   const [wantEdit, setWantEdit] = useState(false)
   const [editPost, setEditPost] = useState({})
   let tag_key = 0
+
+  useEffect(() => {
+    if(props.post.likedUsers.indexOf(props.user._id) >= 0)
+      setLiked("LIKED")
+  }, [])
 
   const handleDelete = () => {
     axios
@@ -46,6 +52,7 @@ const Post = (props) => {
           // success
           console.log(`Liked or Unliked comment ${response.data.post}`)
           setLikes(response.data.post.likes)
+          liked === "LIKED" ? setLiked("LIKE") : setLiked("LIKED")
         })
         .catch((err) => {
           // failure
@@ -94,9 +101,9 @@ const Post = (props) => {
           </div>
           <p>{props.post.body}</p>
           <section className="like">
-            <button className="likeButton" onClick={handleLike}>
+            <button className="Post-likeButton" onClick={handleLike}>
               <span className="normal">{" "}
-              LIKE{" "}</span><span className="thumb" role="img" aria-label="Like">👍</span>
+              {liked}{" "}</span><span className="thumb" role="img" aria-label="Like">👍</span>
             </button>
             <div className="likes"> {likes} </div>
           </section>

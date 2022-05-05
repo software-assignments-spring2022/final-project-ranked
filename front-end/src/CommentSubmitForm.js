@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import axios from "axios"
+import "./css/CommentSubmitForm.css"
 
 const CommentSection = (props) => {
   const [comment, setComment] = useState("")
@@ -34,7 +35,7 @@ const CommentSection = (props) => {
   return (
     <div className="CommentSectionForm">
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="input-field">
           <input
             id="comment_field"
             type="text"
@@ -44,7 +45,7 @@ const CommentSection = (props) => {
           />
         </div>
         <div className="sendButton">
-          <input type="submit" disabled={!comment} value="send" />
+          <input className="CSFsendButton" type="submit" disabled={!comment} value="send" />
         </div>
       </form>
     </div>
