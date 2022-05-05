@@ -31,7 +31,7 @@ const Comment = (props) => {
           <h4>{prev} Wrote: </h4>
           <p>{prevText}</p>
           <h4>
-            ===========================================================================================================================
+            ======================================================================================================
           </h4>
         </pre>
       </section>
@@ -120,8 +120,8 @@ const Comment = (props) => {
 
         <section className="like">
           <button className="likeButton" onClick={handleLike}>
-            {" "}
-            {liked}{" "}
+          <span className="normal">{" "}
+            {liked}{" "}</span><span className="thumb" role="img" aria-label="Like">👍</span>
           </button>
           <div className="likes"> {likes} </div>
         </section>

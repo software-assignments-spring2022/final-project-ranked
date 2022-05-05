@@ -17,6 +17,7 @@ app.use(cors())
 app.use(morgan("dev", { skip: (req, res) => process.env.NODE_ENV === "test" })) // use the morgan middleware to log all incoming http requests
 app.use(express.json({ limit: "25mb" })) // decode JSON-formatted incoming POST data
 app.use(express.urlencoded({ limit: "25mb", extended: true })) // decode url-encoded incoming POST data
+app.use("/client", express.static("client")) // create a static route that serves the front-end built code
 
 // connect to database
 mongoose
@@ -287,6 +288,25 @@ app.post(`/megathread/:gameId/save`, async (req, res) => {
     return res.json({
       success: `You Posted!`,
       post: savePost,
+    })
+  } catch (err) {
+    console.error(err)
+    return res.status(400).json({
+      error: err,
+      status: "failed to save the message to the database",
+    })
+  }
+})
+
+// edit a post
+app.post(`/megathread/edit`, async (req, res) => {
+  try {
+    // try to save the change to the database
+    const post = await Post.findOne({ _id: req.body.id })
+    assert(post.user_id == req.body.user.username)
+    await Post.updateOne({ _id: req.body.id }, { body: req.body.body, tags: req.body.tags, image: req.body.photo })
+    return res.json({
+      success: `You Edit your post!`
     })
   } catch (err) {
     console.error(err)
