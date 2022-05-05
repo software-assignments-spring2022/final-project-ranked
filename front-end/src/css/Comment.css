@@ -60,7 +60,7 @@
   padding: 5px;
 }
 
-/* .like {
+.like {
   display: flex;
   flex-direction: row;
 }
@@ -72,14 +72,9 @@
   border-radius: 10px;
   font-family: monospace;
   background-color: #a34841;
-} */
-
-.like{
-  display: flex;
-  flex-direction: row;
 }
 
-.likeButton {
+/* .likeButton {
   background-color: #a34841;
   font-weight: bold;
   color: #ffffff;
@@ -92,7 +87,7 @@
   margin-bottom: 10px;
   margin-right: 10px;
   border-radius: 10px;
-}
+} */
 .like span.thumb{
 display:none;
 }
