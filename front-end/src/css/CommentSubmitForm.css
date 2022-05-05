@@ -1,0 +1,12 @@
+.CommentSectionForm{
+    padding: 12px 20px;
+    font-family: monospace;
+}
+.CSFsendButton{
+    margin-bottom: 10px;
+    margin-right: 10px;
+    border-radius: 10px;
+    font-family: monospace;
+    background-color: #696969da;
+    color:white;
+}

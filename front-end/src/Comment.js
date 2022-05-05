@@ -1,7 +1,6 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import axios from "axios"
 import "./css/Comment.css"
-import "./css/CommentSection.css"
 import CommentForm from "./CommentSubmitForm"
 import _ from "lodash"
 import Moment from "react-moment"
@@ -9,6 +8,12 @@ import Moment from "react-moment"
 const Comment = (props) => {
   const [wantReply, setwantReply] = React.useState(false)
   const [likes, setLikes] = React.useState(props.details.likes)
+  const [liked, setLiked] = React.useState("LIKE")
+
+  useEffect(() => {
+    if(props.details.likedUsers.indexOf(props.user._id) >= 0)
+      setLiked("LIKED")
+  }, [])
 
   const PreviousComment = (props) => {
     let prev = props.previous.user_id
@@ -68,6 +73,7 @@ const Comment = (props) => {
         .then((response) => {
           console.log(`Liked or Unliked comment ${response.data.comment}`)
           setLikes(response.data.comment.likes)
+          liked === "LIKED" ? setLiked("LIKE") : setLiked("LIKED")
         })
         .catch((err) => {
           console.log(`Received server error: ${err}`)
@@ -115,20 +121,22 @@ const Comment = (props) => {
         <section className="like">
           <button className="likeButton" onClick={handleLike}>
             {" "}
-            LIKE{" "}
+            {liked}{" "}
           </button>
           <div className="likes"> {likes} </div>
         </section>
       </div>
-      <section className="replyform">
         {wantReply && !_.isEmpty(props.user) && (
+
+      <div className="C-replyform">
           <CommentForm
             user={props.user}
             replyTo={props.details._id}
             setNewComment={props.setNewComment}
           />
+
+      </div>
         )}
-      </section>
 
       <section className="replies">
         {props.details.replies &&

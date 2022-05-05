@@ -9,20 +9,21 @@
 }
 
 .game {
-  background-color: #b8eeff;
-  margin: 5px;
-  text-align: center;
   width: 100px;
   height: 100px;
   padding: 10px;
+  background-color: #b8eeff;
+  margin: 5px;
+  text-align: center;
   border: 2px solid rgb(0, 0, 0);
   border-radius: 10px;
-  transition: all 0.2s ease-in-out;
   font-family: monospace;
   word-wrap: break-word;
-  overflow: hidden;
   text-overflow: ellipsis;
-  /* white-space: nowrap; */
+  max-width: 100px;
+  transition: all 0.2s ease-in-out;
+  font-size: medium;
+  /* overflow-x: hidden; */
 }
 
 .game:hover {

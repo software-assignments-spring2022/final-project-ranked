@@ -7,7 +7,7 @@
   transition: all 0.2s ease-in-out;
 }
 .Comment-body:hover {
-  background-color: #ff6000;
+  background-color: #fc8a438e;
   transform: scale(1.02);
 }
 
@@ -52,12 +52,7 @@
   border-radius: 10px;
   font-family: monospace;
   background-color: #418ca3a4;
-}
-
-.replyForm {
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 40px;
+  color:white;
 }
 
 .previous {
