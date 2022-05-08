@@ -70,7 +70,13 @@ The idea for Ranked started with Chris, but none of the progress made would’ve
 2. Create a `.env` file and save it in the current directory. To ensure this file is configured with the correct environmental variables, please contact our Ranked developers for more information, as those data are sensitive and not allowed to be publicly shared on GitHub.
 3. Run `npm start` to start the front-end.
 4. Open [http://localhost:3000](http://localhost:3000) to view our app in your browser. The page will reload when you make changes, and you may also see any lint errors in the console.
-
+5. For the best viewing experience, please adjust your browser dimensions by doing the following (using Chrome as an example): <br>
+    1. open `Developer Tools`
+    2. click `Toggle device toolbar`
+    3. select `Responsive` from the dropdown menu at the top
+    4. change the `Dimensions` to `400x700`
+    5. enjoy using our app!
+  
 ### Unit Testing
 * Our back-end directory includes unit tests built with [mocha](https://mochajs.org/) and [chai](https://www.chaijs.com/) assertion library, while combining with [chai-http](https://www.chaijs.com/plugins/chai-http/) plugin to simplify testing for back-end routes. Code coverage analysis is provided by the `nyc` module.
 * To run unit tests, `cd` to the `back-end` directory and `npm test`. Once the script is finished running, you will be able to see all the test results and the overall code coverage analysis in the console.
