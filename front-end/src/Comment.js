@@ -18,20 +18,19 @@ const Comment = (props) => {
   const PreviousComment = (props) => {
     let prev = props.previous.user_id
     let prevText = props.previous.text
-    let id = props.previous._id
 
     return (
       <section className="previous">
         <pre>
           <p>
             <small>
-              {id}({prev}) ---&gt; {props.id}({props.user})
+              {prev} ---&gt; {props.user}
             </small>{" "}
           </p>
           <h4>{prev} Wrote: </h4>
-          <p>{prevText}</p>
+          <p>  {prevText}</p>
           <h4>
-            ======================================================================================================
+            ==========================
           </h4>
         </pre>
       </section>

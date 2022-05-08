@@ -21,10 +21,11 @@
   border-radius: 10px;
   transition: all 0.2s ease-in-out;
   height: 100%;
+  margin-bottom: 4px;
 }
 
 .post:hover {
-  background-color: #ff6000;
+  background-color: #fc9403;
   transform: scale(1.02);
 }
 

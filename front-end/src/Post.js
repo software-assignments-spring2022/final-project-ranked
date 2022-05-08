@@ -67,7 +67,7 @@ const Post = (props) => {
     <div className="Post">
       {props.user.username === props.post.user_id && <button className="Post-editButton" onClick={() => {
             setWantEdit(!wantEdit)
-          }}> edit </button>}
+          }}> Edit </button>}
       {wantEdit && (
           <Editpost
             user={props.user}
@@ -81,7 +81,7 @@ const Post = (props) => {
       {props.user.username === props.post.user_id && (
         <button className="Post-deleteButton" onClick={handleDelete}>
           {" "}
-          delete{" "}
+          Delete{" "}
         </button>
       )}
       <div className="Post-header"> {props.post.title} </div>

@@ -2,6 +2,12 @@ body {
   margin: auto;
 }
 
+.aboutUs-wrapperDiv {
+  width: 400px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
 .aboutUsTitle > img {
   width: 400px;
   height: 150px;
@@ -43,10 +49,9 @@ body {
   width: 250px;
   height: 150px;
   vertical-align: top;
-  overflow-wrap: break-word;
   display: table-cell;
-  overflow: hidden;
   text-align: center;
+  padding: 6px;
 }
 
 .centered {

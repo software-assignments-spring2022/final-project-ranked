@@ -69,49 +69,51 @@ const Register = () => {
         <Navigate to="/account" />
       ) : (
         <main className="Register">
-          <div className="Register-tabDiv">
-            <div className="Register-loginTab">
-              <Link to="/login">
-                <p>Login</p>
-              </Link>
+          <div className="Register-wrapperDiv">
+            <div className="Register-tabDiv">
+              <div className="Register-loginTab">
+                <Link to="/login">
+                  <p>Login</p>
+                </Link>
+              </div>
+              <div className="Register-registerTab">Sign up</div>
             </div>
-            <div className="Register-registerTab">Register</div>
-          </div>
-          <div className="Register-registerDiv">
-            <Form className="Register-form" onSubmit={HandleRegisterClick}>
-              <div className="Register-usernameForm">
-                <Form.Label>Username</Form.Label>
-                <Form.Control
-                  placeholder="Enter username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-              </div>
-              <div className="Register-emailForm">
-                <Form.Label>Email</Form.Label>
-                <Form.Control
-                  type="email"
-                  placeholder="Enter email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                <Form.Text className="text-muted">
-                  We'll never share your email with anyone else.
-                </Form.Text>
-              </div>
-              <div className="Register-passwordForm">
-                <Form.Label>Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="Enter password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              <Button className="Register-submitBtn" type="submit">
-                Register
-              </Button>
-            </Form>
+            <div className="Register-registerDiv">
+              <Form className="Register-form" onSubmit={HandleRegisterClick}>
+                <div className="Register-usernameForm">
+                  <Form.Label>Username</Form.Label>
+                  <Form.Control
+                    placeholder="Enter username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                </div>
+                <div className="Register-emailForm">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    type="email"
+                    placeholder="Enter email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                  <Form.Text className="text-muted">
+                    We'll never share your email with anyone else.
+                  </Form.Text>
+                </div>
+                <div className="Register-passwordForm">
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control
+                    type="password"
+                    placeholder="Enter password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                <Button className="Register-submitBtn" type="submit">
+                  Sign Up
+                </Button>
+              </Form>
+            </div>
           </div>
         </main>
       )}

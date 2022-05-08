@@ -23,10 +23,9 @@
   max-width: 100px;
   transition: all 0.2s ease-in-out;
   font-size: medium;
-  /* overflow-x: hidden; */
 }
 
 .game:hover {
-  background-color: #ff6000;
+  background-color: #fc9403;
   transform: scale(1.02);
 }
