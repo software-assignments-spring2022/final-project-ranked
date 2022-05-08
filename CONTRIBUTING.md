@@ -56,6 +56,12 @@ A Markdown document exclusively dedicated to how others might contribute to the 
 ### In the Front-end Directory
 1. Run `npm start` to start the front-end.
 2. Open [http://localhost:3000](http://localhost:3000) to view our app in your browser. The page will reload when you make changes, and you may also see any lint errors in the console.
+3. For the best viewing experience, please adjust your browser dimensions by doing the following (using Chrome as an example): <br>
+    1. open `Developer Tools`
+    2. click `Toggle device toolbar`
+    3. select `Responsive` from the dropdown menu at the top
+    4. change the `Dimensions` to `400x700`
+    5. enjoy using our app!
 
 ### Unit Testing
 * Our back-end directory includes unit tests built with [mocha](https://mochajs.org/) and [chai](https://www.chaijs.com/) assertion library, while combining with [chai-http](https://www.chaijs.com/plugins/chai-http/) plugin to simplify testing for back-end routes. Code coverage analysis is provided by the `nyc` module.
