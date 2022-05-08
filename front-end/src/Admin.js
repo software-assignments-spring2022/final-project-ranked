@@ -89,55 +89,57 @@ const Admin = () => {
         -----------------------------
       </div>
 
-      {threadRequestList.map((eachRequest) => (
-        <div className="Admin-eachThreadRequest" key={eachRequest._id}>
-          Game Name: {eachRequest.gameName}
-          <br></br>
-          Will Moderate: {eachRequest.willModerate ? "✅" : "❌"}
-          <br></br>
-          Friends to Moderate: {eachRequest.friendsWillModerate ? "✅" : "❌"}
-          <br></br>
-          Reason: "{eachRequest.reason}"<br></br>
-          At: {eachRequest.dateRequested}
-          <br></br>
-          By: {eachRequest.requestedUsername}
-          <br></br>
-          Approval Status:{" "}
-          <i>
-            <b>{eachRequest.approvalStatus}</b>
-          </i>
-          {eachRequest.approvalStatus == "pending" && (
-            <div>
-              <Form
-                onSubmit={HandleRequest}
-                className="Admin-eachRequestFormDiv"
-              >
-                <Form.Check
-                  label="Approve"
-                  name="processRequestForm"
-                  type={"radio"}
-                  onClick={(e) => {
-                    setApprovalStatus(1)
-                    setRequestID(eachRequest._id)
-                  }}
-                />
-                <Form.Check
-                  label="Reject"
-                  name="processRequestForm"
-                  type={"radio"}
-                  onClick={(e) => {
-                    setApprovalStatus(0)
-                    setRequestID(eachRequest._id)
-                  }}
-                />
-                <Button type="submit" className="Admin-eachRequestFormBtn">
-                  Submit
-                </Button>
-              </Form>
-            </div>
-          )}
-        </div>
-      ))}
+      <div className="Admin-requestWrapperDiv">
+        {threadRequestList.map((eachRequest) => (
+          <div className="Admin-eachThreadRequest" key={eachRequest._id}>
+            Game Name: {eachRequest.gameName}
+            <br></br>
+            Will Moderate: {eachRequest.willModerate ? "✅" : "❌"}
+            <br></br>
+            Friends to Moderate: {eachRequest.friendsWillModerate ? "✅" : "❌"}
+            <br></br>
+            Reason: "{eachRequest.reason}"<br></br>
+            At: {eachRequest.dateRequested}
+            <br></br>
+            By: {eachRequest.requestedUsername}
+            <br></br>
+            Approval Status:{" "}
+            <i>
+              <b>{eachRequest.approvalStatus}</b>
+            </i>
+            {eachRequest.approvalStatus == "pending" && (
+              <div>
+                <Form
+                  onSubmit={HandleRequest}
+                  className="Admin-eachRequestFormDiv"
+                >
+                  <Form.Check
+                    label="Approve"
+                    name="processRequestForm"
+                    type={"radio"}
+                    onClick={(e) => {
+                      setApprovalStatus(1)
+                      setRequestID(eachRequest._id)
+                    }}
+                  />
+                  <Form.Check
+                    label="Reject"
+                    name="processRequestForm"
+                    type={"radio"}
+                    onClick={(e) => {
+                      setApprovalStatus(0)
+                      setRequestID(eachRequest._id)
+                    }}
+                  />
+                  <Button type="submit" className="Admin-eachRequestFormBtn">
+                    Process
+                  </Button>
+                </Form>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </main>
   )
 }

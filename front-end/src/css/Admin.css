@@ -1,3 +1,9 @@
+.Admin-requestWrapperDiv {
+  width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .Admin-eachThreadRequest {
   border: 1px solid black;
   border-radius: 20px;
@@ -17,7 +23,7 @@
 .Admin-eachRequestFormBtn {
   position: relative;
   right: 2px;
-  margin-top: 0px;
+  height: 30px;
   line-height: 0px;
   width: 100px;
 }

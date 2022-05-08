@@ -28,7 +28,7 @@ export default (props) => {
         </a>
       ) : (
         <a className="menu-item" href="/login">
-          Login/Register
+          Login/Signup
         </a>
       )}
       <a className="menu-item" href="/about">

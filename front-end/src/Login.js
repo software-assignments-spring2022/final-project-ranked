@@ -70,7 +70,41 @@ const Login = () => {
         <Navigate to="/account" />
       ) : (
         <main className="Login">
-          <div className="Login-tabDiv">
+          <div className="Login-wrapperDiv">
+            <div className="Login-tabDiv">
+              <div className="Login-loginTab">Login</div>
+              <div>
+                <Link className="Login-registerTab" to="/register">
+                  <p>Sign up</p>
+                </Link>
+              </div>
+            </div>
+            <div className="Login-loginDiv">
+              <Form className="Login-form" onSubmit={HandleLoginClick}>
+                <div className="Login-usernameEmailForm">
+                  <Form.Label>Username</Form.Label>
+                  <Form.Control
+                    placeholder="Enter username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                </div>
+                <div className="Login-passwordForm">
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                <Button type="submit" className="Login-submitBtn">
+                  Login
+                </Button>
+              </Form>
+            </div>
+          </div>
+          {/* <div className="Login-tabDiv">
             <div className="Login-loginTab">Login</div>
             <div>
               <Link className="Login-registerTab" to="/register">
@@ -101,7 +135,7 @@ const Login = () => {
                 Login
               </Button>
             </Form>
-          </div>
+          </div> */}
         </main>
       )}
     </>

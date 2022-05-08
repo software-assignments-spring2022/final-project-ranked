@@ -3,6 +3,7 @@
     font-family: monospace;
 }
 .CSFsendButton{
+    margin-top: 3px;
     margin-bottom: 10px;
     margin-right: 10px;
     border-radius: 10px;

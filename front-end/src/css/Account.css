@@ -11,6 +11,12 @@ body {
   margin-top: 20px;
 }
 
+.Account-wrapperDiv {
+  width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .Account-tabDiv {
   display: flex;
   position: relative;

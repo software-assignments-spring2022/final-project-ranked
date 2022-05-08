@@ -140,7 +140,7 @@ const Editpost = (props) => {
           </Form.Group>
 
           <Button variant="primary" type="submit">
-            Submit
+            Save
           </Button>
         </Form>
       </div>

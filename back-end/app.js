@@ -299,14 +299,14 @@ app.post(`/megathread/:gameId/save`, async (req, res) => {
 })
 
 // edit a post
-app.post(`/megathread/edit`, async (req, res) => {
+app.post("/megathread/edit", async (req, res) => {
   try {
     // try to save the change to the database
     const post = await Post.findOne({ _id: req.body.id })
     assert(post.user_id == req.body.user.username)
     await Post.updateOne({ _id: req.body.id }, { body: req.body.body, tags: req.body.tags, image: req.body.photo })
     return res.json({
-      success: `You Edit your post!`
+      success: "Post updated!"
     })
   } catch (err) {
     console.error(err)

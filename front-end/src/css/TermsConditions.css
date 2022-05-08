@@ -2,30 +2,24 @@ body {
   margin: auto;
 }
 
-.centered {
-  position: absolute;
-  top: 10%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.termsText {
-  /* border: 1px solid black; */
-  text-align: center;
+.TermsConditions-wrapperDiv {
   width: 400px;
-  text-align: center;
-  overflow-wrap: break-word;
-  overflow: auto;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 20px;
 }
 
-.termsFooter {
+.TermsConditions-text {
+  text-align: center;
+}
+
+.TermsConditions-footer {
   position: relative;
   bottom: 0;
-  width: 400px;
   height: 30px;
   text-align: center;
 }
 
-.termsFooter > a {
+.TermsConditions-footer > a {
   color: blue;
 }

@@ -45,7 +45,7 @@ const CommentSection = (props) => {
           />
         </div>
         <div className="sendButton">
-          <input className="CSFsendButton" type="submit" disabled={!comment} value="send" />
+          <input className="CSFsendButton" type="submit" disabled={!comment} value="Send" />
         </div>
       </form>
     </div>

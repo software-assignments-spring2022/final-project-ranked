@@ -152,51 +152,53 @@ const Account = () => {
         src={accountInfo.photo}
         alt="user profile image"
       ></img>
-      <div className="Account-tabDiv">
-        <div className="Account-infoTab">Overview</div>
-        <div>
-          <Link className="Account-adminTab" to="/admin">
-            <p>Admin</p>
-          </Link>
+      <div className="Account-wrapperDiv">
+        <div className="Account-tabDiv">
+          <div className="Account-infoTab">Overview</div>
+          <div>
+            <Link className="Account-adminTab" to="/admin">
+              <p>Admin</p>
+            </Link>
+          </div>
         </div>
-      </div>
-      <div className="Account-infoDiv">
-        <div className="Account-details">
-          <p>
-            {" "}
-            <b>Username:</b> {accountInfo.username}
-          </p>
+        <div className="Account-infoDiv">
+          <div className="Account-details">
+            <p>
+              {" "}
+              <b>Username:</b> {accountInfo.username}
+            </p>
+          </div>
+          <div className="Account-details">
+            <p>
+              {" "}
+              <b>Email address:</b> {accountInfo.email}
+            </p>
+          </div>
+          <div className="Account-details">
+            <p>
+              {" "}
+              <b>Joined on:</b> {accountInfo.joinDate}
+            </p>
+          </div>
+          <OverlayTrigger
+            trigger="click"
+            placement="top"
+            overlay={showRequestsPopover}
+          >
+            <button className="Account-checkRequestBtn">
+              Check Requests Status
+            </button>
+          </OverlayTrigger>
+          <OverlayTrigger
+            trigger="click"
+            placement="top"
+            overlay={ProfileImgFormPopover}
+          >
+            <button className="Account-changePicBtn">
+              Change Profile Picture
+            </button>
+          </OverlayTrigger>
         </div>
-        <div className="Account-details">
-          <p>
-            {" "}
-            <b>Email address:</b> {accountInfo.email}
-          </p>
-        </div>
-        <div className="Account-details">
-          <p>
-            {" "}
-            <b>Joined on:</b> {accountInfo.joinDate}
-          </p>
-        </div>
-        <OverlayTrigger
-          trigger="click"
-          placement="top"
-          overlay={showRequestsPopover}
-        >
-          <button className="Account-checkRequestBtn">
-            Check Requests Status
-          </button>
-        </OverlayTrigger>
-        <OverlayTrigger
-          trigger="click"
-          placement="top"
-          overlay={ProfileImgFormPopover}
-        >
-          <button className="Account-changePicBtn">
-            Change Profile Picture
-          </button>
-        </OverlayTrigger>
       </div>
     </main>
   )
