@@ -5,6 +5,7 @@ import Post from "./Post"
 import "./css/App.css"
 import "./css/Home.css"
 import _ from "lodash"
+import loadingIcon from "./Components/peepocomfy.gif"
 
 const Home = (props) => {
   const jwtToken = localStorage.getItem("token")
@@ -14,24 +15,22 @@ const Home = (props) => {
   const [loaded, setLoaded] = useState(false)
   const [user, setUser] = useState({})
 
-  const fetchPosts = () => {
-    // fetch data for posts
-    console.log(`fetching posts from backend...`)
-    axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/posts`)
-      .then((response) => {
-        // extract the data from the server response
+  const fetchPosts = async () => {
+    try{
+        // fetch data for posts
+        console.log(`fetching posts from backend...`)
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/posts`)
         setPostData(response.data.home_posts)
-      })
-      .catch((err) => {
+    } catch(err) {
         console.log(`Sorry, couldn't get posts data from backend...`)
         console.error(err)
         setPostData([])
-      })
+    }
   }
 
-  const fetchGameNames = () => {
+  const fetchGameNames = async () => {
     // fetch data for game names
-    axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/games`)
+    await axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/games`)
       .then((response) => {
         // extract the data from the server response
         setGameData(response.data.games)
@@ -42,8 +41,8 @@ const Home = (props) => {
       })
   }
 
-  const fetchUser = () => {
-    axios
+  const fetchUser = async () => {
+    await axios
       .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/isLoggedIn`, {
         headers: { Authorization: `JWT ${jwtToken}` },
       })
@@ -59,11 +58,12 @@ const Home = (props) => {
       })
   }
 
-  useEffect(() => {
+  useEffect(async () => {
     setLoaded(false)
-    fetchUser()
-    fetchPosts()
-    fetchGameNames()
+    await fetchUser()
+    await fetchPosts()
+    await fetchGameNames()
+    console.log("LOADED")
     setLoaded(true)
   }, [])
 
@@ -77,8 +77,9 @@ const Home = (props) => {
 
   return (
     <main className="Home">
+      <div className="loading">{!loaded && <p><img src={loadingIcon} alt="loading"></img><br></br>LOADING...</p>}</div>
       <div className="game-list">
-        {!_.isEmpty(gameData) &&
+        {loaded && !_.isEmpty(gameData) &&
           gameData.map((item) => (
             <div
               className="game"
@@ -92,7 +93,7 @@ const Home = (props) => {
               {item.gamename}
             </div>
           ))}
-        {_.isEmpty(gameData) && (
+        {loaded && _.isEmpty(gameData) && (
             <div className="no games">
               Wow so empty... Head over to `link to /threadrequest` to request
               for a game you want on this website!
@@ -101,13 +102,13 @@ const Home = (props) => {
           loaded}
       </div>
       <div className="posts">
-        {_.isEmpty(postData) && (
+        {loaded && _.isEmpty(postData) && (
             <div className="no games">
               Wow so empty... Be the first to post something on RANKED
             </div>
           ) &&
           loaded}
-        {!_.isEmpty(postData) &&
+        {loaded && !_.isEmpty(postData) &&
           postData.map((item) => (
             <div
               className="post"

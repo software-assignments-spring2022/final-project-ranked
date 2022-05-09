@@ -2,6 +2,15 @@
   max-width: 100%;
 }
 
+.loading {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  font-family: monospace;
+  font-size: 20px;
+  color: black;
+}
+
 .game-list {
   display: flex;
   overflow-y: hidden;

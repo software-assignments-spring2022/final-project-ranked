@@ -5,6 +5,7 @@ import CommentSection from "./CommentSection"
 import Post from "./Post"
 import _ from "lodash"
 import "./css/Subthread.css"
+import loadingIcon from "./Components/peepocomfy.gif"
 
 const Subthread = (props) => {
   const jwtToken = localStorage.getItem("token")
@@ -17,12 +18,12 @@ const Subthread = (props) => {
   const { postId } = useParams()
 
   //   the following side-effect will be called once upon initial render
-  useEffect(() => {
+  useEffect(async () => {
     setLoaded(false)
     window.scrollTo(0, 0)
     // fetching post data from backend
     console.log(`fetching post id=${postId}...`)
-    axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/${postId}/post`)
+    await axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/${postId}/post`)
       .then((response) => {
         // extract the data from the server response
         setData(response.data.sub_post)
@@ -33,7 +34,7 @@ const Subthread = (props) => {
         setData({})
       })
     console.log(`fetching account info...`)
-    axios
+    await axios
       .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/isLoggedIn`, {
         headers: { Authorization: `JWT ${jwtToken}` },
       })
@@ -51,17 +52,19 @@ const Subthread = (props) => {
 
   return (
     <div className="Subthread">
-      {/* <button className="back-button" onClick={goBack}> Back </button> */}
-      {_.isEmpty(data) && (
+      <div className="loading">{!loaded && <p><img src={loadingIcon} alt="loading"></img><br></br>LOADING...</p>}</div>
+      {loaded && _.isEmpty(data) && (
           <div className="header"> This post doesn't exist! </div>
-        ) &&
-        loaded}
-      {!_.isEmpty(data) && <Post user={user} post={data}></Post>}
-      {!_.isEmpty(data) && (
+        )}
+      {loaded && !_.isEmpty(data) && <Post user={user} post={data}></Post>}
+      {loaded && !_.isEmpty(data) && (
         <div className="CommentSection">
           <CommentSection user={user} gameId={gameId} postId={postId} />
         </div>
       )}
+      <div className="Subthread-footer">
+        <h2>© 2022 Ranked</h2>
+      </div>
     </div>
   )
 }
