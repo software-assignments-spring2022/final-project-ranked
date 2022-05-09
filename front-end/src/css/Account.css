@@ -85,3 +85,8 @@ body {
   left: 70px;
   margin-top: -5px;
 }
+
+.Account-overlay {
+  height: 300px;
+  overflow-y: scroll;
+}
