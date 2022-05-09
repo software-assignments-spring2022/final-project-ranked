@@ -48,7 +48,7 @@ const Account = () => {
 
   // show previous thread requests overlay component
   const showRequestsPopover = (
-    <Popover>
+    <Popover className="Account-overlay">
       <Popover.Header>Message from Ranked:</Popover.Header>
       {threadRequestList.length === 0 ? (
         <Popover.Body>
