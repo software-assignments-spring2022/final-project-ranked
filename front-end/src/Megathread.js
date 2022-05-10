@@ -8,6 +8,7 @@ import _ from "lodash"
 import Post from "./Post"
 import Newpost from "./Newpost"
 // import usePostSearch from "./usePostSearch"
+import loadingIcon from "./Components/peepocomfy.gif"
 
 const Megathread = (props) => {
   const jwtToken = localStorage.getItem("token")
@@ -25,11 +26,11 @@ const Megathread = (props) => {
   const { gameId } = useParams()
 
   // the following side-effect will be called once upon initial render
-  useEffect(() => {
+  useEffect(async () => {
     // fetch post data from backend
     setLoaded(false)
     console.log(`fetching posts for megathread id=${gameId}...`)
-    axios
+    await axios
       .get(
         `${process.env.REACT_APP_SERVER_HOSTNAME}/megathread/${gameId}/posts`
       )
@@ -45,7 +46,7 @@ const Megathread = (props) => {
       })
 
     console.log(`fetching account info...`)
-    axios
+    await axios
       .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/isLoggedIn`, {
         headers: { Authorization: `JWT ${jwtToken}` },
       })
@@ -92,15 +93,16 @@ const Megathread = (props) => {
 
   return (
     <div className="Megathread">
+      <div className="loading">{!loaded && <p><img src={loadingIcon} alt="loading"></img><br></br>LOADING...</p>}</div>
       <div className="gameName">
-        {_.isEmpty(gamename) && <div> This game doesn't exist! </div> && loaded}
-        {!_.isEmpty(gamename) && <div>Game: {gamename}</div>}
+        {loaded && _.isEmpty(gamename) && <div> This game doesn't exist! </div>}
+        {loaded && !_.isEmpty(gamename) && <div>Game: {gamename}</div>}
       </div>
-      {_.isEmpty(user) && (
+      {loaded && _.isEmpty(user) && (
           <div className="gameName"> Log in first to post! </div>
         ) &&
         !_.isEmpty(gamename)}
-      {!_.isEmpty(gamename) && !_.isEmpty(user) && (
+      {loaded && !_.isEmpty(gamename) && !_.isEmpty(user) && (
         <div className="selfPosting">
           <button
             className="btn"
@@ -119,10 +121,10 @@ const Megathread = (props) => {
           )}
         </div>
       )}
-      {!_.isEmpty(gamename) && _.isEmpty(data) && !wantComent && (
+      {loaded && !_.isEmpty(gamename) && _.isEmpty(data) && !wantComent && (
         <div className="header">Wow so empty... Be the first one to post!</div>
       )}
-      {!_.isEmpty(data) && (
+      {loaded && !_.isEmpty(data) && (
         <div className="posts">
           {data.map((item) => (
             <div
